@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element attributes="hasListeners=true" audit="true" extends="task" label="Financial Request" max_length="40" name="x_snc_city_finance_financial_request" sizeclass="109" type="collection">
+        <element choice="1" label="Account Type" max_length="40" name="account_type" type="choice">
+            <choice>
+                <element label="Individual" sequence="0" value="Individual"/>
+                <element label="Joint" sequence="1" value="Joint"/>
+                <element label="Custodial" sequence="2" value="Custodial"/>
+            </choice>
+        </element>
+        <element label="Address" max_length="255" name="address" type="multi_two_lines"/>
+        <element label="City" max_length="40" name="city" type="string"/>
+        <element label="Email Address" max_length="100" name="email_address" type="email"/>
+        <element label="First Name" max_length="40" name="first_name" type="string"/>
+        <element label="Last Name" max_length="40" name="last_name" type="string"/>
+        <element label="Middle Initial" max_length="40" name="middle_initial" type="string"/>
+        <element label="Phone Number" max_length="40" name="phone_number" type="phone_number_e164"/>
+        <element attributes="edge_encryption_enabled=true" choice="1" label="Request Type" max_length="40" name="request_type" type="string">
+            <choice>
+                <element label="Banking" sequence="0" value="Banking"/>
+                <element label="Credit Cards" sequence="1" value="Credit Cards"/>
+                <element label="Loans" sequence="2" value="Loans"/>
+                <element label="Investments" sequence="3" value="Investments"/>
+            </choice>
+        </element>
+        <element choice="1" label="State/Province" max_length="40" name="state_province" reference="u_states" reference_key="u_abbreviation" type="reference">
+            <choice/>
+        </element>
+        <element label="Zip Code" max_length="40" name="zip_code" type="string"/>
+    </element>
+</database>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_macro">
+    <sys_ui_macro action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>general</category>
+        <description/>
+        <media_type/>
+        <name>city_investment_questionnaire</name>
+        <scoped_name>x_snc_city_finance_city_investment_questionnaire</scoped_name>
+        <sys_class_name>sys_ui_macro</sys_class_name>
+        <sys_created_by>michael.ritchie</sys_created_by>
+        <sys_created_on>2017-06-20 17:12:30</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>a96727dcdbeb760087c1fd441d9619fc</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>city_investment_questionnaire</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sys_ui_macro_a96727dcdbeb760087c1fd441d9619fc</sys_update_name>
+        <sys_updated_by>michael.ritchie</sys_updated_by>
+        <sys_updated_on>2017-06-20 17:31:42</sys_updated_on>
+        <xml><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<div>
+		<table cellspacing="0" cellpadding="0" border="0" class="background_transparent">
+			<tr>
+				<td width="100%">
+					We've outlined the most likely best-case and worst-case annual returns of five hypothetical investment plans.
+				</td>
+			</tr>
+			<tr>
+				<td width="100%">
+					The figures are hypothetical and do not represent the performance of any particular investment.
+				</td>
+			</tr>
+			<tr>
+				<td class="message_image"><img src="city_financial_investment_chart.png"/></td>				
+			</tr>		
+		</table>
+	</div>
+</j:jelly>]]></xml>
+    </sys_ui_macro>
+</record_update>

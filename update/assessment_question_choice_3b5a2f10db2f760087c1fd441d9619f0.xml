@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="assessment_question_choice">
+    <assessment_question_choice action="INSERT_OR_UPDATE">
+        <misc>0</misc>
+        <order>200</order>
+        <question display_value="Which range of possible outcomes is most acceptable to  you?">d33a6b10db2f760087c1fd441d9619dd</question>
+        <rec_misc>0</rec_misc>
+        <score>3</score>
+        <sys_class_name>assessment_question_choice</sys_class_name>
+        <sys_created_by>michael.ritchie</sys_created_by>
+        <sys_created_on>2017-06-20 17:24:59</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>3b5a2f10db2f760087c1fd441d9619f0</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>assessment_question_choice_3b5a2f10db2f760087c1fd441d9619f0</sys_update_name>
+        <sys_updated_by>michael.ritchie</sys_updated_by>
+        <sys_updated_on>2017-06-20 17:24:59</sys_updated_on>
+        <text/>
+        <value>Plan B</value>
+    </assessment_question_choice>
+    <fx_price action="delete_multiple" query="id=3b5a2f10db2f760087c1fd441d9619f0"/>
+    <fx_price action="INSERT_OR_UPDATE">
+        <amount>0</amount>
+        <currency display_value="USD">USD</currency>
+        <field>misc</field>
+        <id>3b5a2f10db2f760087c1fd441d9619f0</id>
+        <parent/>
+        <reference_amount>0</reference_amount>
+        <reference_currency display_value="USD">USD</reference_currency>
+        <sys_created_by>michael.ritchie</sys_created_by>
+        <sys_created_on>2017-06-20 17:24:59</sys_created_on>
+        <sys_id>0d6a6f10db2f760087c1fd441d961939</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>michael.ritchie</sys_updated_by>
+        <sys_updated_on>2017-06-20 17:24:59</sys_updated_on>
+        <table>assessment_question_choice</table>
+        <type>calculated</type>
+    </fx_price>
+    <fx_price action="INSERT_OR_UPDATE">
+        <amount>0</amount>
+        <currency display_value="USD">USD</currency>
+        <field>rec_misc</field>
+        <id>3b5a2f10db2f760087c1fd441d9619f0</id>
+        <parent/>
+        <reference_amount>0</reference_amount>
+        <reference_currency display_value="USD">USD</reference_currency>
+        <sys_created_by>michael.ritchie</sys_created_by>
+        <sys_created_on>2017-06-20 17:24:59</sys_created_on>
+        <sys_id>856aab10db2f760087c1fd441d96195b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>michael.ritchie</sys_updated_by>
+        <sys_updated_on>2017-06-20 17:24:59</sys_updated_on>
+        <table>assessment_question_choice</table>
+        <type>calculated</type>
+    </fx_price>
+</record_update>

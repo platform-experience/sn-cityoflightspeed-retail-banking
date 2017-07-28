@@ -1,0 +1,685 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function mapPageCtrl(appManager, $scope, $rootScope, $window,$location, $anchorScroll, $timeout, leafletData, $q) {
+	/* widget controller */
+	var c = this;
+	$scope.firstFlip = true;
+	$location.hash('ff');
+	
+	$rootScope.$broadcast('refreshFooterUrl');
+	
+	c.loading = true;
+	c.liveApp = false;
+	c.masterMarkers = [];
+	c.markers = [];	
+
+	c.awesomeMarkerIconCurrentLocation = {
+		type: 'awesomeMarker',
+		icon: 'user',
+		markerColor: 'green',
+		prefix: 'fa',
+		iconColor: '#fff'
+	};
+	c.awesomeMarkerIconATM = {
+		type: 'awesomeMarker',
+		icon: 'usd',
+		markerColor: 'blue',
+		prefix: 'fa',
+		iconColor: '#fff'
+	};
+	c.awesomeMarkerIconBank = {
+		type: 'awesomeMarker',
+		icon: 'university',
+		markerColor: 'blue',
+		prefix: 'fa',
+		iconColor: '#fff'
+	};
+
+	//Center of the USA
+	c.centerLocation = {
+		lat: 39.8283,
+		lng: -98.5795,
+		zoom: 3,
+		icon: c.awesomeMarkerIconCurrentLocation
+	}
+	c.startLocation = {
+		lat: 39.8283,
+		lng: -98.5795,
+		zoom: 3,
+		icon: c.awesomeMarkerIconCurrentLocation
+	}
+	function getDeviceLocation() {
+		var defer = $q.defer();
+		
+		if(navigator.geolocation && c.liveApp) {
+			navigator.geolocation.getCurrentPosition(function(location) {
+				c.centerLocation.lat = location.coords.latitude;
+				c.centerLocation.lng = location.coords.longitude;
+				c.startLocation.lat = location.coords.latitude;
+				c.startLocation.lng = location.coords.longitude;
+				if(location.coords.accuracy > 14){
+					c.centerLocation.zoom = Math.round(location.coords.accuracy*0.25);			
+					c.startLocation.zoom = Math.round(location.coords.accuracy*0.25);
+				}
+				defer.resolve();
+			});
+		}else{
+			//Default to New York
+			c.centerLocation = {
+				lat: 40.6453531,
+				lng: -74.0150371,
+				zoom: 14,
+				icon: c.awesomeMarkerIconCurrentLocation
+			};
+			angular.copy(c.centerLocation,c.startLocation);
+			defer.resolve();
+		}
+		return defer.promise;
+	}
+		
+	c.mapbox = {
+		mapbox_layer: {
+			name: 'Mapbox',
+			// url: 'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token={apikey}',
+			url: 'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token={apikey}',
+			type: 'xyz',
+			options: {
+				apikey: c.data.apiKey,
+				mapid: 'testing'
+			}
+		}
+	};
+	
+	c.$onInit = function() {
+		//debugger;
+		c.searchObject = $location.search();
+		appManager.trackPages('guide_map_page');
+		appManager.setTitle("Near By");
+
+		c.tile = c.mapbox.mapbox_layer;	
+		getDeviceLocation().then(function(){
+			$timeout(function() {
+				demoMarkers();
+				c.loading = false;	
+			}, 3000);
+		});
+	};
+	
+	$scope.$watch("c.loading", function(value) {
+		if (value === false) {
+			leafletData.getMap().then(function(map) {
+				$timeout(function() {
+					map.invalidateSize();
+				}, 300);
+			});
+		}
+	});
+
+	function demoMarkers(){
+		var markers = [];
+
+		for(var i=0;i<c.data.sites.length;i++){
+			markers[i] = {
+				name: '',
+				icon: c.awesomeMarkerIconBank,
+				message : '',
+				image : '',
+				lat: parseFloat(c.data.sites[i].lat),
+				lng: parseFloat(c.data.sites[i].lng)
+			};
+			
+			var msg = [];
+			msg.push('<div class="flex-it">');
+			if((c.data.sites[i].types.indexOf('Banking')>-1)&&(c.data.sites[i].types.indexOf('ATM')>-1)){
+				markers[i].name = c.data.sites[i].name + ' - Branch, ATM';
+				markers[i].image = 'city_financial_bank.jpg';
+				markers[i].type = 'Bank|ATM';
+				markers[i].address = c.data.sites[i].street +' ' + c.data.sites[i].city +', '+ c.data.sites[i].state +' '+ c.data.sites[i].zip;
+				msg.push('<div class="image" style="background-image:url(city_financial_bank.jpg)"></div>');
+				msg.push('<div><div class="info-title">'+ markers[i].name  +'</div>');
+				msg.push('<div class="info">'+ c.data.sites[i].street +'</div>');
+				msg.push('<div class="info">'+ c.data.sites[i].city +', '+ c.data.sites[i].state +' '+ c.data.sites[i].zip +'</div>');
+				msg.push('<div class="info">M-F: 9AM - 5PM</div>');
+				msg.push('<div class="info">SAT: 9AM - 3PM</div></div>');
+				
+			}else if(c.data.sites[i].types.indexOf('Banking')>-1){
+				markers[i].name = c.data.sites[i].name + ' - Branch';
+				markers[i].image = 'city_financial_bank.jpg';
+				markers[i].type = 'Bank';
+				markers[i].address = c.data.sites[i].street +' ' + c.data.sites[i].city +', '+ c.data.sites[i].state +' '+ c.data.sites[i].zip;
+				msg.push('<div class="image" style="background-image:url(city_financial_bank.jpg)"></div>');
+				msg.push('<div><div class="info-title">'+ markers[i].name  +'</div>');
+				msg.push('<div class="info">'+ c.data.sites[i].street +'</div>');
+				msg.push('<div class="info">'+ c.data.sites[i].city +', '+ c.data.sites[i].state +' '+ c.data.sites[i].zip +'</div>');
+				msg.push('<div class="info">M-F: 9AM - 5PM</div>');
+				msg.push('<div class="info">SAT: 9AM - 3PM</div></div>');
+
+			}else	if(c.data.sites[i].types.indexOf('ATM')>-1){
+				markers[i].name = c.data.sites[i].name + ' - ATM';
+				markers[i].image = 'city_financial_atm.jpg';
+				markers[i].icon = c.awesomeMarkerIconATM;
+				markers[i].type = 'ATM';
+				markers[i].address = c.data.sites[i].street +' ' + c.data.sites[i].city +', '+ c.data.sites[i].state +' '+ c.data.sites[i].zip;
+				msg.push('<div class="image" style="background-image:url(city_financial_atm.jpg)"></div>');
+				msg.push('<div><div class="info-title">'+ markers[i].name  +'</div>');
+				msg.push('<div class="info">'+ c.data.sites[i].street +'</div>');
+				msg.push('<div class="info">'+ c.data.sites[i].city +', '+ c.data.sites[i].state +' '+ c.data.sites[i].zip +'</div></div>');
+			}
+			msg.push('</div>');
+			markers[i].message = msg.join('');
+		}
+		
+		markers[c.data.sites.length] = {
+				name: '',
+				icon: c.startLocation.icon,
+				message : 'You are Here!',
+				image : '',
+				lat: c.startLocation.lat,
+				lng: c.startLocation.lng
+			};
+		angular.copy(markers, c.markers);
+		angular.copy(c.markers, c.masterMarkers);
+	}
+
+
+	function insertMarkers(markers) {
+		for (var i = 0; i < markers.length; i++) {
+			markers[i].message = '<div class="flex-it">';
+			if (markers[i].type == 'ATM') {
+				markers[i].name = markers[i].name + " - ATM"
+				markers[i].icon = c.awesomeMarkerIconATM;
+				markers[i].message = markers[i].message + '<div class="image" style="background-image:url(city_financial_atm.jpg)"></div>';
+				markers[i].image = 'city_financial_atm.jpg';
+			} else if (markers[i].type == 'Bank') {
+				markers[i].name = markers[i].name + " - Branch"
+				markers[i].icon = c.awesomeMarkerIconBank;
+				markers[i].message = markers[i].message + '<div class="image" style="background-image:url(city_financial_bank.jpg)"></div>';
+				markers[i].image = 'city_financial_bank.jpg';
+			} else {
+				markers[i].name = '';
+				markers[i].message = markers[i].message + 'You are Here!';
+				markers[i].image = '';
+			}
+			markers[i].message = markers[i].message + '<div><div class="info-title">'+ markers[i].name  +'</div>';
+			markers[i].message = markers[i].message + '<div class="info">M-F: 9AM - 5PM</div>';
+			markers[i].message = markers[i].message + '<div class="info">SAT: 9AM - 3PM</div>';
+			markers[i].message = markers[i].message + '</div></div>';
+		}
+		return markers;
+	}
+
+	c.filterMarkers = function(type) {
+		var tempArray = [];
+		for (var i = 0; i < c.masterMarkers.length; i++) {
+			if (c.masterMarkers[i].type && c.masterMarkers[i].type.indexOf(type)>-1) {
+				tempArray.push(c.masterMarkers[i]);
+			}
+		}
+		c.markers = tempArray;
+		c.markers.splice(0, 0, c.startLocation);
+	}
+
+	c.flipIt = function(){
+		// Need to force the moving of the page to the top 
+		// because of scrolling on the back-part page
+		$anchorScroll();
+		$scope.flip();
+	}
+	$scope.$on('leafletDirectiveMarker.click', function(e, args) {
+		var marker = args.leafletObject.getLatLng();
+		c.centerLocation.lat = marker.lat + 0.002;
+		c.centerLocation.lng = marker.lng;
+	});
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>#mapid {
+  height: 100vh;
+  width: 100vw;
+}
+
+.sk-spinner-pulse {
+  width: 60px;
+  height: 60px;
+  margin: 60px auto;
+  background-color: $bam-darkblue;
+  border-radius: 100%;
+  -webkit-animation: sk-pulseScaleOut 1s infinite ease-in-out;
+  animation: sk-pulseScaleOut 1s infinite ease-in-out;
+}
+
+@-webkit-keyframes sk-pulseScaleOut {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes sk-pulseScaleOut {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+.flex-it {
+  display: flex;
+  //align-items: center;
+  .image {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    margin-right: 5px;
+  }
+  .info-title{
+    color: $bam-blue;
+    font-weight: 500;
+    display: block;
+  }
+  .info{
+    color: $bam-blue;
+    font-weight: 400;
+    display: block;
+  }
+}
+
+.type-icons {
+  position: fixed;
+  right: 10px;
+  top: 40px;
+  z-index: 1200;
+  .each-type {
+    margin: 0px;
+    margin-top: 20px;
+  }
+  .exp {
+    width: 34px;
+    height: 34px;
+    background-color: $bam-white;
+    border-radius: 100%;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.54);
+    border: 0;
+    line-height: 80px;
+    text-align: center;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    color: $bam-white;
+    justify-content: center;
+    .fa {
+      color: $bam-blue;
+      font-size: 16px;
+    }
+  }
+}
+.map-icon {
+  fill: $bam-white;
+  stroke: $bam-blue;
+  object-fit: contain;
+  height: 20px;
+  width: 20px;
+}
+.near-by {
+  min-height: 100vh;
+  background: $brand-secondary;
+  margin-top: -10px;
+}
+
+.angular-leaflet-map {
+  height: 100vh;
+  width: 100vw;
+  .leaflet-popup-content p {
+    margin: 5px 0px !important;
+  }
+}
+
+.loading {
+  color: $brand-primary;
+  .loading-span {
+    padding-left: 10px;
+  }
+}
+
+.spinny {
+  position: absolute;
+  top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  z-index: 12000;
+}
+
+.back-part {
+  width: 100vw;
+  height: 100vh;
+  background: $bam-white;
+  color: $bam-dark-gray;
+  .each-marker {
+    background: $bam-white;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    h3 {
+      font-size: 20px;
+      font-weight: 400;
+    }
+    h4 {
+      font-size: 18px;
+      font-weight: 300;
+      margin-top: -4px;
+    }
+    a {
+      font-size: 14px;
+      color: %bam-blue;
+    }
+  }
+}
+
+/*******************leaflet overrides**********************/
+.leaflet-bar {
+  border: 0px solid transparent;
+  margin-left: 14px;
+}
+.leaflet-bar a,
+.leaflet-bar a:hover {
+  background-color: $bam-white;
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  color: $bam-black;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.54);
+  border: 0;
+  z-index: 810;
+}
+.leaflet-bar a,
+.leaflet-control-layers-toggle {
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  display: block;
+}
+.leaflet-bar a:hover {
+  background-color: #f4f4f4;
+}
+.leaflet-bar a:first-child {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.leaflet-bar a:last-child {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  
+}
+.leaflet-bar a.leaflet-disabled {
+  cursor: default;
+  background-color: #f4f4f4;
+  color: #bbb;
+}
+
+.leaflet-touch .leaflet-bar a {
+  border-radius: 50%;
+  background-color: $bam-white;
+  color: $bam-blue;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 34px;
+  height: 34px;
+}
+
+
+/* zoom control */
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  font-family : 'SFUIDisplay','SourceSansPro', Helvetica, Arial, sans-serif !important;
+  font-size: 34px;
+  font-weight: 200;
+  text-indent: 0px;
+  padding-top: 1px;
+}
+.leaflet-control-zoom-out {
+  font-size: 36px;
+  padding-top: 2px;
+}
+
+.leaflet-touch .leaflet-control-zoom-in {
+  font-size: 34px;
+}
+.leaflet-touch .leaflet-control-zoom-out {
+  font-size: 36px;
+  padding-top: 2px;
+}
+
+
+
+/*******************flippy animations**********************/
+
+flippy {
+  float: left;
+  -webkit-perspective: 600px;
+  -moz-perspective: 600px;
+  -ms-perspective: 600px;
+  perspective: 600px;
+}
+
+flippy-front {
+  position: absolute;
+  z-index: 900;
+  width: inherit;
+  height: inherit;
+  -webkit-transform: rotate3d(0, 0, 0, 0deg);
+  -moz-transform: rotate3d(0, 0, 0, 0deg);
+  -ms-transform: rotate3d(0, 0, 0, 0deg);
+  transform: rotate3d(0, 0, 0, 0deg);
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+flippy-back {
+  position: absolute;
+  z-index: 800;
+  width: inherit;
+  height: inherit;
+  -webkit-transform: rotate3d(0, 1, 0, -180deg);
+  -moz-transform: rotate3d(0, 1, 0, -180deg);
+  -ms-transform: rotate3d(0, 1, 0, -180deg);
+  transform: rotate3d(0, 1, 0, -180deg);
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+flippy.flipped flippy-front {
+  z-index: 900;
+  -webkit-transform: rotate3d(0, 1, 0, 180deg);
+  -moz-transform: rotate3d(0, 1, 0, 180deg);
+  -ms-transform: rotate3d(0, 1, 0, 180deg);
+  transform: rotate3d(0, 1, 0, 180deg);
+}
+
+flippy.flipped flippy-back {
+  z-index: 1000;
+  -webkit-transform: rotate3d(0, 0, 0, 0deg);
+  -moz-transform: rotate3d(0, 0, 0, 0deg);
+  -ms-transform: rotate3d(0, 0, 0, 0deg);
+  transform: rotate3d(0, 0, 0, 0deg);
+}
+
+flippy.fancy {
+  float: left;
+  margin: 0 10px 10px 0;
+  position: relative;
+  font-size: .8em;
+  cursor: pointer;
+}
+
+flippy.fancy img {
+  height: 100%;
+  width: ;
+}
+
+flippy.fancy flippy-front {
+  float: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 900;
+  width: inherit;
+  height: inherit;
+}
+
+flippy.fancy flippy-front.flipped {
+  border-color: $bam-box-shadow;
+  box-shadow: 0 15px 50px $bam-box-shadow;
+}
+
+flippy.fancy flippy-back {
+  float: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1800;
+  width: inherit;
+  height: inherit;
+}
+
+flippy.fancy flippy-back.flipped {
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>bank-app-atm-near-me</id>
+        <internal>false</internal>
+        <link/>
+        <name>Bank App Mobile - Map</name>
+        <option_schema>[{"name":"mapbox_apikey","default_value":"pk.eyJ1Ijoic3VzaC1jaGFuZHJhc2hla2FyIiwiYSI6ImNqMnFwcnplZTAwMDEycWt6cm1yNDF0bzEifQ.krI_R9WCDI_GBKrfY6bf1g","label":"Mapbox ApiKey","type":"string"}]</option_schema>
+        <public>true</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	/* populate the 'data' object */
+	/* e.g., data.table = $sp.getValue('table'); */
+
+	data.apiKey = gs.getProperty('x_snc_guide.mapbox.apikey');
+	
+	var grLocType = new GlideRecord('x_snc_city_finance_location_type');
+	grLocType.addEncodedQuery('active=true');
+	grLocType.query();
+	var types = [];
+	while(grLocType.next()){
+		types.push('x_snc_city_finance_typeLIKE');
+		types.push(grLocType.sys_id.toString());
+		types.push('^OR');
+	}
+
+	data.newTypes = types.join('');
+	data.newTypes = data.newTypes.substring(0,(data.newTypes.length-3));
+	
+	data.sites = [];
+	
+	var grSites = new GlideRecord('cmn_location');
+	grSites.addEncodedQuery(data.newTypes);
+	grSites.query();
+	var idx = 0;
+	while (grSites.next()) {
+		data.sites.push({
+			sys_id : grSites.sys_id.toString(),
+			name : grSites.getDisplayValue('company'),
+			street : grSites.getDisplayValue('street'),
+			city : grSites.getDisplayValue('city'),
+			state : grSites.getDisplayValue('state'),
+			zip : grSites.getDisplayValue('zip'),
+			phone : grSites.getDisplayValue('phone'),
+			lat : grSites.getDisplayValue('latitude'),
+			lng : grSites.getDisplayValue('longitude'),
+			types : grSites.getDisplayValue('x_snc_city_finance_type')
+		});
+	}
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>sush.chandrashekar</sys_created_by>
+        <sys_created_on>2017-06-23 21:40:01</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>f9818461dbebf60087c1fd441d961984</sys_id>
+        <sys_mod_count>315</sys_mod_count>
+        <sys_name>Bank App Mobile - Map</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_widget_f9818461dbebf60087c1fd441d961984</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-26 13:02:17</sys_updated_on>
+        <template><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+  <symbol id="icon-flippy" width="20" height="12" viewBox="0 0 20 12">
+    <g fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path d="M1 1h18M1 6h18M1 11h18"/>
+    </g>
+  </symbol>
+</svg>
+<div class="row near-by">
+    <flippy class="fancy" flip-duration="900" timing-function="ease-in-out">
+        <flippy-front id='ff'>
+            <leaflet lf-center="c.centerLocation" markers="c.markers" tiles="c.tile" defaults="defaults"></leaflet>
+        </flippy-front>
+        <flippy-back>
+            <div class="back-part">
+                <div class="each-marker" ng-repeat="eachmarker in c.markers" ng-if='eachmarker.name.length>0'>
+                    <h3>{{eachmarker.name}}</h3>
+                  	<h4>{{eachmarker.address}}</h4>
+                    <a target="_blank" href="https://www.google.com/maps/dir/?api=1&destination={{eachmarker.lat}},{{eachmarker.lng}}">Start Driving</a>
+                </div>
+            </div>
+        </flippy-back>
+    </flippy>
+    <div class="type-icons">
+        <span class="each-type exp" ng-click="c.filterMarkers('ATM')" name='Show ATMs'>
+            <i class="fa fa-usd" aria-hidden="true"></i>
+        </span>
+        <span class="each-type exp" ng-click="c.filterMarkers('Bank')">
+            <i class="fa fa-university" aria-hidden="true"></i>
+        </span>
+        <span class="each-type exp" ng-click="c.flipIt()">
+          <svg class="map-icon">
+              <use xlink:href='#icon-flippy'></use>
+            </svg>
+        </span>
+    </div>
+    <div class="spinny" ng-show="c.loading">
+        <div class="sk-spinner sk-spinner-pulse"></div>
+    </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

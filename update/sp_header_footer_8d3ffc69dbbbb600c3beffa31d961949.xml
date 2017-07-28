@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_header_footer">
+    <sp_header_footer action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function bamHeader($rootScope, $scope, $location, spUtil){
+	var c = this;
+
+	$scope.userID = $scope.user.sys_id;
+	c.notHomepage = !($scope.page.id === $scope.portal.homepage_dv);
+	
+	c.showNav = false;
+	c.bam_header_title = $scope.portal.title;
+	
+	c.$onInit = function() {
+		activateFeedbackWidget();
+	};
+	
+	if($scope.page.sys_name=='bam_login'){
+		c.bam_header_title = "SIGN IN";
+	}
+	$rootScope.$on('showNav', function() {
+		c.showNav = !c.showNav;
+	});
+	c.checkHome = function(page){
+		return !((page === $scope.page.id) && (page === $scope.portal.homepage_dv));
+	};
+	c.navigate = function(page){
+		if(page.indexOf('home') > 0){
+			$location.url('/bam');
+		}else{
+			$location.url('?id=' + page);
+		}
+		c.showNav = false;
+	};
+	c.logOutNow = function(){
+		$location.url($scope.portal.logoutUrl);
+	};
+	c.showFeedback = function(){
+		//id="feedbackButton" data-toggle="modal" data-target="#feedbackModal" role="button"
+		$("#feedbackModal").modal('toggle');
+		c.showNav = false;
+	}
+	function activateFeedbackWidget() {
+		spUtil.get('bam-feedback').then(function(response) {
+			c.feedbackWidget = response;
+		});
+	}
+	console.log($scope.portal);
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.menuSlider {
+  position: fixed;
+  top: 45px;
+  left: -203px;
+  height: calc(100% - 91px);
+  width: 200px;
+  border-right: 2px outset $bam-white;
+}
+.menuSliderShow {
+  left: 0px;
+  z-index: 1;
+  background-color: $bam-blue;
+  -webkit-transition: left 1.0s;
+  -moz-transition: left 1.0s;
+  -o-transition: left 1.0s;
+  transition: left 1.0s;
+}
+.navmenu {
+  list-style-type: none;
+  padding: 0;
+}
+.navmenu &gt; li{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  border-bottom: 1px solid $bam-darkblue;
+  max-height: 50px;
+  font-size: 16px;
+  color: $bam-white;
+  text-decoration: none;
+}
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>bam_header</id>
+        <internal>false</internal>
+        <link/>
+        <name>Bank App Mobile - Header</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	/* populate the 'data' object */
+	/* e.g., data.table = $sp.getValue('table'); */
+	var menu_id = $sp.getValue('sp_rectangle_menu'); // instance sys_id
+	var grMenu = new GlideRecord('sp_rectangle_menu_item');
+	data.menu_id = menu_id;
+	grMenu.addEncodedQuery('sp_rectangle_menu='+ menu_id + '^ORDERBYorder')
+	grMenu.query();
+	data.menu = [];
+	while(grMenu.next()){
+		var grPage = new GlideRecord('sp_page');
+		grPage.addEncodedQuery('sys_id='+grMenu.sp_page.toString());
+		grPage.query();
+		while(grPage.next()){
+			data.menu.push({
+				name : grMenu.sys_name.toString(),
+				sys_id : grMenu.sp_page.toString(),
+				page_id : grPage.id.toString(),
+				isHome : (grMenu.sys_name.toString() === 'Home')
+			});
+		}
+	}
+	
+
+	data.isLoggedIn = GlideSession.get().isLoggedIn();
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_header_footer</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-06 12:26:19</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>8d3ffc69dbbbb600c3beffa31d961949</sys_id>
+        <sys_mod_count>125</sys_mod_count>
+        <sys_name>Bank App Mobile - Header</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_header_footer_8d3ffc69dbbbb600c3beffa31d961949</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-25 20:11:19</sys_updated_on>
+        <template><![CDATA[<div class='banner-container'>
+    {{::c.bam_header_title}}
+</div>
+<div class='menuSlider' ng-class='{"menuSliderShow" : c.showNav}'>
+ <ul class='navmenu'>
+   <li ng-repeat='item in c.data.menu' ng-click='c.navigate(item.page_id)' ng-if='c.checkHome(item.page_id)'>{{item.name}}</li>
+   <li ng-click='c.showFeedback()'>Feedback</li>
+   <li ng-click='c.logOutNow()'>LOGOUT</li>
+  </ul>
+</div>
+<span class="simple-feedback">
+  <sp-widget widget="c.feedbackWidget"></sp-widget>
+</span>]]></template>
+    </sp_header_footer>
+</record_update>

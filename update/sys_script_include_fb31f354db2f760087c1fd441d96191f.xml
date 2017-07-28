@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_snc_city_finance.InvestorProfileUtils</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>InvestorProfileUtils</name>
+        <script><![CDATA[var InvestorProfileUtils = Class.create();
+InvestorProfileUtils.prototype = {
+	// Investor Profile Questionnaire: https://www.schwab.com/public/file/P-778947/InvestorProfileQuestionnaire.pdf
+	
+	initialize: function() {
+	},
+	
+	createAssessment: function(taskID) {
+		var taskAssessment = new GlideRecord("task_assessment");
+		taskAssessment.initialize();
+		taskAssessment.task = taskID;
+		taskAssessment.assessment = "ed0d5798dbeb760087c1fd441d961955"; //Investor Profile Questionnaire
+		var assessmentID = taskAssessment.insert();
+		
+		return assessmentID;
+	},
+	
+	calculateRisk: function(taskAssessment, displayOnly) {
+		if (gs.nil(displayOnly)) {
+			displayOnly = false;
+		}
+		
+		if (displayOnly) {
+			if (typeof taskAssessment != "object") {
+				var assessmentID = taskAssessment;
+				taskAssessment = new GlideRecord("task_assessment");
+				taskAssessment.get(assessmentID);
+			}
+		}
+		
+		var masterAssessment = taskAssessment.assessment;
+		var instance = taskAssessment.instance;
+		
+		if (instance && masterAssessment) {
+			var riskScore = this.calcRiskToleranceScore(instance);
+			var timeScore = this.calcTimeHorizonScore(instance);
+			var investmentRequest = taskAssessment.task.getRefRecord();
+			
+			if (displayOnly) {
+				var profileLookup = new GlideRecord("x_snc_city_finance_investor_profile_data_lookup");
+				profileLookup.addActiveQuery();
+				profileLookup.addQuery("risk_tolerance_score", riskScore);
+				profileLookup.addQuery("time_horizon_score", timeScore);
+				profileLookup.query();
+				if (profileLookup.next()) {
+					investmentRequest.priority = profileLookup.investor_profile;
+				}
+				
+				return investmentRequest.priority.getDisplayValue();
+			} else {
+				investmentRequest.impact = riskScore;
+				investmentRequest.urgency = timeScore;
+				investmentRequest.state = 1; // This will start the workflow
+				investmentRequest.update();
+			}
+		}
+	},
+	
+	// adds all weighted scores to calculate the composite score
+	calcRiskToleranceScore: function(instance) {
+		var score = 0;
+		
+		var srGR = new GlideRecord('survey_response');
+		srGR.addQuery('question.attributes', 'CONTAINS', 'risk');
+		srGR.addQuery('instance', instance);
+		srGR.addNotNullQuery('answer_integer');
+		srGR.query();
+		while (srGR.next()) {
+			score += srGR.answer_integer;
+		}
+		
+		// Set score based on matrix levels
+		if (score > 40) {
+			score = 40;
+		}
+		
+		return score;
+	},
+	
+	calcTimeHorizonScore: function(instance) {
+		var score = 0;
+		
+		var srGR = new GlideRecord('survey_response');
+		srGR.addQuery('question.attributes', 'CONTAINS', 'time');
+		srGR.addQuery('instance', instance);
+		srGR.addNotNullQuery('answer_integer');
+		srGR.query();
+		while (srGR.next()) {
+			score += srGR.answer_integer;
+		}
+		
+		// Set score based on matrix levels
+		if (score <= 4) {
+			score = 4;
+		} else if (score > 5 && score <= 9) {
+			score = 9;
+		} else if (score > 9 && score <= 12) {
+			score = 12;
+		} else if (score > 12 && score <= 18) {
+			score = 18;
+		}
+		
+		return score;
+	},
+	
+	checkForAssessment: function (taskID) {
+		var taskAssessment = new GlideRecord("task_assessment");
+		taskAssessment.addQuery("task", taskID);
+		taskAssessment.addQuery("assessment", "ed0d5798dbeb760087c1fd441d961955"); //Investor Profile Questionnaire
+		taskAssessment.query();
+		
+		return taskAssessment.hasNext();
+	},
+	
+	type: 'InvestorProfileUtils'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>michael.ritchie</sys_created_by>
+        <sys_created_on>2017-06-20 18:54:12</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>fb31f354db2f760087c1fd441d96191f</sys_id>
+        <sys_mod_count>24</sys_mod_count>
+        <sys_name>InvestorProfileUtils</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sys_script_include_fb31f354db2f760087c1fd441d96191f</sys_update_name>
+        <sys_updated_by>michael.ritchie</sys_updated_by>
+        <sys_updated_on>2017-07-21 18:47:39</sys_updated_on>
+    </sys_script_include>
+</record_update>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_ui_list parent="" relationship="" sys_domain="global" table="cmn_location" version="2" view="retail_banking">
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>name</element>
+            <list_id display_value="cmn_location" element="NULL" name="cmn_location" parent="NULL" relationship="NULL" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">c5e3a906db00c300d6afffb41d96190d</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>0</position>
+            <sum>false</sum>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 14:38:08</sys_created_on>
+            <sys_id>81e3a906db00c300d6afffb41d96190e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 14:38:08</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>x_snc_city_finance_type</element>
+            <list_id display_value="cmn_location" element="NULL" name="cmn_location" parent="NULL" relationship="NULL" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">c5e3a906db00c300d6afffb41d96190d</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>1</position>
+            <sum>false</sum>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 14:38:08</sys_created_on>
+            <sys_id>09e3a906db00c300d6afffb41d96190e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 14:38:08</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>city</element>
+            <list_id display_value="cmn_location" element="NULL" name="cmn_location" parent="NULL" relationship="NULL" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">c5e3a906db00c300d6afffb41d96190d</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>2</position>
+            <sum>false</sum>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 14:38:08</sys_created_on>
+            <sys_id>89e3a906db00c300d6afffb41d96190e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 14:38:08</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>latitude</element>
+            <list_id display_value="cmn_location" element="NULL" name="cmn_location" parent="NULL" relationship="NULL" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">c5e3a906db00c300d6afffb41d96190d</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>3</position>
+            <sum>false</sum>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 14:38:08</sys_created_on>
+            <sys_id>0de3a906db00c300d6afffb41d96190e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 14:38:08</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>longitude</element>
+            <list_id display_value="cmn_location" element="NULL" name="cmn_location" parent="NULL" relationship="NULL" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">c5e3a906db00c300d6afffb41d96190d</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>4</position>
+            <sum>false</sum>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 14:38:08</sys_created_on>
+            <sys_id>8de3a906db00c300d6afffb41d96190e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 14:38:08</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>sys_updated_on</element>
+            <list_id display_value="cmn_location" element="NULL" name="cmn_location" parent="NULL" relationship="NULL" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">c5e3a906db00c300d6afffb41d96190d</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>5</position>
+            <sum>false</sum>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 14:38:08</sys_created_on>
+            <sys_id>01e3a906db00c300d6afffb41d96190f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 14:38:08</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element/>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <name>cmn_location</name>
+            <parent/>
+            <position/>
+            <relationship/>
+            <sum>false</sum>
+            <sys_class_name>sys_ui_list</sys_class_name>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 15:36:20</sys_created_on>
+            <sys_customer_update>true</sys_customer_update>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>fd31714edb00c300d6afffb41d961905</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>cmn_location</sys_name>
+            <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+            <sys_policy/>
+            <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+            <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+            <sys_update_name>sys_ui_list_cmn_location_retail_banking</sys_update_name>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 15:36:20</sys_updated_on>
+            <sys_user display_value="Michael Ritchie">6f69d5f8db767200c3beffa31d961918</sys_user>
+            <view display_value="Retail Banking" name="retail_banking">f669f1f9dbc48300d6afffb41d9619b7</view>
+            <view_name/>
+        </sys_ui_list>
+    </sys_ui_list>
+</record_update>

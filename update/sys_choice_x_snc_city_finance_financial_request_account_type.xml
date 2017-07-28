@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="account_type" table="x_snc_city_finance_financial_request" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>account_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Individual</label>
+            <language>en</language>
+            <name>x_snc_city_finance_financial_request</name>
+            <sequence>0</sequence>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:18:09</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>c55b4561dbfbb600c3beffa31d9619e6</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:18:09</sys_updated_on>
+            <value>Individual</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>account_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Joint</label>
+            <language>en</language>
+            <name>x_snc_city_finance_financial_request</name>
+            <sequence>1</sequence>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:18:09</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>c95b8561dbfbb600c3beffa31d96190f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:18:09</sys_updated_on>
+            <value>Joint</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>account_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Custodial</label>
+            <language>en</language>
+            <name>x_snc_city_finance_financial_request</name>
+            <sequence>2</sequence>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:18:09</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>c55b8561dbfbb600c3beffa31d961914</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:18:09</sys_updated_on>
+            <value>Custodial</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>account_type</element>
+            <name>x_snc_city_finance_financial_request</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:18:09</sys_created_on>
+            <sys_customer_update>false</sys_customer_update>
+            <sys_id>095b8561dbfbb600c3beffa31d96190d</sys_id>
+            <sys_mod_count>3</sys_mod_count>
+            <sys_name>account_type</sys_name>
+            <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+            <sys_policy/>
+            <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+            <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+            <sys_update_name>sys_choice_x_snc_city_finance_financial_request_account_type</sys_update_name>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:18:09</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+</record_update>

@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function feedbackController($q, $scope, $location, $rootScope, $timeout) {
+	
+	var c = this;
+	
+	c.autoHideDuration = 0.0;
+
+	$scope.ErrMsg = "Unknown Error";
+	$scope.feedbackError = false;
+	$scope.autoHide = c.data.options.autoHideTY;
+	
+	/* Scope Functions */
+	$scope.initializeFeedback = function() {
+		$scope.resetForm();
+
+		$scope.$on('openFeedback', function (event, args) {
+			$('#feedbackModal').modal('show');
+		});
+		
+		$('#feedbackModal').on('shown.bs.modal', function() {
+			//Make sure the modal and backdrop are siblings (changes the DOM)
+			$(this).before($('.modal-backdrop'));
+			//Make sure the z-index is higher than the backdrop
+			$(this).css("z-index", parseInt($('.modal-backdrop').css('z-index')) + 1);
+		});
+		
+		$('#feedbackModal').on('hidden.bs.modal', function () {
+			if($scope.feedbackSubmitted) {
+				$timeout(function(){
+					$scope.resetForm();
+				}, 250);
+			}
+		});
+
+		$rootScope.$on('$locationChangeStart', function(evt) {
+			$scope.resetForm();
+		});
+	};
+
+	$scope.submitFeedback = function() {
+		if(ValidateEmail($scope.feedback.email)){
+			if(c.data.tblExists){
+				$scope.showModalInlay = false;
+				$scope.feedbackSubmitting = true;
+
+				postFeedback().then(function(){
+					$scope.feedbackSubmitting = false;
+					$scope.feedbackSubmitted = true;
+					$scope.showModalInlay = false;
+
+					if(c.data.options.autoHideTY){
+						$timeout(function(){
+							$('#feedbackModal').modal('hide');
+						}, ( c.autoHideDuration));
+					}
+
+				});
+			}else{
+				$scope.ErrMsg = "DataTable configuration - Does not exist.";
+				$scope.feedbackError = true;
+			}
+		}
+	};
+	
+	$scope.resetError = function(){
+		$scope.feedbackError = false;
+	};
+	
+	$scope.resetForm = function() {
+		if(c.data.options.autoHideTY){
+			c.autoHideDuration = parseFloat(c.data.options.autoHideDuration)*1000;
+		}
+		$scope.feedback = {
+			who : '',
+			email : '',
+			text : '',
+			rating : -1,
+			page_id : $scope.page.id,
+			page_sysid : $scope.page.sys_id,
+			portal : $scope.portal.title,
+			portal_sysid : $scope.portal.sys_id,
+			location : $location.url()
+		};
+		if(c.data.currentUser.loggedIn){
+			c.data.options.showWho = true;
+			$scope.userSysID = c.data.currentUser.sys_id;
+			$scope.feedback.who = c.data.currentUser.name;
+			$scope.feedback.email = c.data.currentUser.email;
+		}
+		$scope.showModalInlay = false;
+		$scope.feedbackSubmitting = false;
+		$scope.feedbackSubmitted = false;
+	};
+
+	/* Let's Go */
+	$scope.initializeFeedback();
+
+	/* Private Functions */
+	function postFeedback(){
+		var defer = $q.defer();
+		c.server.get({action:'PostFeedback', feedback: $scope.feedback }).then(function(response){
+			if(response.data.sys_id){
+				defer.resolve();
+			}else{
+				defer.reject();
+			}
+		});
+		return defer.promise;
+	}
+	
+	function ValidateEmail(mail){  
+		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)){  
+			return (true); 
+		}
+		$scope.ErrMsg = "Invalid Email";
+		$scope.feedbackError = true;
+		return (false);
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>$fb-cream: #fbf8f5 !default;
+$fb-coral: #f95050 !default;
+$fb-darktan: #8e8b87 !default;
+$fb-tan: #e8e5de !default;
+$fb-label: #4a4a4a !default;
+$fb-white: #ffffff !default;
+
+/* Change to desired Color */
+$fb-btn-background: $fb-coral !default;
+/* Or comment out the above and uncomment below to have a Opacity driven transparent background*/
+/*$fb-btn-background: rgba(255, 255, 255, 0.08) !default;*/
+
+$fb-btn-hover-bottom: 45px !default;
+$fb-btn-hover-right: 68px !default;
+
+$fb-icon-close: $bam-dark-gray !default;
+$fb-modal-content-color: $bam-blue !default;
+$fb-modal-content-background-color: $bam-white !default;
+$fb-label-background-color: $bam-white !default;
+$fb-label-color: $bam-blue !default;
+$fb-input-color: $bam-dark-gray !default;
+$fb-input-background-color: $bam-light-gray !default;
+
+$fb-btn-label-text-color: $bam-white !default;
+$fb-btn-cancel-color: $bam-blue !default;
+$fb-btn-cancel-background: $bam-white !default;
+$fb-btn-submit-color: $bam-white !default;
+$fb-btn-submit-background: $bam-blue !default;
+
+.btn-primary {
+  border: 0px solid transparent;
+  background-color: $fb-btn-background !important;
+}
+.icon-close{
+  height: 20px;
+  width: 20px;
+  margin: 0 auto;
+  text-align: center;
+  margin-right: 16px;
+  margin-top: 16px;
+  color: $fb-icon-close !important;
+}
+.icon-feedback {
+  height: 38px;
+  width: 38px;
+  margin: 0 auto;
+  text-align: center;
+  margin-left: 8px;
+  margin-top: 15px;
+}
+.hover-bottom{
+  position:fixed; 
+  bottom: $fb-btn-hover-bottom; 
+  right: $fb-btn-hover-right; 
+  border-radius: 50%;
+  border-width: 0px;
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  z-index: 2000;
+  font-size: 26px;
+  font-weight: 300;
+  background-color: $fb-btn-background !important;
+  @media screen and (max-width: 1366px) {
+   	/* bottom: 95px; */
+  }
+  @media screen and (max-width: 900px) {
+    /* right: 40px; */
+  }
+  @media screen and (max-width: 780px) {
+    /* right: 30px; */
+  }
+  @media screen and (max-width: 475px) {
+    display: none; 
+  }
+}
+.hug-right{
+  display:none;
+  position: fixed;
+  margin: 0px;
+  padding: 0px;
+  right: -31px;
+  bottom: 100px;
+  width: 114px;
+  height: auto;
+  z-index: 0;
+  font-size: 16px;
+  text-align: center;
+  font-weight: 400;
+  border-radius: 0px;
+  border-radius: 0px;
+  border-width: 0px;
+  color: $fb-btn-label-text-color;
+  background-color: $fb-btn-background !important;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+  @media only screen and (max-width: 475px){
+    display: block;
+    z-index: 2000;
+    right: -46px;
+  }
+  @media screen and (max-width: 425px) {
+    display: block;
+    z-index: 2000;
+  }
+  @media screen and (max-width: 340px) {
+    
+  }
+}
+.hug-bottom{
+  display: none;
+  position: fixed;
+  margin: 0px;
+  padding: 0px;
+  bottom: 0px;
+  width: 114px;
+  height: 30px;
+  z-index: 0;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 400;
+  border-radius: 0px;
+  border-width: 0px;
+  right: 15px;
+  color: $fb-btn-label-text-color;
+  background-color: $fb-btn-background !important;
+  @media screen and (max-width: 475px) {
+    display: block;
+    z-index: 2000;
+  }
+  @media screen and (max-width: 340px) {
+    right: 2px;
+  }
+}
+.modal{
+  top: 100px;
+  z-index: 2001 !important;
+  @media only screen and (max-width: 475px){
+   top: 75px;
+  }
+}
+.modal-dialog{
+  width: 767px;
+  @media only screen and (max-width: 475px){
+    width: auto;
+    height: auto;
+  }
+}
+.modal-content{
+  height: 480px;
+  background-color: $fb-modal-content-background-color;
+  color: $fb-modal-content-color;
+  border-radius: 0px;
+  @media only screen and (max-width: 475px){
+    height: 515px;
+  }
+  .fb-title{
+    margin: 0 auto;
+    width: 127px;
+    height: 38px;
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: normal;
+  }
+  .modal-header{
+    width: 100%;
+    text-align: center;
+    border: 0px solid transparent;
+  }
+  .modal-body{
+    .body-inputs{
+      margin: 0 auto;
+      padding: 0;
+      padding-left: 51px;
+      @media only screen and (max-width: 475px){
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+    }
+    .left-input{
+      display: inline-block;
+      margin-right: 15px;
+      @media only screen and (max-width: 475px){
+        width: 100%;
+      }
+    }
+    label{
+      height: 23px;
+      font-size: 18px;
+      line-height: 1.28;
+      text-align: left;
+      color: $fb-label-color;
+      background-color: $fb-label-background-color;
+      border: 0px solid transparent;
+      box-shadow: none;
+    }
+    input{
+      width: 310px;
+      height: 43px;
+      border-radius: 4px;
+      color: $fb-input-color;
+      background-color: $fb-input-background-color;
+      border: 0px solid transparent;
+      box-shadow: none;
+      @media only screen and (max-width: 475px){
+        margin-bottom: 10px;
+        width: 100%;
+      }
+    }
+    textarea{
+      width: 635px;
+      height: 153px;
+      border-radius: 4px;
+      color: $fb-input-color;
+      background-color: $fb-input-background-color;
+      resize: none;
+      border: 0px solid transparent;
+      box-shadow: none;
+      @media only screen and (max-width: 475px){
+        width: 100%;
+        height: 100px;
+      }
+    }
+  }
+  .modal-footer {
+    width: auto;
+    text-align: center;
+    border: 0px solid transparent;
+    .fb-cancel {
+      border-radius: 0px;
+      border: 0px solid transparent;
+      width: calc(100% - 2px);
+      text-align: center;
+      height: 48px;
+      font-weight: 600;
+      line-height: 48px;
+      position: fixed;
+      bottom: 48px;
+      left: 1px;
+      font-size: 16px;
+      color: $fb-btn-cancel-color;
+      background-color: $fb-btn-cancel-background;
+    }
+    .fb-submit {
+      border-radius: 0px;
+      border: 0px solid transparent;
+      width: calc(100% - 2px);
+      text-align: center;
+      height: 48px;
+      font-weight: 600;
+      line-height: 48px;
+      position: fixed;
+      bottom: 0px;
+      left: 1px;
+      font-size: 18px;
+      color: $fb-btn-submit-color;
+      background-color: $fb-btn-submit-background;
+      text-transform: uppercase;
+    }
+  }
+  .modal-close{
+    height: 20px;
+    width: 20px;
+  }
+}
+button[disabled]{
+  cursor: not-allowed;
+}
+.fb-spacer{
+  margin-top: 20px;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>bam-feedback</id>
+        <internal>false</internal>
+        <link/>
+        <name>Bank App Mobile - Feedback</name>
+        <option_schema>[{"name":"dataTable","default_value":"u_simple_feedback","label":"Data Table Name","type":"string"},{"name":"autoHideTY","default_value":"true","label":"Auto Hide Feedback Thank You","type":"boolean"},{"name":"autoHideDuration","default_value":"2.0","label":"Auto Hide Duration (in seconds)","type":"string"},{"name":"showFormButton","default_value":"false","label":"Show Form Button","type":"boolean"},{"name":"hdrTitle","default_value":"Feedback","label":"Header Title","type":"string"},{"name":"hdrIcon","default_value":"","label":"Header Icon","type":"string"},{"name":"txtTYMsg","default_value":"Thank you for your feedback.","label":"Thank You Message","type":"string"},{"name":"showWho","default_value":"true","label":"Show Who","type":"boolean"}]</option_schema>
+        <public>true</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	/* populate the 'data' object */
+	/* e.g., data.table = $sp.getValue('table'); */
+
+	data.options = options;
+	/*- User Info -*/
+	var session = gs.getSession();
+	var curUser = gs.getUser();
+
+	data.tblExists = false;
+
+	data.currentUser = {
+		loggedIn : session.isLoggedIn(),
+		sys_id : gs.getUserID(),
+		name : curUser.getDisplayName(),
+		email : curUser.getEmail()
+	};
+
+	/*- Form Button Options -*/
+	data.options.showFormButton = (options.showFormButton ==='true');
+	/*- Data Posting Options -*/
+	data.tblExists = gs.tableExists(options.dataTable);
+	data.options.autoHideTY = (options.autoHideTY ==='true');
+	/*- Who Options -*/
+	data.options.showWho = (options.showWho === 'true');
+
+	if(input && Object.keys(input).length > 0){
+		if(input.action==='PostFeedback'){
+			var grFeedback = new GlideRecord(options.dataTable);
+
+			grFeedback.initialize();
+
+			grFeedback.u_name = input.feedback.who.toString();
+			grFeedback.u_email = input.feedback.email.toString();
+			grFeedback.u_rating = input.feedback.rating.toString();
+			grFeedback.u_feedback = input.feedback.text.toString();
+			grFeedback.u_location = input.feedback.location.toString();
+			grFeedback.u_portal = input.feedback.portal.toString();
+			grFeedback.u_portal_sys_id = input.feedback.portal_sysid.toString();
+			grFeedback.u_page = input.feedback.page_id.toString();
+			grFeedback.u_page_sys_id = input.feedback.page_sysid.toString();
+
+			//grFeedback.u_other =   /* Big (4k) String field to catch any additional info [without having to modify the table]*/
+
+			data.sys_id = grFeedback.insert();	
+		}
+	}
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-20 16:44:06</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>6ab08a0adb40c300d6afffb41d96196d</sys_id>
+        <sys_mod_count>12</sys_mod_count>
+        <sys_name>Bank App Mobile - Feedback</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_widget_6ab08a0adb40c300d6afffb41d96196d</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-20 19:40:53</sys_updated_on>
+        <template><![CDATA[<svg xmlns="http://www.w3.org/2000/svg"  style="display:none">
+  <symbol id='svg-feedback' width="38" height="38" viewBox="0 0 38 38" fill="none" fill-rule="evenodd" stroke="#ffffff" stroke-linejoin="round" stroke-width="1" transform="translate(1 1)">
+    <circle cx="6.75" cy="29.223" r="2.25"/>
+    <path d="M24 .723c-4.393 0-7.719 2.466-9.735 6.112a8.417 8.417 0 0 0-4.947-1.612C4.586 5.223.75 9.141.75 13.973c0 4.831 3.835 8.749 8.568 8.749.104 0 .204-.012.308-.015 1.546 2.274 4.119 3.765 7.036 3.765 2.07 0 3.969-.75 5.451-1.998.771.162 1.567.249 2.384.249 6.49 0 10.753-5.373 10.753-12s-4.76-12-11.25-12z"/>
+    <circle cx="10.5" cy="14.973" r="1"/>
+    <circle cx="18" cy="14.973" r="1"/>
+    <circle cx="25.5" cy="14.973" r="1"/>
+    <circle cx="1.5" cy="34.473" r="1"/>
+  </symbol>
+  <symbol id='svg-close' width="20" height="20"  version="1.1" xml:space="preserve">
+    <path d="M19.670111740043737,0.34607220229486296 c-0.34508967995700446,-0.3460722128258089 -0.8914816732222592,-0.3460722128258089 -1.2078138798495113,0 L10.007600701247654,8.824841416527155 L1.5529035423010784,0.34607220229486296 c-0.34508967995700446,-0.3460722128258089 -0.8914816732222592,-0.3460722128258089 -1.2078138798495113,0 c-0.34508967995700446,0.3460722128258089 -0.34508967995700446,0.8940198831333392 0,1.2112527448903279 L8.79978682139814,10.036094161417484 L0.34508966245156697,18.514863375649785 c-0.34508967995700446,0.3460722128258089 -0.34508967995700446,0.8940198831333392 0,1.2112527448903279 c0.17254483997850176,0.17303610641290437 0.4026046266165037,0.2595541596193563 0.6039069399247559,0.2595541596193563 s0.4313620999462558,-0.08651805320645223 0.6039069399247559,-0.2595541596193563 L10.007600701247654,11.247346906307813 l8.454697158946574,8.478769214232294 c0.17254483997850176,0.17303610641290437 0.4026046266165037,0.2595541596193563 0.6039069399247559,0.2595541596193563 s0.4313620999462558,-0.08651805320645223 0.6039069399247559,-0.2595541596193563 c0.34508967995700446,-0.3460722128258089 0.34508967995700446,-0.8940198831333392 0,-1.2112527448903279 L11.215414581097166,10.036094161417484 l8.454697158946574,-8.478769214232294 C20.015201420000743,1.211252734359382 20.015201420000743,0.6921444151206726 19.670111740043737,0.34607220229486296 z"/>
+  </symbol>
+</svg>
+
+<!--<button ng-show="{{::c.data.options.showFormButton}}" id="feedbackButton" class="hover-bottom" data-toggle="modal" data-target="#feedbackModal" role="button">
+  <svg class='icon-feedback'><use xlink:href='#svg-feedback'></use></svg>
+</button>
+<button ng-show="{{::c.data.options.showFormButton}}" id="feedbackButton" class="hug-right" data-toggle="modal" data-target="#feedbackModal" role="button">
+  FEEDBACK
+</button>
+-->
+<div id="feedbackModal" class="modal fade" role="dialog" style="display: none"> 
+  <div class="modal-dialog"> 
+    <div class="modal-content" ng-hide='feedbackSubmitted'> 
+      <form ng-model="feedback" role="form" aria-invalid="false"> 
+        <!-- Header --> 
+        <div ng-if="!feedbackSubmitted || !autoHide" class="modal-header"> 
+          <button ng-disabled="feedbackSubmitting" type="button" class="close" data-dismiss="modal" role="button"><svg class='icon-close'><use xlink:href='#svg-close'></use></svg></button> 
+          <div class='fb-title'><i class="fa {{::c.data.options.hdrIcon}}" ng-if='c.data.options.hdrIcon' aria-hidden="true"></i>{{::c.data.options.hdrTitle}}</div> 
+        </div>
+
+        <!-- Body --> 
+        <div class="modal-body"> 
+          <div class='body-inputs' ng-if="!feedbackSubmitted"> 
+            <!-- Who -->
+            <div ng-show="{{::c.data.options.showWho}}">
+              <div class='left-input'>
+                <label for='feedbackWho'>Name</label>
+                <input name="feedbackWho" id="feedbackWho" ng-model='feedback.who'  class="form-control" placeholder="John" role="textbox" aria-invalid="false"/>
+              </div>
+              <div class='left-input'>
+                <label for='feedbackEmail'>Email</label>
+                <input name="feedbackEmail" id="feedbackEmail" ng-model='feedback.email' ng-change="resetError()"  class="form-control" placeholder="john@email.com" role="textbox" aria-invalid="false"/>
+              </div>
+            </div>
+            <div class='fb-spacer'>
+              <!-- Text entry --> 
+              <label for="feedbackTextInput">Comments/Questions</label> 
+              <textarea name="feedbackTextInput" id="feedbackTextInput" ng-model="feedback.text" class="form-control" placeholder="Type feedback here" role="textbox" aria-invalid="false"></textarea> 
+            </div>
+          </div>
+        </div> 
+
+        <!-- Footer -->
+        <div ng-if="!feedbackSubmitted" class="modal-footer"> 
+          <button type="button" class="fb-cancel" ng-disabled="feedbackSubmitting" data-dismiss="modal" role="button">Cancel</button> 
+          <button type="button" class="fb-submit" role="button" ng-disabled="feedback.text.length == 0 || feedback.who.length == 0 || feedback.email.length == 0 || feedbackSubmitting" ng-click="submitFeedback()">Submit Feedback</button> 
+        </div>
+
+      </form>
+    </div> 
+    <!-- Feedback Submitted / Error -->
+    <div ng-if="feedbackSubmitted || feedbackError"> 
+      <div ng-if="feedbackSubmitted"> 
+        <div class="alert alert-success" role="alert">
+          {{::c.data.options.txtTYMsg}}
+        </div>
+      </div>
+      <div ng-if="feedbackError"> 
+        <div class="alert alert-danger" role="alert">
+          Error: {{::ErrMsg}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+]]></template>
+    </sp_widget>
+</record_update>

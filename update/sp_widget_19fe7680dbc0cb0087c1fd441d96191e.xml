@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function ($rootScope, $timeout, $scope, $window, $location, $q) {
+	var c = this;
+	c.loading = true;
+	$scope.userID = $scope.user.sys_id;
+
+	c.resultsShow = false;
+	c.takeSurvey = false;
+	c.loading = false;
+	
+	$rootScope.$on('showResults', function(event, data) {
+		/* Un-block the back button */
+		$window.onbeforeunload = null;
+
+		$timeout(function(){
+			c.core = data.core;
+			c.survey = data.survey;
+
+			getCalculations().then(function(){
+				c.resultsShow = true;		
+			});
+		});
+	});
+
+	c.$onInit = function() {
+	};
+	c.returnHome = function(){
+		$location.url('/bam');
+	}
+	c.makeAppointment = function(){
+		$location.url('/bam?id=bam_appt&invest=1&taskID=' + c.core.taskID);
+	}
+	
+	function getCalculations() {
+		var defer = $q.defer();
+		c.server.get({ action: 'getCalculations', assessmentID: c.core.assessmentID }).then(function(response) {
+			c.core.priority = response.data.priority;
+			if(c.core.priority){
+				defer.resolve(response);
+			}else{
+				defer.reject(response);
+			}
+		});
+		return defer.promise;
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.bg-darkblue { 
+  width: 335px;
+ 	margin: 0 auto;
+  margin-left: 10px;
+  @media (max-width: 375px){
+    margin-left: -10px;
+  }
+  @media (max-width: 320px){
+    margin-left: -25px;
+  }
+}
+.sk-spinner-pulse {
+  width: 60px;
+  height: 60px;
+  margin: 60px auto;
+  background-color: $bam-darkblue;
+  border-radius: 100%;
+  -webkit-animation: sk-pulseScaleOut 1s infinite ease-in-out;
+  animation: sk-pulseScaleOut 1s infinite ease-in-out;
+}
+.ghost-container{
+  margin: 0 auto;
+  background-color: transparent;
+  @media (max-width: 320px){
+    width: 320px;
+  }
+}
+.baminv-title {
+  margin-top: 15px;
+  margin-bottom: 10px;
+	font-size: 24px;
+	font-weight: 500;
+  line-height: 1;
+	color: $bam-darkblue;
+  width: 335px;
+  @media (max-width: 320px){
+    width: 100%;
+  }
+}
+.baminv-subtitle {
+	font-size: 16px;
+  font-weight: 400;
+  line-height: 1.25;
+	color: $bam-dark-gray;
+  margin-bottom: 20px;
+  width: 335px;
+  ul{
+    margin-left: -20px;
+  }
+  li{
+    margin-bottom: 10px;
+  }
+  @media (max-width: 320px){
+    width: 100%;
+  }
+}
+.ques-container{
+  margin: 0 auto;
+  background-color: transparent;
+  @media (max-width: 320px){
+    width: 320px;
+  }
+}
+.baminv-container {
+  margin: 0 auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 20px;
+  width: 335px;
+	min-height: 215px;
+  max-width: 375px;
+  @include border-radius(2px);
+	background-color: $bam-white;
+	box-shadow: 0 2px 4px 0 $bam-box-shadow;
+	border: solid 1px $bam-box-shadow;
+  @media (max-width: 320px){
+    width: 310px;
+    margin-left: 0px;
+  }  
+}
+.btn.btn-primary{
+   @include border-radius(6px);
+  background-color: $bam-blue;
+  color: $bam-white;
+  border-color: transparent;
+  width: 335px;
+  height: 50px;
+  display: block;
+  margin: 0 auto;
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  @media (max-width: 375px){
+    margin-left: 0px;
+  }
+  @media (max-width: 320px){
+    width: 310px;
+  }
+
+}
+.btn.btn-invert{
+   @include border-radius(6px);
+  background-color: $bam-white;
+  color: $bam-blue;
+  border-color: transparent;
+  width: 335px;
+  height: 50px;
+  display: block;
+  margin: 0 auto;
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  @media (max-width: 375px){
+    margin-left: 0px;
+  }
+  @media (max-width: 320px){
+    width: 310px;
+  }
+
+}
+.ques-text{
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 1.2;
+	color: $bam-darkblue;
+  margin-bottom: 15px;
+}
+.ques-content{
+  width: 335px;
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 1.2;
+	color: $bam-darkblue;
+  margin-bottom: 15px;
+  img {
+    margin-top: 5px;
+    width: 280px;
+    @media (max-width: 320px){
+      width: 260px;
+    }
+  }
+}
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>bam-invest-results</id>
+        <internal>false</internal>
+        <link/>
+        <name>Bank App Mobile - Invest Survey Results</name>
+        <option_schema>[{"displayValue":"Task Appointment","name":"task_appointment_record","default_value":"8ee4be0cdb637600c3beffa31d961965","label":"Task Appointment Record","type":"reference","value":"u_task_appointment","ed":{"reference":"u_task_appointment"}}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	if(input){
+		if(input.action ==='getCalculations'){
+			data.priority = new x_snc_city_finance.InvestorProfileUtils().calculateRisk(input.assessmentID, true);
+		}
+	}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-14 16:08:09</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>19fe7680dbc0cb0087c1fd441d96191e</sys_id>
+        <sys_mod_count>52</sys_mod_count>
+        <sys_name>Bank App Mobile - Invest Survey Results</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_widget_19fe7680dbc0cb0087c1fd441d96191e</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-24 18:32:40</sys_updated_on>
+        <template><![CDATA[<div class='container bg-darkblue' ng-show='c.resultsShow'>
+  <div class='row'>
+    <div class='col-xs-12'>
+      <div class='ghost-container'>
+        <div class='baminv-title'>{{::c.survey.name}}</div>
+        <div class='baminv-subtitle'>Thank You for completing the questionnaire.</div>
+      </div>
+      <div class='ghost-container'>
+        <div class='ques-container'>
+          <div class='baminv-container'>
+            <div class='ques-content'>Investor Profile :  {{::c.core.priority}}</div>
+            <div class='ques-text'>We welcome you to schedule an appointment to meet with a Financial Representative and discuss your investments.</div>
+          </div>
+        </div>
+        <button class="btn btn-primary" ng-click="c.makeAppointment()">Make Appointment</button>
+        <button class="btn btn-invert" ng-click="c.returnHome()">Close</button>
+      </div>
+    </div>
+    <div class="spinny" ng-show="c.loading">
+      <div class="sk-spinner sk-spinner-pulse"></div>
+    </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

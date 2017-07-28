@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_header_footer">
+    <sp_header_footer action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function ( $rootScope, $scope, $window, $location) {
+	var c = this;
+
+	c.showFooter = !($scope.page.sys_name=='bam_login');
+
+	c.icons = {
+		bam_home : 'home',
+		bam_atm	: 'atm',
+		bam_invest : 'invest',
+		bam_myappt : 'appt'
+	};
+
+	c.pages = [
+		{ name : 'home' , url : ''},
+		{ name : 'atm' , url : 'bam_atm'},
+		{ name : 'appt' , url : 'bam_myappt'},
+		{ name : 'invest' , url : 'bam_invest'}
+	];
+
+	$scope.userID = $scope.user.sys_id;
+
+	c.showMenu = function(){
+		$rootScope.$broadcast('showNav');
+	};
+
+	c.isHomepage = function() {
+		if (!$scope.page.id)
+			return true;
+
+		if ($scope.page.id == $scope.portal.homepage_dv)
+			return true;
+
+		return false;
+	};
+
+	c.getPage = function(){
+		var id = -1;
+		if(c.isHomepage()){
+			id = 0;
+		}else{
+			for(var i=0;i<c.pages.length;i++){
+				if(c.pages[i].url === $scope.page.id){
+					id = i;
+				}
+			}
+		}
+		return id;
+	};
+
+	c.setPage = function(id){
+		c.pageID = id;
+
+		if(id===0){
+			$location.url('/bam');
+		}else{
+			$location.url('?id=' + c.pages[id].url);
+		}
+	};
+
+	function getCurrentAppointments() {
+		c.server.get({ action: 'getCurrentAppointments' }).then(function(response) {
+			if(response.data.currentAppointments){
+				var appts = JSON.parse(response.data.currentAppointments);
+				c.appointments = appts.length;
+			}
+		});
+	}
+
+	c.$onInit = function() {
+		c.pageID = c.getPage();
+		getCurrentAppointments();
+	};
+
+
+
+	$rootScope.$on('refreshAppts', function(event,data) {
+		getCurrentAppointments();
+	});
+
+	$rootScope.$on('refreshFooterUrl', function(event,data) {
+		//$rootScope.$broadcast('refreshFooterUrl');
+		for(var i=0;i<c.pages.length;i++){
+			if($location.url().indexOf('id='+c.pages[i].url) != -1){
+				c.pageID = 0;
+				if(i==0 && $location.url().indexOf('id=') != -1){
+					c.pageID = -1;
+				}else{
+					c.pageID = i;
+				}
+			}
+		}
+	});
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>$bam-footer-color: #fff;
+$sp-navbar-divider-color: $bam-blue;
+$bam-footer-color-inverse: #fff;
+
+.footer-container {
+  display: none;
+  position: relative;
+  bottom:0;
+  left:0;
+  height: 50px;
+  width: 100%;
+  background-color: $bam-white;
+  color: $bam-light-gray;
+  border: solid 0px;
+  border-top: solid 1px $bam-light-gray;
+  box-shadow: 0 -2px 6px 0 $bam-box-shadow;
+  z-index: 2;
+}
+.footer-item{
+  display: inline-block;
+}
+.navbar-header{
+  height: 45px;
+}
+.navbar {
+  transition: 250ms opacity ease-in-out; 
+  -webkit-transition: 250ms opacity ease-in-out; 
+  border: solid 0px;
+  border-top: solid 1px $bam-light-gray;
+  box-shadow: 0 -2px 6px 0 $bam-box-shadow;
+  z-index: 2;
+}
+.navbar-inverse {
+  background-color: $bam-footer-color-inverse;
+  min-height: 45px;
+}
+ 
+.navbar-fade {
+  opacity: 0.4;
+}
+.navbar-avatar {
+  float: right;
+  margin: 0;
+  .avatar-container {
+  	margin-top: -3px;
+  }
+
+}
+.navbar-inverse .navbar-toggle {
+  border-color: transparent;
+  margin-top: 0px;
+  margin-right: 8px;
+  height: 45px;
+  z-index: 100;
+}
+
+.navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+    background-color: $bam-footer-color;
+}
+.nav &gt; li {
+}
+.nav &gt; li &gt; a {
+  max-height: 50px;
+  color: $bam-font-light;
+  text-decoration: none;
+  padding: 10px 5px;
+}
+
+.navbar-brand {
+  height: 50px;
+  padding: 0;
+}
+
+.navbar-brand img, .navbar-brand span {
+  margin-left: $sp-logo-margin-x;
+  margin-right: $sp-logo-margin-x;
+  margin-top: $sp-logo-margin-y;
+  margin-bottom: $sp-logo-margin-y;
+  display: block;
+  max-height: $sp-logo-max-height;
+  max-width: $sp-logo-max-width;
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.breadcrumb-container {
+  background-color: $panel-bg;
+}
+
+/* for mobile app */
+.navbar-inverse.is-native {
+  background-color: $bam-footer-color-inverse;
+}
+
+nav{
+ margin-bottom: 0px;
+ border-radius: 0px; 
+}
+
+.navbar-collapse{
+	padding-right: 0px;
+}
+
+.navbar-nav {
+margin: 0px;
+}
+
+.badge-appt{
+  background-color: rgba(0, 0, 0, 0.25);
+  position: fixed;
+  margin: 0;
+  float: left;
+  margin-left: -30px;
+  margin-top: 7px;
+  width: 18px;
+  padding-left: 5px;
+  font-weight: 400;
+}
+.badge-appt-selected{
+  background-color: $bam-blue;
+}
+.bamftr-icondiv{
+	display: inline-flex;
+  cursor: pointer;
+  float: left;
+  margin: 0;
+  margin-top: 10px;
+  margin-left: 25px;
+  margin-right: 25px;
+  height: 26px;
+  width: 26px;
+  padding-left: 1px;
+  @media (max-width: 320px){
+    margin-left: 17px;
+    margin-right: 17px;
+  }
+}
+.bamftr-text{
+  font-size: 13px;
+  font-weight: 500;
+  word-wrap: normal;
+  white-space: normal;
+  margin-top: 5px;
+  line-height: 1.2;
+}
+.bamftr-icon {
+  fill: $bam-font-lightgrey;
+ 
+  margin: 0 auto;
+  object-fit: contain;
+}
+.bamftr-icon-selected {
+	fill: $bam-blue;
+}
+.atm-shift{
+  margin-left: 10px;
+}
+.appt-shift{
+  margin-left: 5px;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>bam_footer</id>
+        <internal>false</internal>
+        <link><![CDATA[function(scope, element) {	
+	$(element).on('click.nav','.navbar-collapse.in',function(e) {	
+		var target = $(e.target);
+		if (target.is('a')) {
+			// collapse mobile nav if clicked an anchor
+			$(this).removeClass('in').addClass('collapse');
+			return;
+		}
+		
+		// if neither target nor parent is an anchor, do nothing
+		if (!target.parent().is('a'))
+			return;
+		
+		// collapse mobile nav if target is part of a submenu
+		if (target.parents("ul.dropdown-menu").length > 0)
+			$(this).removeClass('in').addClass('collapse');
+	});
+}]]></link>
+        <name>Bank App Mobile - Footer</name>
+        <option_schema>[{"name":"task_appointment_record","default_value":"8ee4be0cdb637600c3beffa31d961965","label":"Task Appointment Record","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	/* populate the 'data' object */
+	/* e.g., data.table = $sp.getValue('table'); */
+/*	
+	var menu_id = $sp.getValue('sp_rectangle_menu'); // instance sys_id
+	var grMenu = new GlideRecord('sp_rectangle_menu_item');
+	data.menu_id = menu_id;
+	grMenu.addEncodedQuery('sp_rectangle_menu='+ menu_id + '^active=true^ORDERBYorder')
+	grMenu.query();
+	data.menu = [];
+	while(grMenu.next()){
+		var grPage = new GlideRecord('sp_page');
+		grPage.addEncodedQuery('sys_id='+grMenu.sp_page.toString());
+		grPage.query();
+		while(grPage.next()){
+			data.menu.push({
+				name : grMenu.sys_name.toString(),
+				sys_id : grMenu.sp_page.toString(),
+				page_id : grPage.id.toString(),
+				isHome : (grMenu.sys_name.toString() === 'Home')
+			});
+		}
+		//data.menu.items = $sp.getMenuItems(menu_id);
+	}
+*/
+	//data.isLoggedIn = GlideSession.get().isLoggedIn();
+	
+	if(input && Object.keys(input).length > 0) {
+		if(input.action === 'getCurrentAppointments') {
+			data.currentAppointments = new global.TaskAppointmentUtils().getUserAppointments(options.task_appointment_record);
+		}
+	}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_header_footer</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-06 12:28:34</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>13afb0a9dbbbb600c3beffa31d9619ba</sys_id>
+        <sys_mod_count>198</sys_mod_count>
+        <sys_name>Bank App Mobile - Footer</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_header_footer_13afb0a9dbbbb600c3beffa31d9619ba</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-21 16:52:53</sys_updated_on>
+        <template><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="icon-ftr-home" viewBox="0 0 25 16.2" width="25" height="16.2">
+    <path d="M22.75 16.25H2.167A2.173 2.173 0 0 1 0 14.083V2.167C0 .975.975 0 2.167 0H22.75c1.192 0 2.167.975 2.167 2.167v11.916a2.173 2.173 0 0 1-2.167 2.167zM2.167 1.083c-.596 0-1.084.488-1.084 1.084v11.916c0 .596.488 1.084 1.084 1.084H22.75c.596 0 1.083-.488 1.083-1.084V2.167c0-.596-.487-1.084-1.083-1.084H2.167z"/>
+    <path d="M3.25 9.208h15.708v1.083H3.25zM3.25 11.917h6.5V13h-6.5zM.542 3.25h23.292v1.083H.542zM.542 6.5h23.292v1.083H.542z"/>
+  </symbol>
+  <symbol id="icon-ftr-atm" viewBox="0 0 20 26" width="20" height="26">
+    <path d="M9.68 26C8.133 26 0 14.826 0 9.68 0 4.37 4.37 0 9.68 0c5.311 0 9.682 4.37 9.682 9.68C19.362 14.827 11.23 26 9.68 26zm0-24.894c-4.701 0-8.574 3.873-8.574 8.575 0 4.702 7.192 14.162 8.575 15.157 1.383-.995 8.574-10.51 8.574-15.157 0-4.702-3.872-8.575-8.574-8.575z"/>
+    <path d="M9.68 13.83c-2.267 0-4.148-1.881-4.148-4.15 0-2.267 1.88-4.148 4.149-4.148 2.268 0 4.149 1.88 4.149 4.149 0 2.268-1.881 4.149-4.15 4.149zm0-7.192c-1.659 0-3.042 1.383-3.042 3.043 0 1.66 1.383 3.042 3.043 3.042 1.66 0 3.042-1.383 3.042-3.042 0-1.66-1.383-3.043-3.042-3.043z"/>
+  </symbol>
+  <symbol id="icon-ftr-invest" viewBox="0 0 26 26" width="26" height="26">
+    <path d="M16.597632,26.000001l-7.216096,0c-5.195834,0 -9.381536,-4.189059 -9.381536,-9.389059l0,-7.221883c0,-5.2 4.185702,-9.389059 9.381536,-9.389059l7.216096,0c5.195834,0 9.381536,4.189059 9.381536,9.389059l0,7.221883c0,5.2 -4.185702,9.389059 -9.381536,9.389059zm-7.216096,-24.555472a7.915241,7.921589 0 0 0 -7.938928,7.94453l0,7.221883a7.915241,7.921589 0 0 0 7.938928,7.945294l7.216096,0a7.915241,7.921589 0 0 0 7.938928,-7.945294l0,-7.221883a7.915241,7.921589 0 0 0 -7.938928,-7.945294l-7.216096,0l0,0.000765z"/>
+    <path d="M12.26828,6.5l1.443372,0l0,13.721883l-1.443372,0l0,-13.721883z"/>
+    <path d="M12.989584,18.778118c-2.381678,0 -3.608048,-1.878118 -3.608048,-2.889059l1.443372,0c0,0.289059 0.57689,1.444529 2.164676,1.444529c1.587786,0 2.164676,-0.795294 2.164676,-1.445294c0,-1.227353 -1.081956,-1.588294 -2.814155,-2.093765c-1.370783,-0.360941 -2.958569,-0.722647 -2.958569,-2.239059c0,-0.866412 0,-3.610941 3.608048,-3.610941c2.381678,0 3.608048,0.939059 3.608048,2.889059l-1.443372,0c0,-0.578118 0,-1.445294 -2.164676,-1.445294c-2.020262,0 -2.164676,1.011706 -2.164676,2.167177c0,0.360941 0.793893,0.578118 1.875849,0.866412c1.65961,0.433588 3.896875,1.011706 3.896875,3.467177c0,1.371882 -1.153781,2.889059 -3.608048,2.889059z"/>
+  </symbol>
+  <symbol id="icon-ftr-appt" viewBox="0 0 23 26" width="23" height="26">
+    <path d="M20.927 26H1.902A1.868 1.868 0 0 1 0 24.098V5.073c0-1.078.824-1.902 1.902-1.902h19.025c1.078 0 1.902.824 1.902 1.902v19.025A1.868 1.868 0 0 1 20.927 26zM1.902 4.439c-.38 0-.634.254-.634.634v19.025c0 .38.254.634.634.634h19.025c.38 0 .634-.254.634-.634V5.073c0-.38-.254-.634-.634-.634H1.902zM5.073 0h1.268v3.171H5.073zM16.488 0h1.268v3.171h-1.268z"/>
+    <path d="M11.415 10.146A2.544 2.544 0 0 1 8.878 7.61a2.544 2.544 0 0 1 2.537-2.537A2.544 2.544 0 0 1 13.95 7.61a2.544 2.544 0 0 1-2.536 2.536zm0-3.805c-.698 0-1.269.571-1.269 1.269 0 .697.571 1.268 1.269 1.268.697 0 1.268-.57 1.268-1.268 0-.698-.57-1.269-1.268-1.269zM17.756 10.146A2.544 2.544 0 0 1 15.22 7.61a2.544 2.544 0 0 1 2.536-2.537 2.544 2.544 0 0 1 2.537 2.537 2.544 2.544 0 0 1-2.537 2.536zm0-3.805c-.697 0-1.268.571-1.268 1.269 0 .697.57 1.268 1.268 1.268.698 0 1.268-.57 1.268-1.268 0-.698-.57-1.269-1.268-1.269zM5.073 16.488a2.544 2.544 0 0 1-2.536-2.537 2.544 2.544 0 0 1 2.536-2.536A2.544 2.544 0 0 1 7.61 13.95a2.544 2.544 0 0 1-2.537 2.537zm0-3.805c-.697 0-1.268.57-1.268 1.268 0 .698.57 1.269 1.268 1.269.698 0 1.268-.571 1.268-1.269 0-.697-.57-1.268-1.268-1.268zM11.415 16.488a2.544 2.544 0 0 1-2.537-2.537 2.544 2.544 0 0 1 2.537-2.536 2.544 2.544 0 0 1 2.536 2.536 2.544 2.544 0 0 1-2.536 2.537zm0-3.805c-.698 0-1.269.57-1.269 1.268 0 .698.571 1.269 1.269 1.269.697 0 1.268-.571 1.268-1.269 0-.697-.57-1.268-1.268-1.268zM17.756 16.488a2.544 2.544 0 0 1-2.536-2.537 2.544 2.544 0 0 1 2.536-2.536 2.544 2.544 0 0 1 2.537 2.536 2.544 2.544 0 0 1-2.537 2.537zm0-3.805c-.697 0-1.268.57-1.268 1.268 0 .698.57 1.269 1.268 1.269.698 0 1.268-.571 1.268-1.269 0-.697-.57-1.268-1.268-1.268zM5.073 22.83a2.544 2.544 0 0 1-2.536-2.537 2.544 2.544 0 0 1 2.536-2.537 2.544 2.544 0 0 1 2.537 2.537 2.544 2.544 0 0 1-2.537 2.536zm0-3.806c-.697 0-1.268.571-1.268 1.269 0 .697.57 1.268 1.268 1.268.698 0 1.268-.57 1.268-1.268 0-.698-.57-1.269-1.268-1.269z"/>
+  </symbol>
+</svg>
+<div class='footer-container'>
+  <div class='footer-item' ng-repeat='item in c.data.menu'>{{item.name}}</div>
+</div>
+<div ng-show='c.showFooter'>
+  <nav class="navbar-inverse" ng-class="::{'navbar':!isViewNative, 'is-native': isViewNative}" role="navigation">
+      <div class='bamftr-icondiv' ng-click='c.setPage(0)'>
+        <svg class="bamftr-icon" ng-class='{"bamftr-icon-selected": c.pageID===0}'>
+          <use xlink:href='#icon-ftr-home'></use>
+        </svg>
+      </div>
+      <div class='bamftr-icondiv' ng-click='c.setPage(1)'>
+        <svg class="bamftr-icon" ng-class='{"bamftr-icon-selected": c.pageID===1}'>
+          <use xlink:href='#icon-ftr-atm'></use>
+        </svg>
+      </div>
+      <div class='bamftr-icondiv' ng-click='c.setPage(3)'>
+        <svg class="bamftr-icon" ng-class='{"bamftr-icon-selected": c.pageID===3}'>
+          <use xlink:href='#icon-ftr-invest'></use>
+        </svg>
+      </div>
+      <div class='bamftr-icondiv' ng-click='c.setPage(2)'>
+        <svg class="bamftr-icon" ng-class='{"bamftr-icon-selected": c.pageID===2}'>
+          <use xlink:href='#icon-ftr-appt'></use>
+        </svg>
+      </div>
+      <div class='badge badge-appt' ng-class='{"badge-appt-selected": c.pageID===2}' ng-show='c.appointments>0'>
+        {{c.appointments}}
+      </div>
+    <div ng-show="::!isViewNative" class="navbar-header" >
+      <span class="navbar-toggle collapsed navbar-avatar" ng-click='c.showMenu()'><sn-avatar class="avatar-small-medium" primary="userID"/></span>
+    </div>
+  </nav>
+</div>
+]]></template>
+    </sp_header_footer>
+</record_update>

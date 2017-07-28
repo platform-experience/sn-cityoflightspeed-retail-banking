@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function loginCtrl($scope, $http, $window, $location, urlTools) {
+
+	var c = this;
+		
+	c.not_logged_in = !($scope.user.logged_in);
+	
+	c.disableButton = false;
+
+	if(c.not_logged_in){
+		c.password = c.data.SHUser.password;
+		c.username = c.data.SHUser.username;
+	}
+	
+	c.checkSignIn = function(){
+		if(c.data.SHUser && (c.password === c.data.SHUser.password) &&
+			 (c.username === c.data.SHUser.username)){
+			c.disableButton = false;
+		}else{
+			if(c.password && c.username){
+				c.disableButton = (c.password.length < 0) && (c.username.length < 0);
+			}
+		}
+	}
+	
+	c.login = function() {
+		var username,password;
+		if(c.not_logged_in && (c.username === c.data.SHUser.username)){
+			username = c.data.SHUser.user_id;
+			password = c.data.SHUser.password;
+		}else{
+			username = c.username;
+			password = c.password;
+		}
+			
+		var url = urlTools.getURL('view_form.login');
+		// If the page isn't public then the id in the 
+		// url won't match the rendered page id.
+		var pageId = $location.search().id || $scope.page.id;
+		var isLoginPage = $scope.portal.login_page_dv == 'bam';
+		
+		return $http({
+			method: 'post',
+			url: url,
+			data: urlTools.encodeURIParameters({
+				'sysparm_type': 'login',
+				'ni.nolog.user_password': true,
+				'remember_me': !!c.remember_me ? true : false,
+				'user_name': username,
+				'user_password': password,
+				'get_redirect_url': true,
+				'sysparm_goto_url': isLoginPage ? null : $location.url()
+			}),
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			}
+		}).then(function(response) {
+			if (!response.data) {
+				c.message = $scope.data.errorMsg;
+				return;
+			}
+			
+			if (response.data.status == 'success') {
+				$window.location = "/bam"; //response.data.redirect_url;
+			} else {
+				// wrong username or password
+				c.message = response.data.message;
+				c.password = "";
+			}
+			
+		}, function errorCallback(response) {
+			// error
+			c.message = $scope.data.errorMsg;
+		});
+	};
+	
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.bg-darkblue { 
+  /*background-color: $bam-darkblue;*/
+  margin: 0 auto;
+  margin-top: -10px;
+  margin-left: 0px;
+  margin-bottom: 10px;
+  width: 100%;
+  overflow-x: none;
+}
+.nologin-container{
+  position: absolute;
+  top:0;
+  left:0;
+  height: 45px;
+  width: 100%;
+  background-color: $bam-blue;
+  color: $bam-white;
+  text-align: center;
+  padding-top: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+.extraPadding{
+  padding-top: 40px;
+}
+.set-login-type-link {
+  margin-top: 10px;
+  display: block;
+}
+
+.ghost-container{
+  margin: 0 auto;
+  background-color: transparent;
+}
+.ghost-thumbprint{
+  margin: 0 auto;
+  width: 64px;
+  height: 64px;
+  border-radius : 50%;
+  background-color: #ffffff;
+  margin-top: 10px;
+}
+.bamlogin-container {
+  max-width: 335px;
+  color: $bam-white;
+  background-color: $bam-darkblue;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  padding: 0px;
+  'box-shadow: 0 3px 5px 0 #e3e6ea;
+}
+.bamlogin-welcome{
+  margin: 0 auto;
+  width: 90px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  color: $bam-darkblue;
+  text-transform: uppercase;
+  margin-top: 40px;
+}
+.bamlogin-title{
+  margin: 0 auto;
+  width: 215px;
+  font-size: 24px;
+  font-weight: 500;
+  text-align: center;
+  color: $bam-darkblue;
+  margin-bottom: 50px;
+}
+.bamlogin-field-placeholder{
+  opacity: 0.6;
+}
+.bamlogin-field-pwd {
+  -webkit-text-security: disc;
+}
+.bamlogin-field {
+  margin: 0 auto;
+  max-width: 325px;
+  @media (max-width: 320px){
+    max-width: 275px;
+  }
+}
+.bamlogin-field input {
+  @include border-radius(0px);
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
+  height: 32px;
+  font-size: 24px;
+  font-weight: normal;
+  color: #7f7f7f;
+  margin-left: 5px;
+  margin-top: 4px;
+  margin-bottom: 33px;
+  padding-bottom: 0px;
+  padding-left: 30px;
+  background-color: $body-bg;
+  border: 0px solid transparent;
+  border-bottom: 1px solid #cecece;
+  @media only screen {
+    height: 36px;
+  }
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus
+input:-webkit-autofill, 
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: $bam-dark-gray;
+  -webkit-box-shadow: 0 0 0px 1000px $body-bg inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.btn.disabled {
+  background-color: $bam-gray;
+  color: $bam-medium-gray;
+  border-color: transparent;
+  opacity: 0.65; 
+  cursor: not-allowed;
+}
+.btn.btn-primary.btn-selected {
+  background-color: $bam-blue;
+  color: $bam-white;
+  border-color: transparent;
+}
+.btn.btn-primary.btn-continue{
+  @include border-radius(6px);
+  background-color: $bam-blue;
+  color: $bam-white;
+  border-color: transparent;
+  width: 100%;
+  max-width: 325px;
+  height: 50px;
+  display: block;
+  margin: 0 auto;
+  font-size: 16px;
+  font-weight: 400;
+  @media (max-width: 320px){
+    max-width: 265px;
+  }
+}
+.bamlogin-icon {
+  fill: $bam-blue;
+  margin: 0 auto;
+  margin-left: 16px;
+  margin-top: 14px;
+  object-fit: contain;
+  height: 35px;
+  width: 32px;
+}
+.bamlogin-user {
+  fill: $bam-soft-gray;
+  margin: 0 auto;
+  position: absolute;
+  margin-left: 5px;
+  margin-top: 5px;
+  object-fit: contain;
+  height: 24px;
+  width: 23px;
+  @media only screen {
+
+  }
+}
+.bamlogin-pwd {
+  fill: $bam-soft-gray;
+  margin: 0 auto;
+  position: absolute;
+  margin-left: 5px;
+  margin-top: 5px;
+  object-fit: contain;
+  height: 24px;
+  width: 21px;
+  @media only screen {
+
+  }
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>bam-login</id>
+        <internal>false</internal>
+        <link/>
+        <name>Bank App Mobile - Login</name>
+        <option_schema/>
+        <public>true</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	function S4() {
+		return (((1+Math.random())*0x10000)|0).toString(16).substring(1); 
+	}
+
+	var SHUserID = 'sh:'+ (S4() + S4() + S4() + "4" + S4().substr(0,3) + S4() + S4() + S4() + S4()).toLowerCase();
+  var SHUser = {};
+	
+	data.loggedInUser = gs.getUserName();
+	data.SHGenerated = false;
+	if((data.loggedInUser==="guest")||(data.loggedInUser==='undefined')){
+		var endPoint = "https://cityoflightspeeddev.service-now.com/api/snc/stagehand/createstage?definition_id=f9cecf91dbc44300d6afffb41d961990&user_name=" + SHUserID;
+		try{
+			var request = new sn_ws.RESTMessageV2();
+			request.setEndpoint(endPoint);
+			request.setHttpMethod('PUT');
+			request.setRequestHeader("Accept","application/json");
+			var response = request.execute();
+			SHUser = JSON.parse(response.getBody());
+			data.SHUser = SHUser.result.personas[0];
+			data.SHUser.username = data.SHUser.name.replace(" ",".");
+			data.SHGenerated = true;
+		}catch(e){
+			data.RESTErr = e;
+		}
+	}
+	
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-10 13:38:39</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>585635b2dbff3a00c3beffa31d9619db</sys_id>
+        <sys_mod_count>137</sys_mod_count>
+        <sys_name>Bank App Mobile - Login</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_widget_585635b2dbff3a00c3beffa31d9619db</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-19 21:15:21</sys_updated_on>
+        <template><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+  <symbol id="icon-thumbprint" viewBox="0 0 32 35" width="32" height="35">
+    <path d="M3.133 11.577l-1.7-.36c.626-2.691 1.52-4.845 3.759-6.46l1.074 1.435C4.565 7.27 3.759 8.795 3.133 11.577zM23.452 4.397c-2.059-1.435-4.655-2.153-7.788-2.153-4.565 0-7.34 2.153-7.429 2.153L7.161 2.962c.09-.09 3.312-2.513 8.503-2.513 3.491 0 6.445.807 8.772 2.513l-.984 1.435zM29.538 33.654l-1.7-.628c0-.09 2.148-6.462 2.148-13.641 0-.629 0-1.257.09-1.885.179-2.962.358-6.103-3.491-11.038l1.432-1.077c4.296 5.474 4.028 9.243 3.849 12.294 0 .629-.09 1.167-.09 1.795 0 7.45-2.148 13.91-2.238 14.18zM5.55 18.128l-1.88-.09C4.207 7.36 10.74 5.026 15.217 5.026V6.82c-6.266 0-9.31 3.769-9.667 11.307zM24.705 13.372c-.09-2.154-2.327-4.398-4.744-4.757l.268-1.794c3.223.538 6.087 3.41 6.266 6.371l-1.79.18zM23.72 32.936l-1.7-.449c0-.09 1.342-5.833 1.074-11.308l1.79-.09c.179 5.834-1.164 11.667-1.164 11.847z"/>
+    <path d="M9.488 30.692C8.056 27.821 7.071 22.256 8.145 17.5c1.075-4.936 3.939-7.628 8.146-7.628 3.133 0 7.071 1.525 8.235 8.525l-1.79.27c-.806-4.757-2.865-7-6.445-7-3.401 0-5.55 2.064-6.445 6.192-.895 4.218-.09 9.423 1.253 12.026l-1.61.807z"/>
+    <path d="M15.217 35h-1.79c0-.897-.448-2.872-1.254-4.936-.537-1.436-2.148-8.436-.358-12.295.627-1.346 1.433-2.243 2.596-2.692.537-.18.806-.36 1.7-.36v1.796s-.715.09-1.073.18c-.716.269-1.253.807-1.611 1.704-1.433 3.141-.18 9.513.447 11.039.716 1.974 1.343 3.77 1.343 5.564zM20.945 29.795l-1.7-.539c1.342-4.128 2.148-9.782-.18-11.846l1.164-1.346c3.76 3.32 1.522 11.398.716 13.73z"/>
+    <path d="M16.38 25.936c-1.074-1.885-1.521-3.41-1.163-4.577.268-.897.984-1.256 1.074-1.346l.358.808.448.807c-.269.18-.538 1.077.805 3.41l-1.522.898zM1.432 29.705C-.09 26.565.27 19.385.448 15.525v-.628l1.79.09v.628c-.18 3.41-.448 10.59.805 13.282l-1.61.808zM5.908 33.385c-1.343-2.334-1.522-6.372-1.79-10.59 0-.808-.09-1.616-.09-2.333l1.79-.09c.09.807.09 1.615.09 2.423.179 3.859.358 7.808 1.521 9.782l-1.521.808zM28.196 23.064l-1.79-.18c0-.09.447-4.576 0-6.91l1.79-.269c.447 2.603 0 7.18 0 7.36z"/>
+  </symbol>
+  <symbol id="icon-user" viewBox="0 0 23 24" width="23" height="24">
+    <path d="M11.5 13C8.444 13 6 10.111 6 6.5S8.444 0 11.5 0 17 2.889 17 6.5 14.556 13 11.5 13zm0-11.556c-2.309 0-4.142 2.24-4.142 5.056 0 2.817 1.833 5.056 4.142 5.056s4.142-2.24 4.142-5.056c0-2.817-1.833-5.056-4.142-5.056zM18.89 24H4.11C1.786 24 .45 22.429.096 20.857c-.352-1.571.212-3.643 2.323-4.643C4.813 15.071 7.558 14 11.148 14c4.153 0 7.743 1.357 9.432 2.214 2.111 1 2.675 3 2.323 4.643C22.55 22.43 21.213 24 18.89 24zm-7.742-8.571c-3.167 0-5.56.857-8.165 2.071-1.478.714-1.76 2.071-1.548 3 .21.929 1.056 2.071 2.674 2.071h14.782c1.618 0 2.463-1.142 2.674-2.071.211-.929-.07-2.286-1.548-3-1.62-.786-4.927-2.071-8.869-2.071z"/>
+  </symbol>
+  <symbol id="icon-pwd" viewBox="0 0 21 24" width="21" height="24">
+    <path d="M18.194 24H1.935A1.917 1.917 0 0 1 0 22.065V12c0-1.084.852-1.935 1.935-1.935h16.259c1.083 0 1.935.851 1.935 1.935v10.065A1.917 1.917 0 0 1 18.194 24zM1.935 10.839A1.14 1.14 0 0 0 .775 12v10.065a1.14 1.14 0 0 0 1.16 1.16h16.259a1.14 1.14 0 0 0 1.16-1.16V12a1.14 1.14 0 0 0-1.16-1.161H1.935z"/>
+    <path d="M16.258 10.258h-.774V6.465c0-3.02-2.478-5.497-5.497-5.497A5.353 5.353 0 0 0 4.645 6.31v3.948h-.774V6.31c0-3.368 2.748-6.116 6.116-6.116 3.445 0 6.271 2.825 6.271 6.27v3.794zM10.065 20.71a1.14 1.14 0 0 1-1.162-1.162v-2.245c-.697-.426-1.161-1.161-1.161-2.013a2.33 2.33 0 0 1 2.323-2.322 2.33 2.33 0 0 1 2.322 2.322c0 .852-.464 1.587-1.161 2.013v2.245a1.14 1.14 0 0 1-1.161 1.162zm0-6.968c-.852 0-1.549.697-1.549 1.548 0 .62.349 1.162.93 1.433l.231.116v2.748c0 .232.155.387.388.387.232 0 .387-.155.387-.387V16.84l.232-.116c.58-.233.929-.813.929-1.433 0-.851-.697-1.548-1.548-1.548z"/>
+  </symbol>
+</svg>
+<div class='nologin-container' ng-if='c.not_logged_in'>SIGN IN</div>
+<div class='container bg-darkblue' ng-class="{'extraPadding': c.not_logged_in}">
+  <div class='row'>
+    <div class='col-xs-12'>
+      <div class='ghost-container'>
+        <div class='bamlogin-welcome'>Welcome To</div>
+        <div class='bamlogin-title'>{{::portal.title}}</div>
+      </div>
+      <div ng-if="!data.is_logged_in">
+        <form ng-if="!c.externalLoginMode" class="form-signin" ng-submit="c.login()" method="post">
+          <div class='ghost-container'>
+            <div class='bamlogin-field' ng-class="{'bamlogin-field-placeholder' : c.username.length === 0}">
+              <label for="username" class="sr-only">{{::data.usernameMsg}}</label>
+              <svg class="bamlogin-user">
+                <use xlink:href='#icon-user'></use>
+              </svg>
+              <input id="username" name="username" ng-keypress="c.message = ''" ng-click="c.message = ''" class="form-control no-border" type="text" placeholder='{{::data.usernameMsg}}' autofocus="true" ng-model="c.username" ng-change='c.checkSignIn()'/>
+            </div>
+            <div class='bamlogin-field' ng-class="{'bamlogin-field-placeholder' : c.password.length === 0}">
+              <label for="password" class="sr-only">{{::data.passwordMsg}}</label>
+              <svg class="bamlogin-pwd">
+                <use xlink:href='#icon-pwd'></use>
+              </svg>
+              <input id="password" name="password" ng-keypress="c.message = ''" ng-click="c.message = ''" class="form-control no-border" type="password" placeholder='{{::data.passwordMsg}}' ng-model="c.password" ng-change='c.checkSignIn()'/>
+            </div>
+            <button name='login' type="submit" class="btn btn-primary btn-continue" ng-class="{'disabled': c.disableButton }">Sign In</button>
+          </div>
+          <div ng-if="c.message" class="alert alert-danger" role="alert">{{c.message}}</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+]]></template>
+    </sp_widget>
+</record_update>

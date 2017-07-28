@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function scheduleAppointment($rootScope, appManager, $timeout, $http, $scope, $window,$location) {
+	var c = this;
+	$rootScope.$broadcast('refreshFooterUrl');
+	$scope.userID = $scope.user.sys_id;
+	c.toggleDelete = {};
+	c.noAppointments = false;
+	c.$onInit = function() {
+		getCurrentAppointments();
+	};
+	c.removeAppt = function(sys_id){
+		c.toggleDelete[sys_id].confirm = true;
+		c.toggleDelete[sys_id].show = false;
+	}
+	c.cancelAppt = function(sys_id){
+		c.toggleDelete[sys_id].confirm = false;
+		c.toggleDelete[sys_id].show = true;
+	}
+	c.editAppt = function(sys_id){
+		$location.url('?id=bam_appt&taskID='+sys_id);
+	}
+	c.deleteAppt = function(sys_id){
+		c.server.get({ action: 'deleteTimeSlot', taskSysid: sys_id }).then(function(response) {
+			c.toggleDelete[sys_id].confirm = false;
+			c.toggleDelete[sys_id].show = false;
+			$rootScope.$broadcast('refreshAppts');
+		});
+		getCurrentAppointments();
+	}
+	c.parseDateTime = function(slotTime, type){
+		var dt = slotTime.split(" ")[0];
+		var time = slotTime.split(" ")[1].split(":");
+		var parsed = [4];
+
+		//Date
+		parsed[0] = moment(dt).format("dddd, MMMM D YYYY");
+
+		//Time
+		if(time[0]>12){
+			parsed[1] = (time[0]-12)+":"+time[1]+"PM";
+		}else{
+			parsed[1] = time[0]+":"+time[1]+"AM";
+		}
+		if(parsed[1].split("")[0]==="0"){
+			parsed[1] = parsed[1].substring(1,parsed[1].length);
+		}
+
+		//Day of Week
+		parsed[2] = moment(dt).format("ddd");
+
+		//Short Date (no year)
+		parsed[3] = moment(dt).format("MMM D");
+
+		return parsed[type];
+	}
+	c.makeAppointment = function(){
+		$location.url('?id=bam_appt');
+	}
+	function getCurrentAppointments() {
+		c.server.get({ action: 'getCurrentAppointments', userID: $scope.userID   }).then(function(response) {
+			console.log(response.data);
+			if (JSON.parse(response.data.currentAppointments).length > 0) {
+				c.currentUserAppointments = processTheTimes(JSON.parse(response.data.currentAppointments));
+				c.noAppointments = false;
+			}else{
+				c.noAppointments = true;
+			}
+		});
+	}
+
+	function processTheTimes(appointments) {
+
+		for (var i = 0; i < appointments.length; i++) {
+			appointments[i].work_in = moment(appointments[i].work_start).fromNow();
+			appointments[i].today = (moment().diff(appointments[i].work_start,'days') === 0);
+			if (appointments[i].duration > 0) {
+				appointments[i].duration = Math.floor(appointments[i].duration / 60);
+			}
+			if(appointments[i].location){
+				appointments[i].location = c.data.banksByID[appointments[i].location].name;
+			}
+			appointments[i].time = c.parseDateTime(appointments[i].work_start,1)
+			appointments[i].weekday = c.parseDateTime(appointments[i].work_start,2)
+			appointments[i].day = c.parseDateTime(appointments[i].work_start,3)
+			c.toggleDelete[appointments[i].sys_id] = { confirm: false, show: true};
+		}
+		return appointments;
+	}
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.bg-darkblue { 
+  /*background-color: $bam-darkblue;*/
+ 	margin: 0 auto;
+  margin-top: -10px;
+  margin-left: -15px;
+  margin-bottom: 10px;
+  width: 110%;
+  overflow-x: none;
+}
+.ghost-container{
+  margin: 0 auto;
+  background-color: transparent;
+  position: relative;
+}
+.no-slots {
+  margin: 0 auto;
+  margin-top: 10px;
+  color: #FB4B4B;
+  text-align: center;
+}
+.bamappt-title {
+  margin-top: 15px;
+  margin-left: 5px;
+  margin-bottom: 10px;
+	font-size: 24px;
+	font-weight: 500;
+  line-height: 1;
+	color: $bam-darkblue;
+  @media (max-width: 375px){
+  }
+  @media (max-width: 320px){
+    width: 285px;
+  }
+}
+.bamappt-subtitle {
+	font-size: 16px;
+  font-weight: 400;
+  line-height: 1.25;
+	color: $bam-dark-gray;
+  margin-left: 5px;
+  margin-bottom: 40px;
+  @media (max-width: 375px){
+  }
+  @media (max-width: 320px){
+    width: 285px;
+  }
+}
+.btn.btn-primary {
+  margin: 0 auto !important;
+   @include border-radius(6px);
+  background-color: $bam-blue;
+  color: $bam-white;
+  border-color: transparent;
+  width: 325px;
+  height: 50px;
+  display: block;
+  font-size: 16px;
+  font-weight: 400;
+  @media (max-width: 375px){
+    margin-left: 0px;
+  }
+  @media (max-width: 320px){
+    width: 285px;
+  }
+
+}
+.container-appts{
+  margin: 0;
+  background-color: transparent;
+  width: 100%;
+  margin-top: 20px;
+}
+.appts{
+  font-size: 14px;
+  color: $bam-blue;
+}
+
+.bamappt-container {
+  max-width: 335px;
+  color: $bam-font-darkgrey;
+  background-color: transparent;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 0px;
+}
+
+.appt-box { 
+  @include border-radius(4px);
+  max-width: 335px;
+  min-height: 79px;
+  background-color: $bam-font-light;
+  padding: 0px;
+  border: solid 1px #dfdfdf;
+  margin-left: 0px;
+  font-size: 16px;
+}
+.appt-delete{
+  line-height: 72px;
+}
+.appt-site {
+  display: block;
+  font-weight: 500;
+}
+.padding-override{
+  padding: 0px;
+}
+.appt-when{
+  display: inline-block;
+  margin: 0 auto;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+.appt-where{
+  display: inline-block;
+  margin: 0 auto;
+  margin-left: 24px;
+  margin-right: 0px;
+}
+.appt-tools{
+  position: fixed;
+  display: inline-block;
+  margin: 0 auto;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.appt-datetime {
+  display: block;
+	font-weight: 300;
+  text-transform: uppercase;
+  font-size: 14px;
+  width: 45px;
+}
+.appt-weekday {
+  display: block;
+  text-transform: uppercase;
+  font-weight: 500;
+  width: 40px;
+  
+}
+.appt-icon {
+  margin: 0 auto;
+  margin-top: 5px;
+  margin-right: 15px;
+  object-fit: contain;
+  height: 22px;
+  width: 22px;
+  stroke: $bam-gray;
+}
+.btn-cancel{
+  background-color: transparent;
+  width: 87px;
+	height: 30px;
+  font-size: 12px;
+	font-weight: 500;
+	text-align: center;
+	color: #676767;
+	border-radius: 4px;
+	border: solid 2px #dfdfdf;
+  margin-left: 20px;
+  margin-top: 5px;
+}
+.btn-delete{
+  background-color: transparent;
+  width: 114px;
+	height: 30px;
+  font-size: 12px;
+	font-weight: 500;
+	text-align: center;
+	color: #4b8cfb;
+	border-radius: 4px;
+	border: solid 2px #4b8cfb;
+  margin-left: -10px;
+  margin-top: 5px;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>bam-myappt</id>
+        <internal>false</internal>
+        <link/>
+        <name>Bank App Mobile - MyAppt</name>
+        <option_schema>[{"displayValue":"Task Appointment","name":"task_appointment_record","default_value":"8ee4be0cdb637600c3beffa31d961965","label":"Task Appointment Record","type":"reference","value":"u_task_appointment","ed":{"reference":"u_task_appointment"}},{"name":"additional_fields","default_value":"location","label":"Additional Appointment Fields","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[// populate the 'data' variable with catalog item, variables, and variable view
+(function() {
+		
+	// - Bank list - site on request form
+	var grLocType = new GlideRecord('x_snc_city_finance_location_type');
+	grLocType.addEncodedQuery('active=true');
+	grLocType.query();
+	var types = [];
+	while(grLocType.next()){
+		if(grLocType.getDisplayValue('name')==='Banking Center'){
+			types.push('x_snc_city_finance_typeLIKE');
+			types.push(grLocType.sys_id.toString());	
+		}
+	}
+
+	data.newTypes = types.join('');
+
+	data.banks = [];
+	data.banksByID = {};
+	
+	var grSites = new GlideRecord('cmn_location');
+	grSites.addEncodedQuery(data.newTypes);
+	grSites.query();
+	
+	while (grSites.next()) {
+		data.banks.push({
+			sys_id : grSites.sys_id.toString(),
+			name : grSites.getDisplayValue('company'),
+			street : grSites.getDisplayValue('street'),
+			city : grSites.getDisplayValue('city'),
+			state : grSites.getDisplayValue('state'),
+			zip : grSites.getDisplayValue('zip'),
+			phone : grSites.getDisplayValue('phone')
+		});
+		data.banksByID[grSites.sys_id.toString()] = {
+			name : grSites.getDisplayValue('company'),
+			street : grSites.getDisplayValue('street'),
+			city : grSites.getDisplayValue('city'),
+			state : grSites.getDisplayValue('state'),
+			zip : grSites.getDisplayValue('zip'),
+			phone : grSites.getDisplayValue('phone')
+		};
+	}
+	
+	if (input) {
+		if (input.action == 'getCurrentAppointments') {
+			data.currentAppointments = new global.TaskAppointmentUtils().getUserAppointments(options.task_appointment_record, options.additional_fields, input.userID);
+		}
+		if (input.action == 'deleteTimeSlot') {
+			data.deleted = new global.TaskAppointmentUtils().removeAppointment(options.task_appointment_record, input.taskSysid);
+		}
+	}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-10 12:18:02</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>1fe3697adbbf3a00c3beffa31d9619d6</sys_id>
+        <sys_mod_count>200</sys_mod_count>
+        <sys_name>Bank App Mobile - MyAppt</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_widget_1fe3697adbbf3a00c3beffa31d9619d6</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-24 17:14:10</sys_updated_on>
+        <template><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+  <symbol id='icon-trash' width="20" height="22" viewBox="0 0 20 22">
+    <g fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3.083 3.917h13.333v16.667H3.083zM6.417 1.417h6.667v2.5H6.417zM1 3.917h18.333M6.417 6.833v10M9.75 6.833v10M13.083 6.833v10"/>
+    </g>
+  </symbol>
+  <symbol id='icon-edit' width="22" height="21" viewBox="0 0 22 21">
+    <g fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8.103 16.905L1.091 19.91l3.006-7.014L16.619.375l4.006 4.008zM18.024 6.984l-4.006-4.008M8.103 16.905l-4.006-4.008"/>
+    </g>
+  </symbol>
+</svg>
+<div class='container bg-darkblue'>
+  <div class='row'>
+    <div class='col-xs-12'>
+      <div class='ghost-container'>
+        <div class='bamappt-title'>My Appointments</div>
+      </div>
+      <div class='ghost-container' ng-show="c.noAppointments">
+        <div class='bamappt-subtitle'>You have no scheduled appointments.</div>
+      </div>
+      <div class='ghost-container'>
+      <div class='bamappt-container' ng-repeat='item in c.currentUserAppointments track by $index'>
+        <div class='appt-box' ng-show='c.toggleDelete[item.sys_id].show'>
+          <div class='appt-when'>
+            <div class='appt-weekday'>{{item.weekday}}</div>
+            <div class='appt-datetime'>{{item.day}}</div>
+          </div>
+          <div class='appt-where'>
+            <div class='appt-site'>{{item.location}}</div>
+            <div class='appt-datetime'>{{item.time}}</div>
+          </div>
+          <div class='appt-tools'>
+            <svg class="appt-icon" ng-click='c.editAppt(item.sys_id)'>
+              <use xlink:href='#icon-edit'></use>
+            </svg>
+            <svg class="appt-icon" ng-click='c.removeAppt(item.sys_id)'>
+              <use xlink:href='#icon-trash'></use>
+            </svg>
+          </div>
+        </div>
+        <div class='row appt-box appt-delete' ng-show='c.toggleDelete[item.sys_id].confirm'>
+          <div class='col-xs-6'><input type='button' class='btn btn-cancel' value='CANCEL' ng-click='c.cancelAppt(item.sys_id)'/></div>
+          <div class='col-xs-6'><input type='button' class='btn btn-delete' value='YES, DELETE!' ng-click='c.deleteAppt(item.sys_id)' /></div>
+        </div>
+      </div>
+      </div>
+      <button class="btn btn-primary" ng-click="c.makeAppointment()">Make Appointment</button>
+    </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

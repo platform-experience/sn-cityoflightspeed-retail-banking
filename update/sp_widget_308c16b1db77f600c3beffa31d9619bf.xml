@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function($window,$location) {
+  /* widget controller */
+  var c = this;
+	
+	c.pages = [
+		{ name : 'home' , url : ''},
+		{ name : 'atm' , url : 'bam_atm'},
+		{ name : 'appt' , url : 'bam_myappt'},
+		{ name : 'invest' , url : 'bam_invest'}
+	];
+		
+	c.setPage = function(id){
+		if(id===0){
+			$location.url('/bam');
+		}else{
+			$location.url('?id='+c.pages[id].url);
+		}
+	};
+	
+	c.appointments = JSON.parse(c.data.currentAppointments).length;
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.bg-darkblue { &#13;
+  /*background-color: $bam-darkblue;*/&#13;
+ 	margin: 0 auto;&#13;
+  margin-top: 10px;&#13;
+  margin-left: -15px;&#13;
+  margin-bottom: 10px;&#13;
+  width: 110%;&#13;
+}&#13;
+.badge-appt{&#13;
+  background-color: red;&#13;
+  position: relative;&#13;
+  margin: 0;&#13;
+  float: right;&#13;
+  margin-right: 10px;&#13;
+  margin-top: -45px;&#13;
+  width: 18px;&#13;
+  padding-left: 5px;&#13;
+  font-weight: 400;&#13;
+}&#13;
+.ghost-container{&#13;
+  margin: 0 auto;&#13;
+  margin-top: -10px;&#13;
+  background-color: transparent;&#13;
+  overflow: hidden;&#13;
+  text-align: center;&#13;
+}&#13;
+.bamsrvs-container{&#13;
+  max-width: 335px;&#13;
+  color: $bam-font-dark;&#13;
+  margin: 0 auto;&#13;
+  background-color: transparent;&#13;
+  display: inline-flex;&#13;
+}&#13;
+.bamsrvs-choicebox {&#13;
+  @include border-radius(4px);&#13;
+  border: 1px solid #E7E7E7;&#13;
+  box-shadow: 0 2px 4px 0 rgba(227,230,234,0.5);&#13;
+  background-color: #ffffff;&#13;
+  min-height: 110px;&#13;
+  width: 103px;&#13;
+  margin: 0 auto;&#13;
+  padding: 0px;&#13;
+  padding-top: 15px;&#13;
+  text-align: center;&#13;
+  cursor: pointer;&#13;
+  @media (max-width: 320px){&#13;
+    width: 88px;&#13;
+  }&#13;
+}&#13;
+.marginR{&#13;
+  margin-right: 4px;&#13;
+  @media (max-width: 320px){&#13;
+    margin-right: 0px;&#13;
+  }&#13;
+}&#13;
+.marginC {&#13;
+  margin-right: 6px;&#13;
+  margin-left: 6px;&#13;
+  @media (max-width: 320px){&#13;
+    margin-right: 2px;&#13;
+    margin-left: 2px;&#13;
+  }&#13;
+}&#13;
+.marginL {&#13;
+  margin-left: 4px;&#13;
+  @media (max-width: 320px){&#13;
+    margin-left: 0px;&#13;
+  }&#13;
+  &#13;
+}&#13;
+.bamsrvs-icondiv{&#13;
+	display: block;&#13;
+}&#13;
+.bamsrvs-text{&#13;
+  font-size: 13px;&#13;
+  font-weight: 600;&#13;
+  word-wrap: normal;&#13;
+  white-space: normal;&#13;
+  margin-top: 5px;&#13;
+  line-height: 1.2;&#13;
+}&#13;
+.bamsrvs-icon {&#13;
+  fill: $bam-blue;&#13;
+  height: 36px;&#13;
+  width: 36px;&#13;
+  margin: 0 auto;&#13;
+}&#13;
+.atm-shift{&#13;
+  margin-left: 10px;&#13;
+}&#13;
+.appt-shift{&#13;
+  margin-left: 5px;&#13;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>bam-services</id>
+        <internal>false</internal>
+        <link/>
+        <name>Bank App Mobile - Services</name>
+        <option_schema>[{"displayValue":"Task Appointment","name":"task_appointment_record","default_value":"8ee4be0cdb637600c3beffa31d961965","label":"Task Appointment Record","type":"reference","value":"u_task_appointment","ed":{"reference":"u_task_appointment"}},{"name":"additional_fields","default_value":"","label":"Additional Appointment Fields","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+	data.currentAppointments = new global.TaskAppointmentUtils().getUserAppointments(options.task_appointment_record);
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-07 13:51:53</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>308c16b1db77f600c3beffa31d9619bf</sys_id>
+        <sys_mod_count>116</sys_mod_count>
+        <sys_name>Bank App Mobile - Services</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_widget_308c16b1db77f600c3beffa31d9619bf</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-18 20:04:12</sys_updated_on>
+        <template><![CDATA[<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="icon-atm" stroke="none" stroke-width="1" fill-rule="evenodd">
+    <g id='ATM'>
+      <path d="M13.404 36C11.26 36 0 20.528 0 13.404 0 6.051 6.051 0 13.404 0S26.81 6.051 26.81 13.404C26.809 20.528 15.549 36 13.404 36zm0-34.468c-6.51 0-11.872 5.362-11.872 11.872s9.957 19.609 11.872 20.987c1.915-1.378 11.873-14.553 11.873-20.987 0-6.51-5.362-11.872-11.873-11.872z"/>
+      <path d="M13.404 19.149c-3.14 0-5.744-2.604-5.744-5.745 0-3.14 2.604-5.744 5.744-5.744 3.14 0 5.745 2.604 5.745 5.744 0 3.14-2.604 5.745-5.745 5.745zm0-9.958c-2.298 0-4.213 1.915-4.213 4.213s1.915 4.213 4.213 4.213 4.213-1.915 4.213-4.213-1.915-4.213-4.213-4.213z"/>
+    </g>
+  </symbol>
+  <symbol id="icon-invest" stroke="none" stroke-width="1" fill-rule="evenodd">
+    <g id='INVEST'>
+      <path d="M21.722 34h-9.444C5.478 34 0 28.522 0 21.722v-9.444C0 5.478 5.478 0 12.278 0h9.444C28.522 0 34 5.478 34 12.278v9.444C34 28.522 28.522 34 21.722 34zM12.278 1.889a10.359 10.359 0 0 0-10.39 10.389v9.444a10.359 10.359 0 0 0 10.39 10.39h9.444a10.359 10.359 0 0 0 10.39-10.39v-9.444a10.359 10.359 0 0 0-10.39-10.39h-9.444z"/>
+      <path d="M16.056 8.5h1.889v17.944h-1.889z"/>
+      <path d="M17 24.556c-3.117 0-4.722-2.456-4.722-3.778h1.889c0 .378.755 1.889 2.833 1.889 2.078 0 2.833-1.04 2.833-1.89 0-1.605-1.416-2.077-3.683-2.738-1.794-.472-3.872-.945-3.872-2.928 0-1.133 0-4.722 4.722-4.722 3.117 0 4.722 1.228 4.722 3.778h-1.889c0-.756 0-1.89-2.833-1.89-2.644 0-2.833 1.323-2.833 2.834 0 .472 1.039.756 2.455 1.133 2.172.567 5.1 1.323 5.1 4.534 0 1.794-1.51 3.778-4.722 3.778z"/>
+    </g>
+  </symbol>
+  <symbol id="icon-appt" stroke="none" stroke-width="1" fill-rule="evenodd">
+    <g id='APPT'>
+      <path d="M28.976 36H2.634C1.141 36 0 34.859 0 33.366V7.024C0 5.532 1.141 4.39 2.634 4.39h26.342c1.492 0 2.634 1.142 2.634 2.634v26.342c0 1.493-1.142 2.634-2.634 2.634zM2.634 6.146c-.527 0-.878.352-.878.878v26.342c0 .527.351.878.878.878h26.342c.526 0 .878-.351.878-.878V7.024c0-.526-.352-.878-.878-.878H2.634zM7.024 0H8.78v4.39H7.024zM22.829 0h1.756v4.39h-1.756z"/>
+      <path d="M15.805 14.049a3.523 3.523 0 0 1-3.512-3.512 3.523 3.523 0 0 1 3.512-3.513 3.523 3.523 0 0 1 3.512 3.513 3.523 3.523 0 0 1-3.512 3.512zm0-5.269c-.966 0-1.756.79-1.756 1.757 0 .965.79 1.756 1.756 1.756s1.756-.79 1.756-1.756-.79-1.757-1.756-1.757zM24.585 14.049a3.523 3.523 0 0 1-3.512-3.512 3.523 3.523 0 0 1 3.512-3.513 3.523 3.523 0 0 1 3.513 3.513 3.523 3.523 0 0 1-3.513 3.512zm0-5.269c-.965 0-1.756.79-1.756 1.757 0 .965.79 1.756 1.756 1.756s1.756-.79 1.756-1.756-.79-1.757-1.756-1.757zM7.024 22.83a3.523 3.523 0 0 1-3.512-3.513 3.523 3.523 0 0 1 3.512-3.512 3.523 3.523 0 0 1 3.513 3.512 3.523 3.523 0 0 1-3.513 3.512zm0-5.269c-.965 0-1.756.79-1.756 1.756s.79 1.756 1.756 1.756 1.756-.79 1.756-1.756-.79-1.756-1.756-1.756zM15.805 22.83a3.523 3.523 0 0 1-3.512-3.513 3.523 3.523 0 0 1 3.512-3.512 3.523 3.523 0 0 1 3.512 3.512 3.523 3.523 0 0 1-3.512 3.512zm0-5.269c-.966 0-1.756.79-1.756 1.756s.79 1.756 1.756 1.756 1.756-.79 1.756-1.756-.79-1.756-1.756-1.756zM24.585 22.83a3.523 3.523 0 0 1-3.512-3.513 3.523 3.523 0 0 1 3.512-3.512 3.523 3.523 0 0 1 3.513 3.512 3.523 3.523 0 0 1-3.513 3.512zm0-5.269c-.965 0-1.756.79-1.756 1.756s.79 1.756 1.756 1.756 1.756-.79 1.756-1.756-.79-1.756-1.756-1.756zM7.024 31.61a3.523 3.523 0 0 1-3.512-3.512 3.523 3.523 0 0 1 3.512-3.513 3.523 3.523 0 0 1 3.513 3.513 3.523 3.523 0 0 1-3.513 3.512zm0-5.269c-.965 0-1.756.79-1.756 1.757 0 .965.79 1.756 1.756 1.756s1.756-.79 1.756-1.756-.79-1.757-1.756-1.757zM15.805 31.61a3.523 3.523 0 0 1-3.512-3.512 3.523 3.523 0 0 1 3.512-3.513 3.523 3.523 0 0 1 3.512 3.513 3.523 3.523 0 0 1-3.512 3.512zm0-5.269c-.966 0-1.756.79-1.756 1.757 0 .965.79 1.756 1.756 1.756s1.756-.79 1.756-1.756-.79-1.757-1.756-1.757z"/>
+    </g>
+  </symbol>
+</svg>
+
+<div class='container bg-darkblue'>
+  <div class='row'>
+    <div class='col-xs-12'>
+      <div class='ghost-container'>
+        <div class='bamsrvs-container'>
+          <div class='bamsrvs-choicebox marginR' ng-click='c.setPage(1)'>
+            <div class='bamsrvs-icondiv'>
+              <svg class="bamsrvs-icon atm-shift">
+                <use xlink:href='#icon-atm'></use>
+              </svg>
+            </div>
+            <div class='bamsrvs-text'>Branch &amp; ATM Locations</div>
+          </div>
+          <div class='bamsrvs-choicebox marginC' ng-click='c.setPage(3)'>
+            <div class='bamsrvs-icondiv'>
+              <svg class="bamsrvs-icon">
+                <use xlink:href='#icon-invest'></use>
+              </svg>
+            </div>
+            <div class='bamsrvs-text'>Start<br/>Investing</div>
+          </div>
+          <div class='bamsrvs-choicebox marginL' ng-click='c.setPage(2)'>
+            <div class='bamsrvs-icondiv'>
+              <svg class="bamsrvs-icon appt-shift">
+                <use xlink:href='#icon-appt'></use>
+              </svg>
+            </div>
+            <div class='badge badge-appt' ng-show='c.appointments>0'>
+              {{::c.appointments}}
+            </div>
+            <div class='bamsrvs-text'>My Appointments</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

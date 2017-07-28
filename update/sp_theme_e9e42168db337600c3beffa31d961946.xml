@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_theme">
+    <sp_theme action="INSERT_OR_UPDATE">
+        <css_variables>$body-bg: #fafafa !default;&#13;
+&#13;
+$bam-softblue: #e4edf9 !default;&#13;
+$bam-lightblue: #72A5FC !default;&#13;
+$bam-slateblue: #607795 !default;&#13;
+$bam-blue: #4b8cfb !default;&#13;
+$bam-darkblue: #3b516d !default;&#13;
+$bam-red: #fb4b4b !default;&#13;
+&#13;
+$bam-white: #ffffff !default;&#13;
+$bam-black: #000000 !default;&#13;
+&#13;
+$bam-box-shadow: #e3e6ea !default;&#13;
+&#13;
+$bam-font-dark: #676767 !default;&#13;
+$bam-font-light: #ffffff !default;&#13;
+&#13;
+$bam-ultralight-gray: #fafafa !default;&#13;
+$bam-light-gray: #eaeaea !default;&#13;
+$bam-soft-gray: #c8c8c8 !default;&#13;
+$bam-gray: #b1b1b1 !default;&#13;
+$bam-medium-gray: #aaaaaa !default;&#13;
+$bam-dark-gray: #7f7f7f !default;&#13;
+$bam-ultradark-gray: #676767 !default;&#13;
+&#13;
+$bam-font-lightgrey: #c2c2c2 !default;&#13;
+$bam-font-grey: #eaeaea !default;&#13;
+$bam-font-mediumgrey: #898989 !default;&#13;
+$bam-font-darkgrey: #676767 !default;&#13;
+&#13;
+&#13;
+/* Grays{&#13;
+	--white-two: #fafafa;&#13;
+	--white-three: #fbfbfb;&#13;
+	--white-four: #eaeaea;&#13;
+	--white-five: #dddddd;&#13;
+	--pinkish-grey: #c8c8c8;&#13;
+	--pinkish-grey-two: #bababa;&#13;
+	--greyish: #b1b1b1;&#13;
+	--greyish-two: #aaaaaa;&#13;
+	--warm-grey: #898989;&#13;
+	--warm-grey-two: #7f7f7f;&#13;
+	--warm-grey-three: #959595;&#13;
+	--brownish-grey: #676767;&#13;
+}*/&#13;
+&#13;
+body {&#13;
+	font-family: 'SFUIDisplay','SourceSansPro', Helvetica, Arial, sans-serif !important;&#13;
+	color: $bam-font-mediumgrey;&#13;
+	font-weight: 300;&#13;
+}&#13;
+&#13;
+.touch_scroll {&#13;
+	overflow-x: hidden;&#13;
+    @media (max-width: 320px){&#13;
+    	overflow-x: scroll;&#13;
+    }&#13;
+}&#13;
+.banner-container{&#13;
+  position: relative;&#13;
+  top:0;&#13;
+  left:0;&#13;
+  height: 45px;&#13;
+  width: 100%;&#13;
+  background-color: $bam-blue;&#13;
+  color: $bam-white;&#13;
+  text-align: center;&#13;
+  padding-top: 12px;&#13;
+  font-size: 16px;&#13;
+  font-weight: 600;&#13;
+  letter-spacing: 1.2px;&#13;
+  text-transform: uppercase;&#13;
+}&#13;
+.glass:after {&#13;
+  content: '';&#13;
+  position: absolute;&#13;
+  top: 2px;&#13;
+  left: 2px;&#13;
+  width: calc(100% - 4px);&#13;
+  height: 47%;&#13;
+  background: linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.1));&#13;
+  border-radius: 2px;&#13;
+}&#13;
+&#13;
+@mixin border-radius($radius) {&#13;
+  -webkit-border-radius: $radius;&#13;
+     -moz-border-radius: $radius;&#13;
+      -ms-border-radius: $radius;&#13;
+          border-radius: $radius;&#13;
+}&#13;
+&#13;
+@font-face {  &#13;
+  font-family: 'SFUIDisplay';  &#13;
+  src: url('/sys_attachment.do?sys_id=31a52ab5db77f600c3beffa31d9619f8')  format('truetype'); &#13;
+  font-weight: normal;  &#13;
+  font-style: normal;  &#13;
+}&#13;
+@font-face {  &#13;
+  font-family: 'SFUIDisplay';  &#13;
+  src: url('/sys_attachment.do?sys_id=3da56ab5db77f600c3beffa31d961902')  format('truetype'); &#13;
+  font-weight: bold;  &#13;
+  font-style: normal;  &#13;
+}&#13;
+@font-face {  &#13;
+  font-family: 'SFUIDisplay';  &#13;
+  src: url('/sys_attachment.do?sys_id=96a56ab5db77f600c3beffa31d961920')  format('truetype');&#13;
+  font-weight: bolder;  &#13;
+  font-style: normal;  &#13;
+}&#13;
+@font-face {  &#13;
+  font-family: 'SFUIDisplay';  &#13;
+  src: url('/sys_attachment.do?sys_id=55a52ab5db77f600c3beffa31d9619de')  format('truetype');&#13;
+  font-weight: lighter;  &#13;
+  font-style: normal;  &#13;
+}&#13;
+@font-face {  &#13;
+  font-family: 'SFUIDisplay';  &#13;
+  src: url('/sys_attachment.do?sys_id=5da52ab5db77f600c3beffa31d9619d8')  format('truetype');&#13;
+  font-weight: 100;  &#13;
+  font-style: normal;  &#13;
+}&#13;
+@font-face {  &#13;
+  font-family: 'SFUIDisplay';  &#13;
+  src: url('/sys_attachment.do?sys_id=55a52ab5db77f600c3beffa31d9619de')  format('truetype');&#13;
+  font-weight: 200;  &#13;
+  font-style: normal;  &#13;
+}&#13;
+@font-face {  &#13;
+  font-family: 'SFUIDisplay';  &#13;
+  src: url('/sys_attachment.do?sys_id=0aa56ab5db77f600c3beffa31d961908')  format('truetype');&#13;
+  font-weight: 300;  &#13;
+  font-style: normal;  &#13;
+}&#13;
+@font-face {  &#13;
+  font-family: 'SFUIDisplay';  &#13;
+  src: url('/sys_attachment.do?sys_id=31a52ab5db77f600c3beffa31d9619f8')  format('truetype');&#13;
+  font-weight: 400;  &#13;
+  font-style: normal;  &#13;
+}&#13;
+@font-face {  &#13;
+  font-family: 'SFUIDisplay';  &#13;
+  src: url('/sys_attachment.do?sys_id=b1a52ab5db77f600c3beffa31d9619fd')  format('truetype');&#13;
+  font-weight: 500;  &#13;
+  font-style: normal;  &#13;
+}&#13;
+@font-face {  &#13;
+  font-family: 'SFUIDisplay';  &#13;
+  src: url('/sys_attachment.do?sys_id=6da52ab5db77f600c3beffa31d9619e5')  format('truetype');&#13;
+  font-weight: 600;  &#13;
+  font-style: normal;  &#13;
+}&#13;
+@font-face {  &#13;
+  font-family: 'SFUIDisplay';  &#13;
+  src: url('/sys_attachment.do?sys_id=3da56ab5db77f600c3beffa31d961902')  format('truetype');&#13;
+  font-weight: 700;  &#13;
+  font-style: normal;  &#13;
+}&#13;
+@font-face {  &#13;
+  font-family: 'SFUIDisplay';  &#13;
+  src: url('/sys_attachment.do?sys_id=d2a56ab5db77f600c3beffa31d96190e')  format('truetype');&#13;
+  font-weight: 800;  &#13;
+  font-style: normal;  &#13;
+}&#13;
+@font-face {  &#13;
+  font-family: 'SFUIDisplay';  &#13;
+  src: url('/sys_attachment.do?sys_id=96a56ab5db77f600c3beffa31d961920')  format('truetype');&#13;
+  font-weight: 900;  &#13;
+  font-style: normal;  &#13;
+}</css_variables>
+        <footer display_value="Bank App Mobile - Footer">13afb0a9dbbbb600c3beffa31d9619ba</footer>
+        <footer_fixed>true</footer_fixed>
+        <header display_value="Bank App Mobile - Header">8d3ffc69dbbbb600c3beffa31d961949</header>
+        <name>Bank App Mobile</name>
+        <navbar_fixed>true</navbar_fixed>
+        <sys_class_name>sp_theme</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-03 12:49:32</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>e9e42168db337600c3beffa31d961946</sys_id>
+        <sys_mod_count>37</sys_mod_count>
+        <sys_name>Bank App Mobile</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_theme_e9e42168db337600c3beffa31d961946</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-17 22:15:33</sys_updated_on>
+    </sp_theme>
+</record_update>

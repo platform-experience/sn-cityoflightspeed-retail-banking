@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element attributes="all_tables.text_index_translations=true" label="Location" max_length="40" name="cmn_location" text_index="true" type="collection">
+        <element label="Type" max_length="4000" name="x_snc_city_finance_type" reference="x_snc_city_finance_location_type" type="glide_list"/>
+    </element>
+</database>

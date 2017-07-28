@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function CSTCtrl($scope, $location, spUtil) {
+    /* widget controller */
+    var c = this;
+
+    c.$onInit = function() {
+        c.state = 1;
+        $scope.$on('$sp.sc_cat_item.submitted', onRecordProducerSubmitted)
+
+        $scope.$on('savedObservation', onObservationsSaved)
+
+        // onRecordProducerSubmitted(); // TODO Remove this - test purpose only!
+    };
+
+    function onRecordProducerSubmitted(event, param) {
+        if (param) {
+            var record_id = param.sys_id;
+        }
+        $location.search({ id: 'walmart_observation', sys_id: record_id });
+        return;
+        c.state = 2;
+
+
+        spUtil.get('walmart-observation', {
+            sys_id: record_id
+        }).then(function(response) {
+            c.data.observations = response;
+        });
+    }
+
+    function onObservationsSaved(event, items) {
+        c.state = 3;
+    }
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>record-producer-bank</id>
+        <internal>false</internal>
+        <link/>
+        <name>Record Producer Bank</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+    /* populate the 'data' object */
+    /* e.g., data.table = $sp.getValue('table'); */
+    data.recordProducer = $sp.getWidget('walmart-sc-cat-item');
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>sush.chandrashekar</sys_created_by>
+        <sys_created_on>2017-06-23 19:50:10</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>2a48a391dbabf60087c1fd441d96193a</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>Record Producer Bank</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_widget_2a48a391dbabf60087c1fd441d96193a</sys_update_name>
+        <sys_updated_by>sush.chandrashekar</sys_updated_by>
+        <sys_updated_on>2017-06-23 19:51:41</sys_updated_on>
+        <template><![CDATA[<div>
+    <div ng-show="c.state==1">
+        <sp-widget widget="c.data.recordProducer"></sp-widget>
+    </div>
+
+    <div ng-show="c.state==2">
+        <sp-widget widget="c.data.observations"></sp-widget>
+    </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

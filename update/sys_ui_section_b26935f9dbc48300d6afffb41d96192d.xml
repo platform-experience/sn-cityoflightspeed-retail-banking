@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_ui_section caption="" section_id="b26935f9dbc48300d6afffb41d96192d" sys_domain="global" table="cmn_location" version="3" view="retail_banking">
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>name</element>
+            <position>0</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 15:35:56</sys_created_on>
+            <sys_id>b711fd0edb00c300d6afffb41d9619cd</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">b26935f9dbc48300d6afffb41d96192d</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 15:35:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>company</element>
+            <position>1</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 15:35:56</sys_created_on>
+            <sys_id>3f11fd0edb00c300d6afffb41d9619cd</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">b26935f9dbc48300d6afffb41d96192d</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 15:35:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>street</element>
+            <position>2</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 15:35:56</sys_created_on>
+            <sys_id>bf11fd0edb00c300d6afffb41d9619cd</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">b26935f9dbc48300d6afffb41d96192d</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 15:35:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>city</element>
+            <position>3</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 15:35:56</sys_created_on>
+            <sys_id>3311fd0edb00c300d6afffb41d9619ce</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">b26935f9dbc48300d6afffb41d96192d</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 15:35:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>state</element>
+            <position>4</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 15:35:56</sys_created_on>
+            <sys_id>b311fd0edb00c300d6afffb41d9619ce</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">b26935f9dbc48300d6afffb41d96192d</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 15:35:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>zip</element>
+            <position>5</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 15:35:56</sys_created_on>
+            <sys_id>3711fd0edb00c300d6afffb41d9619ce</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">b26935f9dbc48300d6afffb41d96192d</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 15:35:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>country</element>
+            <position>6</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 15:35:56</sys_created_on>
+            <sys_id>b711fd0edb00c300d6afffb41d9619ce</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">b26935f9dbc48300d6afffb41d96192d</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 15:35:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>x_snc_city_finance_type</element>
+            <position>7</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 15:35:56</sys_created_on>
+            <sys_id>3b11fd0edb00c300d6afffb41d9619ce</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">b26935f9dbc48300d6afffb41d96192d</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 15:35:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.split</element>
+            <position>8</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 15:35:56</sys_created_on>
+            <sys_id>bb11fd0edb00c300d6afffb41d9619ce</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">b26935f9dbc48300d6afffb41d96192d</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 15:35:56</sys_updated_on>
+            <sys_user/>
+            <type>.split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>contact</element>
+            <position>9</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 15:35:56</sys_created_on>
+            <sys_id>3f11fd0edb00c300d6afffb41d9619ce</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">b26935f9dbc48300d6afffb41d96192d</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 15:35:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>phone</element>
+            <position>10</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 15:35:56</sys_created_on>
+            <sys_id>bf11fd0edb00c300d6afffb41d9619ce</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">b26935f9dbc48300d6afffb41d96192d</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 15:35:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>fax_phone</element>
+            <position>11</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 15:35:56</sys_created_on>
+            <sys_id>3311fd0edb00c300d6afffb41d9619cf</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">b26935f9dbc48300d6afffb41d96192d</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 15:35:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>parent</element>
+            <position>12</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 15:35:56</sys_created_on>
+            <sys_id>b311fd0edb00c300d6afffb41d9619cf</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">b26935f9dbc48300d6afffb41d96192d</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 15:35:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>latitude</element>
+            <position>13</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 15:35:56</sys_created_on>
+            <sys_id>3711fd0edb00c300d6afffb41d9619cf</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">b26935f9dbc48300d6afffb41d96192d</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 15:35:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>longitude</element>
+            <position>14</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-20 15:35:56</sys_created_on>
+            <sys_id>b711fd0edb00c300d6afffb41d9619cf</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="f669f1f9dbc48300d6afffb41d9619b7">b26935f9dbc48300d6afffb41d96192d</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-20 15:35:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_section action="INSERT_OR_UPDATE">
+            <caption/>
+            <header>false</header>
+            <name>cmn_location</name>
+            <roles/>
+            <sys_class_name>sys_ui_section</sys_class_name>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-19 21:33:42</sys_created_on>
+            <sys_customer_update>true</sys_customer_update>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>b26935f9dbc48300d6afffb41d96192d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>cmn_location</sys_name>
+            <sys_overrides/>
+            <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+            <sys_policy/>
+            <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+            <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+            <sys_update_name>sys_ui_section_b26935f9dbc48300d6afffb41d96192d</sys_update_name>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-19 21:33:42</sys_updated_on>
+            <sys_user/>
+            <title>false</title>
+            <view display_value="Retail Banking" name="retail_banking">f669f1f9dbc48300d6afffb41d9619b7</view>
+            <view_name/>
+        </sys_ui_section>
+    </sys_ui_section>
+</record_update>

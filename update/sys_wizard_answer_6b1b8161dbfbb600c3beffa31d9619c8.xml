@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_wizard_answer">
+    <sys_wizard_answer action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <answer>Financial Request</answer>
+        <button_label/>
+        <dependent_value/>
+        <element/>
+        <name>Financial Request</name>
+        <next_question/>
+        <order>100</order>
+        <payload_name/>
+        <question display_value="Task" name="Task">9a5417b7db22320087c1fd441d96190a</question>
+        <roles/>
+        <script/>
+        <sys_class_name>sys_wizard_answer</sys_class_name>
+        <sys_created_by>michael.ritchie</sys_created_by>
+        <sys_created_on>2017-07-06 13:17:13</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>6b1b8161dbfbb600c3beffa31d9619c8</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Financial Request</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sys_wizard_answer_6b1b8161dbfbb600c3beffa31d9619c8</sys_update_name>
+        <sys_updated_by>michael.ritchie</sys_updated_by>
+        <sys_updated_on>2017-07-06 13:17:13</sys_updated_on>
+        <table/>
+        <target_url>x_snc_city_finance_financial_request.do</target_url>
+        <type>1</type>
+    </sys_wizard_answer>
+</record_update>

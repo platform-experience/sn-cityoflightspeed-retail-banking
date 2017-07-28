@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_css">
+    <sp_css action="INSERT_OR_UPDATE">
+        <css>/*&#13;
+Author: L. Voogdt&#13;
+License: MIT&#13;
+Version: 1.0&#13;
+*/&#13;
+&#13;
+/* Marker setup */&#13;
+.awesome-marker {&#13;
+  background: url('markers-plain.png') no-repeat 0 0;&#13;
+  width: 35px;&#13;
+  height: 46px;&#13;
+  position:absolute;&#13;
+  left:0;&#13;
+  top:0;&#13;
+  display: block;&#13;
+  text-align: center;&#13;
+}&#13;
+&#13;
+.awesome-marker-shadow {&#13;
+  background: url('markers-shadow.png') no-repeat 0 0;&#13;
+  width: 36px;&#13;
+  height: 16px;&#13;
+}&#13;
+&#13;
+/* Retina displays */&#13;
+@media (min--moz-device-pixel-ratio: 1.5),(-o-min-device-pixel-ratio: 3/2),&#13;
+(-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5),(min-resolution: 1.5dppx) {&#13;
+ .awesome-marker {&#13;
+  background-image: url('markers-plain.png');&#13;
+  background-size: 360px 46px;&#13;
+ }&#13;
+ .awesome-marker-shadow {&#13;
+  background-image: url('markers-shadow@2x.png');&#13;
+  background-size: 35px 16px;&#13;
+ }&#13;
+}&#13;
+&#13;
+.awesome-marker i {&#13;
+  color: #333;&#13;
+  margin-top: 10px;&#13;
+  display: inline-block;&#13;
+  font-size: 14px;&#13;
+}&#13;
+&#13;
+.awesome-marker .icon-white {&#13;
+  color: #fff;&#13;
+}&#13;
+&#13;
+/* Colors */&#13;
+.awesome-marker-icon-red {&#13;
+  background-position: 0 0;&#13;
+}&#13;
+&#13;
+.awesome-marker-icon-darkred {&#13;
+  background-position: -180px 0;&#13;
+}&#13;
+&#13;
+.awesome-marker-icon-lightred {&#13;
+  background-position: -360px 0;&#13;
+}&#13;
+&#13;
+.awesome-marker-icon-orange {&#13;
+  background-position: -36px 0;&#13;
+}&#13;
+&#13;
+.awesome-marker-icon-beige {&#13;
+  background-position: -396px 0;&#13;
+}&#13;
+&#13;
+.awesome-marker-icon-green {&#13;
+  background-position: -72px 0;&#13;
+}&#13;
+&#13;
+.awesome-marker-icon-darkgreen {&#13;
+  background-position: -252px 0;&#13;
+}&#13;
+&#13;
+.awesome-marker-icon-lightgreen {&#13;
+  background-position: -432px 0;&#13;
+}&#13;
+&#13;
+.awesome-marker-icon-blue {&#13;
+  background-position: -108px 0;&#13;
+}&#13;
+&#13;
+.awesome-marker-icon-darkblue {&#13;
+  background-position: -216px 0;&#13;
+}&#13;
+&#13;
+.awesome-marker-icon-lightblue {&#13;
+  background-position: -468px 0;&#13;
+}&#13;
+&#13;
+.awesome-marker-icon-purple {&#13;
+  background-position: -144px 0;&#13;
+}&#13;
+&#13;
+.awesome-marker-icon-darkpurple {&#13;
+  background-position: -288px 0;&#13;
+}&#13;
+&#13;
+.awesome-marker-icon-pink {&#13;
+  background-position: -504px 0;&#13;
+}&#13;
+&#13;
+.awesome-marker-icon-cadetblue {&#13;
+  background-position: -324px 0;&#13;
+}&#13;
+&#13;
+.awesome-marker-icon-white {&#13;
+  background-position: -574px 0;&#13;
+}&#13;
+&#13;
+.awesome-marker-icon-gray {&#13;
+  background-position: -648px 0;&#13;
+}&#13;
+&#13;
+.awesome-marker-icon-lightgray {&#13;
+  background-position: -612px 0;&#13;
+}&#13;
+&#13;
+.awesome-marker-icon-black {&#13;
+  background-position: -682px 0;&#13;
+}&#13;
+</css>
+        <name>Awesome Marker Style</name>
+        <sys_class_name>sp_css</sys_class_name>
+        <sys_created_by>sush.chandrashekar</sys_created_by>
+        <sys_created_on>2017-06-23 21:58:19</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>dfa58025dbebf60087c1fd441d96193c</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>Awesome Marker Style</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_css_dfa58025dbebf60087c1fd441d96193c</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-17 21:40:11</sys_updated_on>
+    </sp_css>
+</record_update>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function($location) {
+	/* widget controller */
+	var c = this;
+
+	c.goSchedule = function(){
+		$location.url('?id=bam_appt');
+	};
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.bg-darkblue { 
+  /*background-color: $bam-darkblue;*/
+  margin: 0 auto;
+  margin-top: 10px;
+  margin-left: -15px;
+  margin-bottom: 10px;
+  width: 110%;
+}
+
+.baminfo-container{
+  @include border-radius(4px);
+  max-width: 335px;
+  min-height: 93px;
+  color: $bam-white;
+  background-color: $bam-blue;
+  margin: 0 auto;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+  padding-top: 0px;
+  padding-bottom: 10px;
+  padding-right: 15px;
+  box-shadow: 0 3px 5px 0 $bam-box-shadow;
+  border: solid 1px $bam-box-shadow;
+  letter-spacing: normal;
+}
+.baminfo-title{
+  height: 18px;
+  font-size: 18px;
+  line-height: 18px;
+  margin-top: 15px;
+  margin-bottom: 2px;
+  font-weight: 600;
+  @media (max-width: 320px){
+    font-size: 16px;
+    line-height: 16px;
+  }
+}
+.baminfo-details{
+  font-size: 14px;
+  line-height: 1.21;
+  font-weight: normal;
+  margin-top: 2px;
+  @media (max-width: 320px){
+    font-size: 12px;
+  }
+}
+
+.baminfo-icondiv{
+  float:left;
+  height: 80px;
+  display: inline-block;
+  margin: 0;
+  margin-top: 15px;
+  margin-left: 5px;
+  margin-right: 15px;
+}
+.baminfo-icon {
+  fill: $bam-white;
+  height: 24px;
+  width: 24px;
+  margin: 0 auto;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>bam-info</id>
+        <internal>false</internal>
+        <link/>
+        <name>Bank App Mobile - Schedule Appt</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-06 16:50:30</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>1fbb356ddb3fb600c3beffa31d961970</sys_id>
+        <sys_mod_count>39</sys_mod_count>
+        <sys_name>Bank App Mobile - Schedule Appt</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_widget_1fbb356ddb3fb600c3beffa31d961970</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-18 19:28:20</sys_updated_on>
+        <template><![CDATA[<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="icon-clock" stroke="none" stroke-width="1" fill-rule="evenodd">
+    <g id='CLOCK'>
+      <path d="M18.638 12.766h-7.66v-7.66H12v6.639h6.638z"/>
+      <path d="M12 24C5.362 24 0 18.638 0 12S5.362 0 12 0s12 5.362 12 12-5.362 12-12 12zm0-22.979A10.962 10.962 0 0 0 1.021 12 10.962 10.962 0 0 0 12 22.979 10.962 10.962 0 0 0 22.979 12 10.962 10.962 0 0 0 12 1.021z"/>    </g>
+  </symbol>
+</svg>
+<div class='container bg-darkblue'>
+  <div class='row'>
+    <div class='col-xs-12'>
+      <div class='baminfo-container' ng-click='c.goSchedule()'>
+        <div class='baminfo-icondiv'>
+           <svg class="baminfo-icon">
+              <use xlink:href='#icon-clock'></use>
+            </svg>
+				</div>
+        <div class='baminfo-title'>Schedule an Appointment</div>
+        <div class='baminfo-details'>Setup New Accounts, Consolidate Loans, 
+          or meet with a Financial Planner for advice!</div>
+      </div>
+    </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

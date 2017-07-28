@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_page">
+    <sp_page action="INSERT_OR_UPDATE">
+        <css>section.page {&#13;
+  overflow-x: hidden;&#13;
+}</css>
+        <id>bam_myappt</id>
+        <internal>false</internal>
+        <public>false</public>
+        <roles/>
+        <short_description>Bank App Mobile - My Appointments</short_description>
+        <sys_class_name>sp_page</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-10 12:15:33</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>5c53657adbbf3a00c3beffa31d96195c</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>bam_myappt</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_page_5c53657adbbf3a00c3beffa31d96195c</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-17 19:30:29</sys_updated_on>
+        <title>My Appointments</title>
+    </sp_page>
+    <sys_translated_text action="delete_multiple" query="documentkey=5c53657adbbf3a00c3beffa31d96195c"/>
+</record_update>

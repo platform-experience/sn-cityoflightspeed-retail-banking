@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element audit="true" max_length="40" name="x_snc_city_finance_investment_request" sizeclass="18" type="collection">
+        <element choice="1" label="Account Type" mandatory="true" max_length="40" name="account_type" type="choice">
+            <choice/>
+        </element>
+        <element label="Address" max_length="255" name="address" type="multi_two_lines"/>
+        <element label="City" max_length="40" name="city" type="string"/>
+        <element label="Email Address" max_length="100" name="email_address" type="email"/>
+        <element label="First Name" max_length="40" name="first_name" type="string"/>
+        <element label="Last Name" max_length="40" name="last_name" type="string"/>
+        <element label="Middle Initial" max_length="40" name="middle_initial" type="string"/>
+        <element label="Phone Number" max_length="40" name="phone_number" type="phone_number_e164"/>
+        <element choice="1" label="State/Province" max_length="40" name="state_province" reference="u_states" reference_key="u_abbreviation" type="reference">
+            <choice/>
+        </element>
+        <element label="Zip Code" max_length="40" name="zip_code" type="string"/>
+    </element>
+</database>

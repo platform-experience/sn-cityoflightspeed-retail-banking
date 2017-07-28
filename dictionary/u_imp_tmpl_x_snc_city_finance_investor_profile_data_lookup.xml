@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element extends="sys_import_set_row" label="Imp Tmpl X Snc City Finance Investor Profile Data Lookup" max_length="40" name="u_imp_tmpl_x_snc_city_finance_investor_profile_data_lookup" type="collection">
+        <element attributes="import_attribute_name=Investor Profile" label="Investor Profile" max_length="40" name="u_investor_profile" type="integer"/>
+        <element attributes="import_attribute_name=Order" label="Order" max_length="40" name="u_order" type="integer"/>
+        <element attributes="import_attribute_name=Risk Tolerance Score" label="Risk Tolerance Score" max_length="40" name="u_risk_tolerance_score" type="integer"/>
+        <element attributes="import_attribute_name=Time Horizon Score" label="Time Horizon Score" max_length="40" name="u_time_horizon_score" type="integer"/>
+    </element>
+</database>

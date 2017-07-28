@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="x_snc_city_finance_investor_profile_data_lookup">
+    <x_snc_city_finance_investor_profile_data_lookup action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <investor_profile>1</investor_profile>
+        <order>199</order>
+        <risk_tolerance_score>39</risk_tolerance_score>
+        <sys_class_name>x_snc_city_finance_investor_profile_data_lookup</sys_class_name>
+        <sys_created_by>michael.ritchie</sys_created_by>
+        <sys_created_on>2017-06-20 19:34:20</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>63f7cca4db6f760087c1fd441d9619cb</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>199</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>x_snc_city_finance_investor_profile_data_lookup_63f7cca4db6f760087c1fd441d9619cb</sys_update_name>
+        <sys_updated_by>michael.ritchie</sys_updated_by>
+        <sys_updated_on>2017-06-20 19:34:20</sys_updated_on>
+        <time_horizon_score>9</time_horizon_score>
+    </x_snc_city_finance_investor_profile_data_lookup>
+</record_update>

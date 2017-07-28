@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_row">
+    <sp_row action="INSERT_OR_UPDATE">
+        <class_name/>
+        <order>1</order>
+        <sp_column/>
+        <sp_container display_value="Branches and ATMs - Container 1">b7028861dbebf60087c1fd441d9619cd</sp_container>
+        <sys_class_name>sp_row</sys_class_name>
+        <sys_created_by>sush.chandrashekar</sys_created_by>
+        <sys_created_on>2017-06-23 21:42:21</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>4412c0a1dbebf60087c1fd441d96195c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>1</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_row_4412c0a1dbebf60087c1fd441d96195c</sys_update_name>
+        <sys_updated_by>sush.chandrashekar</sys_updated_by>
+        <sys_updated_on>2017-06-23 21:42:21</sys_updated_on>
+    </sp_row>
+</record_update>

@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function ($rootScope, $sce, appManager, $timeout, $http, $scope, $window, $q) {
+	var c = this;
+	$scope.userID = $scope.user.sys_id;
+	$scope.desc = $sce.trustAsHtml(c.data.survey.desc);
+
+	c.investShow = false;
+	c.takeSurvey = false;
+	c.core = {};
+	c.surveyResults = {
+		ques : []
+	};
+
+	$rootScope.$on('showInvest', function(event,data) {
+		/* Block the back button */
+		$window.onbeforeunload = function() { return "Stop";  };
+
+		$timeout(function(){
+			c.core.taskID = data.requestID;  // aka >> Task ID
+			c.investShow = true;
+		})
+	});
+
+	c.$onInit = function() {
+		buildResultsModel();
+	};
+
+	var buildResultsModel = function(){
+		for(var i=1;i<=c.data.survey.questions[0].count;i++){
+			c.surveyResults.ques["Q"+i]=0;
+		}
+	}
+	c.submitSurvey = function(){
+		c.results = [];
+		var el = document.querySelectorAll("input[type='radio']");
+		for(var x=0;x<el.length;x++){
+			if(el[x].checked){
+				var ques = c.data.survey.questions[el[x].dataset.idx];
+				var ans = ques.choices[el[x].dataset.ridx];
+				c.results.push({
+					score : ans.score,
+					response : ans.value,
+					sys_id : ans.sys_id,
+					q_text : ques.text,
+					q_sys_id : ques.sys_id
+				});
+			}
+		}
+
+		getTaskAssessment().then(function(){
+			getSurveyInstance().then(function(){
+				setSurveyResults().then(function(){
+					updateTaskAssessment().then(function(){
+						c.investShow = false;
+						var toPass = {
+							core : c.core,
+							survey : c.data.survey
+						}
+						$rootScope.$broadcast('showResults', toPass);	
+					});
+				});
+			});	
+		});
+
+	}
+
+	function getTaskAssessment() {
+		var defer = $q.defer();
+		c.server.get({ action: 'getTaskAssessment', taskID: c.core.taskID, assessment: c.data.survey.sys_id }).then(function(response) {
+			c.core.assessmentID = response.data.assessmentID;
+			if(c.core.assessmentID){
+				defer.resolve(response);
+			}else{
+				defer.reject(response);
+			}
+		});
+		return defer.promise;
+	}
+	function getSurveyInstance() {
+		var defer = $q.defer();
+		c.server.get({ action: 'getSurveyInstance', survey: c.data.survey, userID: $scope.userID }).then(function(response) {
+			c.core.surveyInstance = response.data.surveyInstance;
+			if(c.core.surveyInstance){
+				defer.resolve(response);
+			}else{
+				defer.reject(response);
+			}
+		});
+		return defer.promise;
+	}
+	function setSurveyResults() {
+		var defer = $q.defer();
+		c.server.get({ action: 'setSurveyResults', surveyInstance: c.core.surveyInstance, responseResults: c.results }).then(function(response) {
+			if(response.data.success){
+				defer.resolve(response);
+			}else{
+				defer.reject(response);
+			}
+		});
+		return defer.promise;
+	}
+	function updateTaskAssessment() {
+		var defer = $q.defer();
+		c.server.get({ action: 'updateTaskAssessment', surveyInstance: c.core.surveyInstance, assessmentID: c.core.assessmentID, userID: $scope.userID }).then(function(response) {
+			if(response.data.success){
+				defer.resolve(response);
+			}else{
+				defer.reject(response);
+			}
+		});
+		return defer.promise;
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.bg-darkblue { 
+  width: 335px;
+ 	margin: 0 auto;
+  padding: 0px;
+  @media (max-width: 320px){
+    margin-left: -10px;
+  }
+}
+.ghost-container{
+  margin: 0 auto;
+  background-color: transparent;
+  @media (max-width: 375px){
+  }
+  @media (max-width: 320px){
+    width: 320px;
+    padding: 0px;
+    margin: 0 auto;
+  }
+}
+.baminv-title {
+  margin-top: 15px;
+  margin-bottom: 10px;
+	font-size: 24px;
+	font-weight: 500;
+  line-height: 1;
+	color: $bam-darkblue;
+  @media (max-width: 375px){
+  }
+  @media (max-width: 320px){
+    width: 285px;
+  }
+}
+.baminv-subtitle {
+  margin-left: 5px;
+	font-size: 16px;
+  font-weight: 400;
+  line-height: 1.25;
+	color: $bam-dark-gray;
+  margin-bottom: 20px;
+  ul{
+    margin-left: -20px;
+  }
+  li{
+    margin-bottom: 10px;
+  }
+  @media (max-width: 375px){
+  }
+  @media (max-width: 320px){
+    width: 285px;
+  }
+}
+.ques-container{
+  margin: 0 auto;
+  background-color: transparent;
+  @media (max-width: 375px){
+  }
+  @media (max-width: 320px){
+    width: 320px;
+  }
+}
+.baminv-container {
+  margin: 0 auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 20px;
+  width: 335px;
+	min-height: 215px;
+  @include border-radius(2px);
+	background-color: $bam-white;
+	box-shadow: 0 2px 4px 0 $bam-box-shadow;
+	border: solid 1px $bam-box-shadow;
+  @media (max-width: 375px){
+  }
+  @media (max-width: 320px){
+    width: 295px;
+    float: left;
+  }  
+}
+.btn.btn-primary{
+   @include border-radius(6px);
+  background-color: $bam-blue;
+  color: $bam-white;
+  border-color: transparent;
+  width: 100%;
+  max-width: 335px;
+  height: 50px;
+  display: block;
+  margin: 0 auto;
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  @media (max-width: 375px){
+    margin-left: 0px;
+  }
+  @media (max-width: 320px){
+    width: 285px;
+  }
+
+}
+.ques-text{
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 1.2;
+	color: $bam-darkblue;
+  margin-bottom: 15px;
+}
+.ques-content{
+ 	font-size: 16px;
+	font-weight: 600;
+	line-height: 1.2;
+	color: $bam-darkblue;
+  margin-bottom: 15px;
+  img {
+    margin-top: 5px;
+    max-width: 290px;
+    @media (max-width: 320px){
+      width: 260px;
+    }
+  }
+  @media (max-width: 320px){
+    width: 260px;
+  }
+}
+.radio {
+  margin: 0;
+  margin-bottom: 10px;
+  margin-left: -20px;
+  input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    + .radio-label {
+      &amp;:before {
+        content: '';
+        background: $bam-white;
+        border-radius: 100%;
+        border: 1px solid darken($bam-box-shadow, 25%);
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 300;
+        width: 1.4em;
+        height: 1.4em;
+        position: relative;
+        top: 0;
+        margin-right: 0.5em; 
+        vertical-align: top;
+        cursor: pointer;
+        text-align: center;
+        transition: all 250ms ease;
+      }
+    }
+    &amp;:checked {
+      + .radio-label {
+        &amp;:before {
+          background-color: $bam-blue;
+          box-shadow: inset 0 0 0 4px $bam-white;
+        }
+      }
+    }
+    &amp;:focus {
+      + .radio-label {
+        &amp;:before {
+          outline: none;
+          border-color: $bam-blue;
+        }
+      }
+    }
+    &amp;:disabled {
+      + .radio-label {
+        &amp;:before {
+          box-shadow: inset 0 0 0 4px $bam-box-shadow;
+          border-color: darken($bam-box-shadow, 25%);
+          background: darken($bam-box-shadow, 25%);
+        }
+      }
+    }
+    + .radio-label {
+      &amp;:empty {
+        &amp;:before {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>bam-invest</id>
+        <internal>false</internal>
+        <link/>
+        <name>Bank App Mobile - Invest Survey</name>
+        <option_schema>[{"displayValue":"Task Appointment","name":"task_appointment_record","default_value":"8ee4be0cdb637600c3beffa31d961965","label":"Task Appointment Record","type":"reference","value":"u_task_appointment","ed":{"reference":"u_task_appointment"}}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	data.survey = { sys_id: '', name: '', desc: '', questions : {}};
+
+	var survey = new GlideRecord("assessment_master");
+	survey.addEncodedQuery("name=Investor Profile Questionnaire");
+	survey.query();
+
+
+	while(survey.next()){
+		data.survey.name = survey.name.toString();
+		data.survey.desc = survey.introduction.toString();
+		data.survey.sys_id = survey.sys_id.toString();
+		var surveyQues = new GlideRecord("assessment_question");
+		surveyQues.addEncodedQuery("master=" + survey.sys_id.toString());
+		surveyQues.query();
+		data.survey.questions[0] = {
+			master : data.survey.sys_id,
+			count : 0
+		};
+		while(surveyQues.next()){
+			var ques = {
+				sys_id : surveyQues.sys_id.toString(),
+				order :  surveyQues.order.toString(),
+				text : surveyQues.question_text.toString(),
+				type : parseInt(surveyQues.type.toString()),
+				choices : {},
+				content : ''
+			}
+			data.survey.questions[0].count++;
+			data.survey.questions[surveyQues.order.toString()] = ques;
+
+			switch(ques.type){
+				case 3 :
+					var quesChoices = new GlideRecord("assessment_question_choice");
+					quesChoices.addEncodedQuery("question=" + surveyQues.sys_id.toString());
+					quesChoices.query();
+					while(quesChoices.next()){
+						var choice = {
+							sys_id : quesChoices.sys_id.toString(),
+							order :  quesChoices.order.toString(),
+							value : quesChoices.value.toString(),
+							score : quesChoices.score.toString()
+						}
+						data.survey.questions[surveyQues.order.toString()].choices[quesChoices.order.toString()] = choice;
+					}
+					break;
+
+				case 17:
+					//sys_ui_macro
+
+					var macroUI = new GlideRecord("sys_ui_macro");
+					macroUI.addEncodedQuery("sys_id=" + surveyQues.macro.toString());
+					macroUI.query();
+					while(macroUI.next()){
+						data.survey.questions[surveyQues.order.toString()].content = trimHTML(macroUI.xml.toString());
+					}
+
+					break;
+
+				default:
+					console.log(ques.type);
+					break;
+			}
+		}
+	}
+	function trimHTML(content){
+		var parsing = content.split("<");
+		var newContent = [];
+		for(var x=0;x<parsing.length;x++){
+			if(parsing[x] != "" && 
+				(parsing[x].indexOf("?xml")==-1) &&
+				(parsing[x].indexOf("j:")==-1) && 
+				(parsing[x].indexOf("/j:")==-1) ){
+				newContent.push("<"+parsing[x]);
+			}
+		}
+		return newContent.join("");
+	}
+	
+	if(input){
+		if(input.action ==='getTaskAssessment'){
+			//var assessmentID = new global.InvestorProfileUtils().createAssessment(input.taskID);
+			
+			var taskAssessment = new GlideRecord('task_assessment');
+			taskAssessment.initialize();
+			taskAssessment.task = input.taskID;
+			taskAssessment.assessment = input.assessment;
+			data.assessmentID = taskAssessment.insert();
+		}
+		if(input.action ==='getSurveyInstance'){
+			var grSurvey = new GlideRecord('survey_instance');
+			grSurvey.newRecord();
+			grSurvey.survey = input.survey.sys_id;
+			grSurvey.taken_by = input.userID;
+			grSurvey.taken_on = new GlideDateTime();
+			data.surveyInstance = grSurvey.insert();
+		}
+		if(input.action ==='setSurveyResults'){
+			var questions = input.responseResults;
+			var posted = [];
+			
+			for(var i=0;i<questions.length;i++){
+					var grSurveyResponse = new GlideRecord('survey_response');
+					grSurveyResponse.newRecord();
+					grSurveyResponse.instance = input.surveyInstance;
+					grSurveyResponse.question = questions[i].q_sys_id;
+					grSurveyResponse.question_choice = questions[i].sys_id;
+					grSurveyResponse.response = questions[i].response;
+					grSurveyResponse.answer = questions[i].score;
+					grSurveyResponse.answer_integer = parseInt(questions[i].score);
+					grSurveyResponse.insert();
+					posted.push(grSurveyResponse.sys_id.toString());
+			}
+			
+			data.success = (posted.length>0);
+			data.postedResults = posted;
+		}
+		if(input.action ==='updateTaskAssessment'){
+			var updatedRec ='';
+			var grTA = new GlideRecord('task_assessment');
+			grTA.addQuery('sys_id',input.assessmentID);
+			grTA.query();
+			while(grTA.next()){
+				grTA.instance = input.surveyInstance;
+				grTA.completed_by = input.userID;
+				grTA.completed_date = new GlideDateTime();
+				updatedRec = grTA.update();
+			}
+			data.success = (updatedRec === input.assessmentID);
+		}
+	}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-10 13:19:32</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>e8023532dbff3a00c3beffa31d96191d</sys_id>
+        <sys_mod_count>242</sys_mod_count>
+        <sys_name>Bank App Mobile - Invest Survey</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_widget_e8023532dbff3a00c3beffa31d96191d</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-24 15:29:22</sys_updated_on>
+        <template><![CDATA[<div class='container bg-darkblue' ng-show='c.investShow'>
+  <div class='row'>
+    <div class='col-xs-12'>
+      <div class='ghost-container'>
+        <div class='baminv-title' style='display:none;'>Personal Wealth Management Questionnaire</div>
+        <div class='baminv-subtitle' style='display:none;'>The following questionnaire will help ensure we offer you a healthy mix of online investing and financial planning services for both the 
+          self-directed, do-it-yourself investor.</div>
+        <div class='baminv-title'>{{::c.data.survey.name}}</div>
+        <div class='baminv-subtitle' ng-bind-html='desc' ng-show='!c.takeSurvey'></div>
+        <button class="btn btn-primary" ng-click="c.takeSurvey=true" ng-show='!c.takeSurvey'>Begin</button>
+      </div>
+      <div class='ghost-container' ng-show='c.takeSurvey'>
+        <div class='ques-container' ng-repeat='ques in c.data.survey.questions track by $index' ng-show='$index != 0'>
+          <div class='baminv-container' ng-if='ques.type == 3'>
+            <div class='ques-text'>{{::ques.text}}</div>
+            <div class="radio" ng-repeat='choice in ques.choices track by $index'>
+              <input id='Q{{::ques.order}}C{{::choice.order}}' name='Q{{::ques.order}}' type="radio" value={{::choice.score}} data-ridx='{{::choice.order}}' data-idx='{{::ques.order}}'/>
+              <label for='Q{{::ques.order}}C{{::choice.order}}' class="radio-label">{{::choice.value}}</label>
+            </div>
+          </div>
+          <div class='baminv-container' ng-if='ques.type != 3'>
+            <div class='ques-text'>{{::ques.text}}</div>
+            <div class='ques-content' ng-bind-html='ques.content'></div>
+          </div>
+        </div>
+        <button class="btn btn-primary" ng-click="c.submitSurvey()">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

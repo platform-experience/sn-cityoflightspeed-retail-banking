@@ -1,0 +1,1022 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function scheduleAppointment($rootScope, appManager, $timeout, $http, $scope, $window,$location, $q) {
+	var c = this;
+	var today = new Date();
+	$rootScope.$broadcast('refreshFooterUrl');
+	$scope.userID = $scope.user.sys_id;
+	c.taskID = $location.search().taskID;
+	c.setAppt = {
+		"location" : '',
+		"request_type" : '',
+		"description" : '',
+		"work_start" : ''
+	}
+	if($location.search().invest){
+		c.setAppt.request_type = 'Investments';
+	}
+	
+	
+	c.$onInit = function() {
+		
+		c.stage = 0;
+		c.selectedSite = "";
+		c.selectedLocation = "";
+		c.selectedSlot = "";
+		c.selectedSlotTime = "";
+		c.timeSlotReturn = "";
+		c.setReminder = false;
+		
+		c.alertSuccess = false;
+		
+		getCurrentAppointments();
+		
+		c.selectedReminderTime = c.data.reminderTimes[0];
+		c.confirmationNumber = "-unknown-";
+	}
+	console.log(c);
+	
+	c.selectLocation = function(){
+		
+		c.changeStage(1);
+		c.getTimeSlots(c.selectedDate);
+	}
+	c.returnHome = function(){
+		$window.location.href = '/bam';
+	}
+	
+	c.changeStage = function(stage) {
+		c.stage = stage;
+		
+	}
+	
+	c.getTimeSlots = function(selDate) {
+		if(c.setAppt.location.length>0){
+			c.server.get({ action: 'getTimeSlots', selectedDate: moment(selDate).format("YYYY-MM-DD"), siteQuery: 'location='+c.setAppt.location }).then(function(response) {
+				if (response.data.timeSlots && response.data.timeSlots.length > 0) {
+					c.timeSLots = JSON.parse(response.data.timeSlots);
+					c.selectedSlot = c.timeSLots[0];
+				}
+				c.dateFormatted = moment(selDate).format("dddd, MMMM D YYYY");
+				$timeout(function() {
+					var el = $window.document.getElementById('btnContinue');
+					if(el)
+						el.focus();
+				});
+			});
+		}
+	};
+	
+	c.setSlotTime = function(slotTime){
+		c.selectedSlotTime = c.setAppt.work_start = slotTime;
+
+		var time = slotTime.split(" ")[1].split(":");
+		
+		if(time[0]>12){
+			c.selectedTime = (time[0]-12)+":"+time[1]+"PM";
+		}else{
+			c.selectedTime = time[0]+":"+time[1]+"AM";
+		}
+		if(time[0].split("")[0]==="0"){
+			c.selectedTime = c.selectedTime.substring(1,c.selectedTime.length);
+		}
+	}
+
+	c.getFormattedDate = function(selDate){
+		c.dateFormatted = moment(selDate).format("dddd, MMMM D YYYY");
+	}
+
+	c.setupReminder = function(reminderTime) {
+		c.server.get({ action: 'setupReminder', selectedTime: reminderTime, taskID: c.timeSlotReturn }).then(function(response) {
+			c.reminderSetup = response.data.reminderReturn;
+		});
+	}
+
+	function getCurrentAppointments() {
+		c.server.get({ action: 'getCurrentAppointments' }).then(function(response) {
+			if (response.data.currentAppointments.length > 0) {
+				c.currentUserAppointments = processTheTimes(JSON.parse(response.data.currentAppointments));
+			}
+		});
+	}
+
+	function processTheTimes(appointments) {
+		for (var i = 0; i < appointments.length; i++) {
+			appointments[i].work_start = moment(appointments[i].work_start).fromNow();
+			if (appointments[i].duration > 0) {
+				appointments[i].duration = Math.floor(appointments[i].duration / 60);
+			}
+		}
+		return appointments;
+	}
+
+	c.datePickerPopup = {
+		opened: false
+	};
+	
+	c.dateOptions = {
+		showWeeks: false,
+		formatYear: 'yyyy',
+		maxDate: today.setDate(today.getDate() + 30),
+		minDate: populateDate(),
+		startingDay: 1
+	};
+
+	// Disable weekend selection
+	c.disabled = function(date, mode) {
+		return (mode === 'day' && (date.getDay() === 0 || date.getDay() === 6));
+	}
+	
+	c.openDatePickerPopup = function() {
+		c.datePickerPopup.opened = true;
+	};
+	
+	c.submitTimeSlot = function() {
+		var action = 'setTimeSlots';
+		if(c.taskID){
+			action = 'updateTimeSlots';
+		}
+		c.server.get({ action: action, appointment: c.setAppt, taskID: c.taskID }).then(function(response) {
+			if (response.data.timeSlotReturn) {
+				var rtn = JSON.parse(response.data.timeSlotReturn);
+
+				c.timeSlotReturn = rtn.sys_id;
+				c.confirmationNumber = rtn.number;
+				c.selectedLocation = c.data.banksByID[c.setAppt.location].street +' '+c.data.banksByID[c.setAppt.location].city + ', ' +c.data.banksByID[c.setAppt.location].state +' '+ c.data.banksByID[c.setAppt.location].zip ;
+				c.selectedSite = c.data.banksByID[c.setAppt.location].name;
+
+				c.setupReminder(c.selectedReminderTime.value.display_value);
+
+				c.stage = 3;
+			}else{
+				console.log(response);
+			}
+		});	
+	};
+
+	c.changeAppt = function(){
+		c.server.get({ action: 'deleteTimeSlot', taskID: c.timeSlotReturn }).then(function(response) {
+			$window.location.reload();
+		});
+	}
+	
+	function populateDate() {
+
+		if (moment().hour() > moment(c.data.end_date_time).hour()) {
+			c.minDate = new Date();
+			c.minDate.setDate(c.minDate.getDate() + 1);
+			c.getTimeSlots(c.minDate);
+		} else {
+			c.minDate = new Date();
+			c.getTimeSlots(c.minDate);
+		}
+		c.selectedDate = c.minDate;
+		return c.minDate;
+
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.bg-darkblue { 
+  min-height: 500px;
+  overflow-x: hidden;
+  padding: 0px;
+}
+.ghost-container{
+  margin: 0 auto;
+  background-color: transparent;
+}
+.remind-container{
+  margin: 0 auto;
+  width: 335px;
+  background-color: transparent;
+}
+
+.bamappt-title {
+  margin-top: 15px;
+  margin-left: 5px;
+  margin-bottom: 6px;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 0.75;
+  color: $bam-darkblue;
+}
+.bamappt-subtitle {
+  margin-left: 5px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.12;
+  color: $bam-dark-gray;
+}
+.bamappt-dateformatted{
+  float: left;
+  margin: 0;
+  margin-left: 57px;
+  margin-top: -38px;
+  margin-right: 15px;
+  height: 18px;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.0;
+  z-index: 400;
+  color: $bam-medium-gray;
+  background-color: $bam-white;
+  position: relative;
+  @media (max-width: 320px){
+    margin-left: 40px;
+  }
+}
+.bamappt-change{
+  float: right;
+  margin-top: -38px;
+  margin-right: 15px;
+  letter-spacing: 1.1px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: $bam-blue;
+  z-index: 400;
+  position: relative;
+  @media (max-width: 320px){
+    margin-right: 7px;
+  }
+}
+.bamappt-locations {
+  margin-bottom: 20px;
+}
+.bamappt-location-box{
+	max-width: 335px;
+	height: 115px;
+	@include border-radius(4px);
+	background-color: $bam-white;
+	border: solid 1px $bam-soft-gray;
+  margin: 0 auto;
+  margin-top: 20px;
+  padding: 20px 10px;
+}
+.box-selected {
+  border: solid 1px $bam-blue;
+}
+.bamappt-location-selected{
+	max-width: 335px;
+	height: 80px;
+	@include border-radius(4px);
+	background-color: $bam-white;
+	border: solid 1px $bam-box-shadow;
+  box-shadow: 0 2px 4px 0 $bam-box-shadow;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  padding: 20px 10px;
+  .name{
+    width: 155px;
+    margin-left: -6px;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 1.11;
+    color: $bam-medium-gray;
+  }
+  .street{
+    width: 155px;
+    margin-left: -6px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.11;
+    color: $bam-medium-gray;
+    margin-top: 3px;
+  }
+  .change{
+    color: $bam-blue;
+    margin: 0 auto;
+    margin-top: 11px;
+    margin-left: 3px;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: normal;
+    text-align: center;
+  }
+}
+.icon-location {
+  fill: $bam-soft-gray;
+  margin: 0 auto;
+  margin-top: 7px;
+  position: absolute;
+  object-fit: contain;
+  height: 26px;
+  width: 20px;
+  @media only screen {
+
+  }
+}
+.bamappt-location-name{
+	height: 18px;
+	font-size: 18px;
+	font-weight: 600;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: 1.0;
+	letter-spacing: normal;
+	color: $bam-ultradark-gray;
+}
+.bamappt-location-street{
+	font-size: 14px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: 1.29;
+	letter-spacing: normal;
+	color: $bam-ultradark-gray;
+}
+.bamappt-label{
+  height: 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: $bam-darkblue;
+}
+.bamappt-field{
+  border-bottom: 0px solid transparent;
+  margin-top: 4px;
+  margin-bottom: 33px;
+  :focus {
+    border-bottom: 1px solid $bam-blue;
+    color: $bam-blue;
+  }
+}
+.icon-arrow{
+  position: relative;
+  float: right;
+  right: 0;
+  top: 25px;
+  z-index: -1;
+  margin: 0;
+  stroke: $bam-soft-gray;
+  stroke-width: 2px;
+  object-fit: contain;
+  height: 12px;
+  width: 23px;
+  @media only screen {
+
+  }
+}
+
+.bamappt-field-placeholder{
+  opacity: 0.6;
+  position: relative;
+}
+
+.bamappt-field input, .bamappt-field select {
+  @include border-radius(0px);
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
+  width: 325px;
+  height: 32px;
+  font-size: 18px;
+  color: $bam-dark-gray;
+  padding-bottom: 0px;
+  background-color: transparent;
+  border: 0px solid transparent;
+ 	border-bottom: 1px solid $bam-soft-gray;
+  @media (max-width: 320px){
+    width: 275px;
+  }
+}
+.bamappt-field textarea{
+  @include border-radius(0px);
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
+  width: 325px;
+  height: 64px;
+  resize: none;
+  font-size: 18px;
+  color: $bam-dark-gray;
+  margin-top: 4px;
+  padding-bottom: 0px;
+  background-color: transparent;
+  border: 0px solid transparent;
+ 	border-bottom: 1px solid $bam-soft-gray;
+  @media (max-width: 320px){
+    width: 275px;
+  }
+}
+.no-slots{
+  margin: 0 auto;
+  text-align: center;
+  color: $bam-red;
+  width: 269px;
+	height: 44px;
+	font-size: 16px;
+	font-weight: 500;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: 1.38;
+	letter-spacing: normal;
+}
+.bamappt-picker-location {
+  max-width: 325px;
+  margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.bamappt-picker-time {
+  max-width: 335px;
+  margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.bamappt-picker-chiclets, .bamappt-picker-locations {
+  margin: 0 auto;
+  text-align: center;
+  max-width: 345px;
+}
+.bamappt-datepicker {
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
+.input-group, .form-group{
+  margin: 0 auto;
+  width: 335px;
+}
+
+.uidatepicker {
+  @include border-radius(0px);
+  height: 60px;
+  background: no-repeat scroll 20px 15px;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMyIgaGVpZ2h0PSIyNiIgdmlld0JveD0iMCAwIDIzIDI2Ij4gICAgPGcgZmlsbD0iI0RERCIgZmlsbC1ydWxlPSJub256ZXJvIj4gICAgICAgIDxwYXRoIGQ9Ik0yMC45MjcgMjZIMS45MDJBMS44NjggMS44NjggMCAwIDEgMCAyNC4wOThWNS4wNzNjMC0xLjA3OC44MjQtMS45MDIgMS45MDItMS45MDJoMTkuMDI1YzEuMDc4IDAgMS45MDIuODI0IDEuOTAyIDEuOTAydjE5LjAyNUExLjg2OCAxLjg2OCAwIDAgMSAyMC45MjcgMjZ6TTEuOTAyIDQuNDM5Yy0uMzggMC0uNjM0LjI1NC0uNjM0LjYzNHYxOS4wMjVjMCAuMzguMjU0LjYzNC42MzQuNjM0aDE5LjAyNWMuMzggMCAuNjM0LS4yNTQuNjM0LS42MzRWNS4wNzNjMC0uMzgtLjI1NC0uNjM0LS42MzQtLjYzNEgxLjkwMnpNNS4wNzMgMGgxLjI2OHYzLjE3MUg1LjA3M3pNMTYuNDg4IDBoMS4yNjh2My4xNzFoLTEuMjY4eiIvPiAgICAgICAgPHBhdGggZD0iTTExLjQxNSAxMC4xNDZBMi41NDQgMi41NDQgMCAwIDEgOC44NzggNy42MWEyLjU0NCAyLjU0NCAwIDAgMSAyLjUzNy0yLjUzN0EyLjU0NCAyLjU0NCAwIDAgMSAxMy45NSA3LjYxYTIuNTQ0IDIuNTQ0IDAgMCAxLTIuNTM2IDIuNTM2em0wLTMuODA1Yy0uNjk4IDAtMS4yNjkuNTcxLTEuMjY5IDEuMjY5IDAgLjY5Ny41NzEgMS4yNjggMS4yNjkgMS4yNjguNjk3IDAgMS4yNjgtLjU3IDEuMjY4LTEuMjY4IDAtLjY5OC0uNTctMS4yNjktMS4yNjgtMS4yNjl6TTE3Ljc1NiAxMC4xNDZBMi41NDQgMi41NDQgMCAwIDEgMTUuMjIgNy42MWEyLjU0NCAyLjU0NCAwIDAgMSAyLjUzNi0yLjUzNyAyLjU0NCAyLjU0NCAwIDAgMSAyLjUzNyAyLjUzNyAyLjU0NCAyLjU0NCAwIDAgMS0yLjUzNyAyLjUzNnptMC0zLjgwNWMtLjY5NyAwLTEuMjY4LjU3MS0xLjI2OCAxLjI2OSAwIC42OTcuNTcgMS4yNjggMS4yNjggMS4yNjguNjk4IDAgMS4yNjgtLjU3IDEuMjY4LTEuMjY4IDAtLjY5OC0uNTctMS4yNjktMS4yNjgtMS4yNjl6TTUuMDczIDE2LjQ4OGEyLjU0NCAyLjU0NCAwIDAgMS0yLjUzNi0yLjUzNyAyLjU0NCAyLjU0NCAwIDAgMSAyLjUzNi0yLjUzNkEyLjU0NCAyLjU0NCAwIDAgMSA3LjYxIDEzLjk1YTIuNTQ0IDIuNTQ0IDAgMCAxLTIuNTM3IDIuNTM3em0wLTMuODA1Yy0uNjk3IDAtMS4yNjguNTctMS4yNjggMS4yNjggMCAuNjk4LjU3IDEuMjY5IDEuMjY4IDEuMjY5LjY5OCAwIDEuMjY4LS41NzEgMS4yNjgtMS4yNjkgMC0uNjk3LS41Ny0xLjI2OC0xLjI2OC0xLjI2OHpNMTEuNDE1IDE2LjQ4OGEyLjU0NCAyLjU0NCAwIDAgMS0yLjUzNy0yLjUzNyAyLjU0NCAyLjU0NCAwIDAgMSAyLjUzNy0yLjUzNiAyLjU0NCAyLjU0NCAwIDAgMSAyLjUzNiAyLjUzNiAyLjU0NCAyLjU0NCAwIDAgMS0yLjUzNiAyLjUzN3ptMC0zLjgwNWMtLjY5OCAwLTEuMjY5LjU3LTEuMjY5IDEuMjY4IDAgLjY5OC41NzEgMS4yNjkgMS4yNjkgMS4yNjkuNjk3IDAgMS4yNjgtLjU3MSAxLjI2OC0xLjI2OSAwLS42OTctLjU3LTEuMjY4LTEuMjY4LTEuMjY4ek0xNy43NTYgMTYuNDg4YTIuNTQ0IDIuNTQ0IDAgMCAxLTIuNTM2LTIuNTM3IDIuNTQ0IDIuNTQ0IDAgMCAxIDIuNTM2LTIuNTM2IDIuNTQ0IDIuNTQ0IDAgMCAxIDIuNTM3IDIuNTM2IDIuNTQ0IDIuNTQ0IDAgMCAxLTIuNTM3IDIuNTM3em0wLTMuODA1Yy0uNjk3IDAtMS4yNjguNTctMS4yNjggMS4yNjggMCAuNjk4LjU3IDEuMjY5IDEuMjY4IDEuMjY5LjY5OCAwIDEuMjY4LS41NzEgMS4yNjgtMS4yNjkgMC0uNjk3LS41Ny0xLjI2OC0xLjI2OC0xLjI2OHpNNS4wNzMgMjIuODNhMi41NDQgMi41NDQgMCAwIDEtMi41MzYtMi41MzcgMi41NDQgMi41NDQgMCAwIDEgMi41MzYtMi41MzcgMi41NDQgMi41NDQgMCAwIDEgMi41MzcgMi41MzcgMi41NDQgMi41NDQgMCAwIDEtMi41MzcgMi41MzZ6bTAtMy44MDZjLS42OTcgMC0xLjI2OC41NzEtMS4yNjggMS4yNjkgMCAuNjk3LjU3IDEuMjY4IDEuMjY4IDEuMjY4LjY5OCAwIDEuMjY4LS41NyAxLjI2OC0xLjI2OCAwLS42OTgtLjU3LTEuMjY5LTEuMjY4LTEuMjY5eiIvPiAgICA8L2c+PC9zdmc+);
+  background-color: $bam-white;
+  padding-left: 60px;
+  @media (max-width: 320px){
+    max-width: 290px;
+    background: no-repeat scroll 10px 15px;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMyIgaGVpZ2h0PSIyNiIgdmlld0JveD0iMCAwIDIzIDI2Ij4gICAgPGcgZmlsbD0iI0RERCIgZmlsbC1ydWxlPSJub256ZXJvIj4gICAgICAgIDxwYXRoIGQ9Ik0yMC45MjcgMjZIMS45MDJBMS44NjggMS44NjggMCAwIDEgMCAyNC4wOThWNS4wNzNjMC0xLjA3OC44MjQtMS45MDIgMS45MDItMS45MDJoMTkuMDI1YzEuMDc4IDAgMS45MDIuODI0IDEuOTAyIDEuOTAydjE5LjAyNUExLjg2OCAxLjg2OCAwIDAgMSAyMC45MjcgMjZ6TTEuOTAyIDQuNDM5Yy0uMzggMC0uNjM0LjI1NC0uNjM0LjYzNHYxOS4wMjVjMCAuMzguMjU0LjYzNC42MzQuNjM0aDE5LjAyNWMuMzggMCAuNjM0LS4yNTQuNjM0LS42MzRWNS4wNzNjMC0uMzgtLjI1NC0uNjM0LS42MzQtLjYzNEgxLjkwMnpNNS4wNzMgMGgxLjI2OHYzLjE3MUg1LjA3M3pNMTYuNDg4IDBoMS4yNjh2My4xNzFoLTEuMjY4eiIvPiAgICAgICAgPHBhdGggZD0iTTExLjQxNSAxMC4xNDZBMi41NDQgMi41NDQgMCAwIDEgOC44NzggNy42MWEyLjU0NCAyLjU0NCAwIDAgMSAyLjUzNy0yLjUzN0EyLjU0NCAyLjU0NCAwIDAgMSAxMy45NSA3LjYxYTIuNTQ0IDIuNTQ0IDAgMCAxLTIuNTM2IDIuNTM2em0wLTMuODA1Yy0uNjk4IDAtMS4yNjkuNTcxLTEuMjY5IDEuMjY5IDAgLjY5Ny41NzEgMS4yNjggMS4yNjkgMS4yNjguNjk3IDAgMS4yNjgtLjU3IDEuMjY4LTEuMjY4IDAtLjY5OC0uNTctMS4yNjktMS4yNjgtMS4yNjl6TTE3Ljc1NiAxMC4xNDZBMi41NDQgMi41NDQgMCAwIDEgMTUuMjIgNy42MWEyLjU0NCAyLjU0NCAwIDAgMSAyLjUzNi0yLjUzNyAyLjU0NCAyLjU0NCAwIDAgMSAyLjUzNyAyLjUzNyAyLjU0NCAyLjU0NCAwIDAgMS0yLjUzNyAyLjUzNnptMC0zLjgwNWMtLjY5NyAwLTEuMjY4LjU3MS0xLjI2OCAxLjI2OSAwIC42OTcuNTcgMS4yNjggMS4yNjggMS4yNjguNjk4IDAgMS4yNjgtLjU3IDEuMjY4LTEuMjY4IDAtLjY5OC0uNTctMS4yNjktMS4yNjgtMS4yNjl6TTUuMDczIDE2LjQ4OGEyLjU0NCAyLjU0NCAwIDAgMS0yLjUzNi0yLjUzNyAyLjU0NCAyLjU0NCAwIDAgMSAyLjUzNi0yLjUzNkEyLjU0NCAyLjU0NCAwIDAgMSA3LjYxIDEzLjk1YTIuNTQ0IDIuNTQ0IDAgMCAxLTIuNTM3IDIuNTM3em0wLTMuODA1Yy0uNjk3IDAtMS4yNjguNTctMS4yNjggMS4yNjggMCAuNjk4LjU3IDEuMjY5IDEuMjY4IDEuMjY5LjY5OCAwIDEuMjY4LS41NzEgMS4yNjgtMS4yNjkgMC0uNjk3LS41Ny0xLjI2OC0xLjI2OC0xLjI2OHpNMTEuNDE1IDE2LjQ4OGEyLjU0NCAyLjU0NCAwIDAgMS0yLjUzNy0yLjUzNyAyLjU0NCAyLjU0NCAwIDAgMSAyLjUzNy0yLjUzNiAyLjU0NCAyLjU0NCAwIDAgMSAyLjUzNiAyLjUzNiAyLjU0NCAyLjU0NCAwIDAgMS0yLjUzNiAyLjUzN3ptMC0zLjgwNWMtLjY5OCAwLTEuMjY5LjU3LTEuMjY5IDEuMjY4IDAgLjY5OC41NzEgMS4yNjkgMS4yNjkgMS4yNjkuNjk3IDAgMS4yNjgtLjU3MSAxLjI2OC0xLjI2OSAwLS42OTctLjU3LTEuMjY4LTEuMjY4LTEuMjY4ek0xNy43NTYgMTYuNDg4YTIuNTQ0IDIuNTQ0IDAgMCAxLTIuNTM2LTIuNTM3IDIuNTQ0IDIuNTQ0IDAgMCAxIDIuNTM2LTIuNTM2IDIuNTQ0IDIuNTQ0IDAgMCAxIDIuNTM3IDIuNTM2IDIuNTQ0IDIuNTQ0IDAgMCAxLTIuNTM3IDIuNTM3em0wLTMuODA1Yy0uNjk3IDAtMS4yNjguNTctMS4yNjggMS4yNjggMCAuNjk4LjU3IDEuMjY5IDEuMjY4IDEuMjY5LjY5OCAwIDEuMjY4LS41NzEgMS4yNjgtMS4yNjkgMC0uNjk3LS41Ny0xLjI2OC0xLjI2OC0xLjI2OHpNNS4wNzMgMjIuODNhMi41NDQgMi41NDQgMCAwIDEtMi41MzYtMi41MzcgMi41NDQgMi41NDQgMCAwIDEgMi41MzYtMi41MzcgMi41NDQgMi41NDQgMCAwIDEgMi41MzcgMi41MzcgMi41NDQgMi41NDQgMCAwIDEtMi41MzcgMi41MzZ6bTAtMy44MDZjLS42OTcgMC0xLjI2OC41NzEtMS4yNjggMS4yNjkgMCAuNjk3LjU3IDEuMjY4IDEuMjY4IDEuMjY4LjY5OCAwIDEuMjY4LS41NyAxLjI2OC0xLjI2OCAwLS42OTgtLjU3LTEuMjY5LTEuMjY4LTEuMjY5eiIvPiAgICA8L2c+PC9zdmc+);
+    padding-left: 40px;
+  }
+
+}
+.chiclets {
+  clear: both;
+  width: 335px;
+  margin: 0 auto;
+  margin-left: 5px;
+  text-align: left;
+  button {
+    @include border-radius(6px);
+    border: 0px solid transparent;
+    margin-left: 1px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    width: 100px;
+    height: 38px;
+    @media (max-width: 320px){
+      margin-left: 2px;
+      margin-right: 3px;
+      width: 88px;
+    }
+  }
+}
+.btn.btn-primary {
+  background-color: $bam-softblue;
+  color: $bam-slateblue;
+  border-color: transparent;
+}
+.btn.disabled {
+  background-color: $bam-gray;
+  color: $bam-medium-gray;
+  border-color: transparent;
+  opacity: 0.65; 
+  cursor: not-allowed;
+}
+.btn.btn-primary.btn-selected {
+  background-color: $bam-blue;
+  color: $bam-white;
+  border-color: transparent;
+}
+.btn.btn-primary.btn-continue{
+  @include border-radius(6px);
+  background-color: $bam-blue;
+  color: $bam-white;
+  border-color: transparent;
+  width: 100%;
+  max-width: 325px;
+  height: 50px;
+  display: block;
+  margin: 0 auto;
+  font-size: 16px;
+  font-weight: 400;
+}
+.btn.btn-primary.btn-invert{
+  @include border-radius(6px);
+  background-color: transparent;
+  color: $bam-blue;
+  border-color: transparent;
+  width: 100%;
+  max-width: 325px;
+  height: 50px;
+  display: block;
+  margin: 0 auto;
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.uib-button-bar {
+  .uib-datepicker-current {
+    background: inherit;
+    color: $brand-info;
+    border: 0px;
+  }
+  .uib-clear {
+    background: inherit;
+    color: $brand-danger;
+    border: 0px;
+  }
+  .uib-close {
+    background: inherit;
+    color: $brand-success;
+    border: 0px;
+  }
+}
+
+.bamappt-confirm-title {
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 26px;
+  margin-bottom: 25px;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.1;
+  color: $bam-darkblue;
+  text-align: center;
+}
+.bamappt-confirm-details {
+  margin: 0 auto;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+}
+.reminder-select{
+  width: 100px;
+  height: 28px;
+  margin-top: 10px;
+  padding: 0px;
+  padding-left: 3px;
+  display: inline-flex;
+  @media (max-width: 320px){
+    margin-left: -25px;
+  }
+}
+.reminder-select-label{
+  position: absolute;
+  margin-left: 8px;
+  margin-top: 14px;
+  font-size: 16px;
+  color: $bam-blue;
+}
+/* line 1, sass/custom/_switches.scss */
+input[type=checkbox]{
+  visibility: hidden;
+}
+.switch-label{
+  position: absolute;
+  margin-left: 8px;
+  margin-top: 4px;
+  font-size: 16px;
+  color: $bam-blue;
+}
+.input-switch {
+  height: 28px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  margin-left: -10px;
+  @media (max-width: 320px){
+    margin-left: -15px;
+  }
+}
+/* line 21, sass/custom/_switches.scss */
+.input-switch input[type=checkbox] ~ .switch {
+  background-color: $bam-medium-gray;
+  width: 50px;
+  height: 27px;
+  border-radius: 12.5px;
+  position: relative;
+  display: inline-block;
+  transition: all 0.4s;
+  /*box-shadow: inset 0px 0px 3px 0px #777;*/
+}
+/* line 31, sass/custom/_switches.scss */
+.input-switch input[type=checkbox] ~ .switch:before {
+  content: '';
+  color: transparent;
+  background-color: $bam-white;
+  border-radius: 50%;
+  width: 45%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin: 2px;
+  transition: all 0.4s;
+  /*box-shadow: 0 6px 18px -9px #000000;*/
+
+}
+/* line 51, sass/custom/_switches.scss */
+.input-switch input[type=checkbox]:checked ~ .switch {
+  background-color: $bam-blue;
+}
+/* line 54, sass/custom/_switches.scss */
+.input-switch input[type=checkbox]:checked ~ .switch:before {
+  left: 23.5px;
+}
+/* line 61, sass/custom/_switches.scss */
+.input-switch input[type=checkbox]:disabled ~ .switch {
+  opacity: 0.5;
+}
+/* line 69, sass/custom/_switches.scss */
+.input-switch input[type=checkbox]:hover ~ .switch:before {
+  box-shadow: 0px;
+  /*box-shadow: 0 6px 18px -5px #000000;*/
+}
+/* line 76, sass/custom/_switches.scss */
+.input-switch input[type=checkbox]:focus ~ .switch {
+  border: 0px;
+  box-shadow: 0px;
+  /*border: 1px solid #278efc;*/
+  /*box-shadow: 0px 0px 6px 1px #278efc, inset 0px 0px 3px 0px #777;*/
+}
+/* line 87, sass/custom/_switches.scss */
+.input-switch.input-switch-accessibility input[type=checkbox] ~ .switch:after {
+  content: '0';
+  color: #485563;
+  width: 45%;
+  position: absolute;
+  left: 23.5px;
+  top: 0;
+  bottom: 0;
+  margin: 2px;
+  line-height: 23px;
+  text-align: center;
+  font-weight: bold;
+}
+/* line 104, sass/custom/_switches.scss */
+.input-switch.input-switch-accessibility input[type=checkbox]:checked ~ .switch:after {
+  content: '1';
+  color: $bam-white;
+  left: 0;
+}
+
+
+.radio {
+  margin: 0;
+  margin-bottom: 10px;
+  margin-left: -20px;
+  margin-top: 26px;
+  input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    + .radio-label {
+      &amp;:before {
+        content: '';
+        background: $bam-white;
+        border-radius: 100%;
+        border: 1px solid darken($bam-box-shadow, 25%);
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 200;
+        width: 1.4em;
+        height: 1.4em;
+        position: relative;
+        top: 0;
+        margin-right: 0.5em; 
+        vertical-align: top;
+        cursor: pointer;
+        text-align: center;
+        transition: all 250ms ease;
+      }
+    }
+    &amp;:checked {
+      + .radio-label {
+        &amp;:before {
+          background-color: $bam-blue;
+          border-color: $bam-blue;
+          box-shadow: inset 0 0 0 4px $bam-white;
+        }
+      }
+    }
+    &amp;:focus {
+      + .radio-label {
+        &amp;:before {
+          outline: none;
+          border-color: $bam-blue;
+        }
+      }
+    }
+    &amp;:disabled {
+      + .radio-label {
+        &amp;:before {
+          box-shadow: inset 0 0 0 4px $bam-box-shadow;
+          border-color: darken($bam-box-shadow, 25%);
+          background: darken($bam-box-shadow, 25%);
+        }
+      }
+    }
+    + .radio-label {
+      &amp;:empty {
+        &amp;:before {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>bam-appt</id>
+        <internal>false</internal>
+        <link/>
+        <name>Bank App Mobile - Appt</name>
+        <option_schema>[{"displayValue":"Task Appointment","name":"task_appointment_record","default_value":"8ee4be0cdb637600c3beffa31d961965","label":"Task Appointment Record","type":"reference","value":"u_task_appointment","ed":{"reference":"u_task_appointment"}},{"name":"additional_fields","default_value":"","label":"Additional Appointment Fields","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[// populate the 'data' variable with catalog item, variables, and variable view
+(function() {
+	data.portalLayout = 'Chiclets'; //Dropdown
+	
+	var taskApntGR = new GlideRecord('u_task_appointment');
+	taskApntGR.addQuery('sys_id', options.task_appointment_record);
+	taskApntGR.query();
+	if (taskApntGR.next()) {
+		var sceduleSpanGR = new GlideRecord('cmn_schedule_span');
+		sceduleSpanGR.addQuery('schedule', taskApntGR.u_schedule.toString());
+		sceduleSpanGR.query();
+		if (sceduleSpanGR.next()) {
+			data.end_date_time = sceduleSpanGR.end_date_time.toString();
+		}
+	}
+	
+	//Get the request types
+	var grRequest = new GlideRecord('x_snc_city_finance_financial_request');
+	grRequest.initialize();
+
+	data.request_type = [];
+
+	var requestTypes = grRequest.getElement('request_type').getChoices();
+	for(var x=0;x<requestTypes.length;x++){
+		data.request_type.push({'choice': requestTypes[x], 'value': x });	
+	}
+	data.reminderTimes = getReminderChoices();
+
+	// - Bank list - site on request form
+	var grLocType = new GlideRecord('x_snc_city_finance_location_type');
+	grLocType.addEncodedQuery('active=true');
+	grLocType.query();
+	var types = [];
+	while(grLocType.next()){
+		if(grLocType.getDisplayValue('name')==='Banking Center'){
+			types.push('x_snc_city_finance_typeLIKE');
+			types.push(grLocType.sys_id.toString());	
+		}
+	}
+
+	data.newTypes = types.join('');
+
+	data.banks = [];
+	data.banksByID = {};
+	
+	var grSites = new GlideRecord('cmn_location');
+	grSites.addEncodedQuery(data.newTypes);
+	grSites.query();
+	
+	while (grSites.next()) {
+		data.banks.push({
+			sys_id : grSites.sys_id.toString(),
+			name : grSites.getDisplayValue('company'),
+			street : grSites.getDisplayValue('street'),
+			city : grSites.getDisplayValue('city'),
+			state : grSites.getDisplayValue('state'),
+			zip : grSites.getDisplayValue('zip'),
+			phone : grSites.getDisplayValue('phone') || "(999) 555-1212"
+		});
+		data.banksByID[grSites.sys_id.toString()] = {
+			name : grSites.getDisplayValue('company'),
+			street : grSites.getDisplayValue('street'),
+			city : grSites.getDisplayValue('city'),
+			state : grSites.getDisplayValue('state'),
+			zip : grSites.getDisplayValue('zip'),
+			phone : grSites.getDisplayValue('phone') || "(999) 555-1212"
+		};
+	}
+
+	function getReminderChoices() {
+		var tempArray = [];
+		var reminderGR = new GlideRecord('sys_choice');
+		reminderGR.addQuery('element', 'remind_me');
+		reminderGR.addQuery('inactive', false);
+		reminderGR.orderBy('sequence');
+		reminderGR.query();
+		while (reminderGR.next()) {
+			var obj = {};
+			$sp.getRecordElements(obj, reminderGR, 'label,sys_id,value');
+			tempArray.push(obj);
+		}
+		return tempArray;
+	}
+
+	if (input && Object.keys(input).length > 0) {
+		if (input.action == 'getTimeSlots') {
+			data.timeSlots = new global.TaskAppointmentUtils().getTimeSlots(options.task_appointment_record, input.selectedDate, input.siteQuery);
+		}
+		if (input.action == 'setTimeSlots') {
+			data.timeSlotReturn = new global.TaskAppointmentUtils().createAppointment(options.task_appointment_record, null, input.appointment);
+		}
+		if (input.action == 'updateTimeSlots') {
+			data.timeSlotReturn = new global.TaskAppointmentUtils().updateAppointment(options.task_appointment_record, input.taskID, null, input.appointment);
+		}
+		if (input.action == 'getCurrentAppointments') {
+			data.currentAppointments = new global.TaskAppointmentUtils().getUserAppointments(options.task_appointment_record, options.additional_fields);
+		}
+		if (input.action == 'deleteTimeSlot') {
+			data.deleted = new global.TaskAppointmentUtils().removeAppointment(options.task_appointment_record,input.taskID);
+		}
+		if (input.action == 'setupReminder') {
+			data.reminderReturn = new global.TaskAppointmentUtils().createReminder(input.taskID, input.selectedTime)
+		}
+	}
+
+})()]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-06 19:27:37</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>c1ef5e21dbbfb600c3beffa31d9619f7</sys_id>
+        <sys_mod_count>537</sys_mod_count>
+        <sys_name>Bank App Mobile - Appt</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_widget_c1ef5e21dbbfb600c3beffa31d9619f7</sys_update_name>
+        <sys_updated_by>sush.chandrashekar</sys_updated_by>
+        <sys_updated_on>2017-07-27 20:33:16</sys_updated_on>
+        <template><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+  <symbol id="icon-location" width="20" height="26" viewBox="0 0 20 26">
+    <path d="M9.68 26C8.133 26 0 14.826 0 9.68 0 4.37 4.37 0 9.68 0c5.311 0 9.682 4.37 9.682 9.68C19.362 14.827 11.23 26 9.68 26zm0-24.894c-4.701 0-8.574 3.873-8.574 8.575 0 4.702 7.192 14.162 8.575 15.157 1.383-.995 8.574-10.51 8.574-15.157 0-4.702-3.872-8.575-8.574-8.575z"/>
+    <path d="M9.68 13.83c-2.267 0-4.148-1.881-4.148-4.15 0-2.267 1.88-4.148 4.149-4.148 2.268 0 4.149 1.88 4.149 4.149 0 2.268-1.881 4.149-4.15 4.149zm0-7.192c-1.659 0-3.042 1.383-3.042 3.043 0 1.66 1.383 3.042 3.043 3.042 1.66 0 3.042-1.383 3.042-3.042 0-1.66-1.383-3.043-3.042-3.043z"/>
+  </symbol>
+  <symbol id='icon-arrow' width="23" height="12" viewBox="0 0 23 12">
+    <path fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" d="M1.438.429L11.501 11.57 21.563.43"/>
+  </symbol>
+</svg>
+<div class='container bg-darkblue'>
+    <div class='row'>
+        <div class='col-xs-12'>
+            <div class='ghost-container' ng-show='c.stage < 3'>
+                <div class='bamappt-title'>Schedule an Appointment</div>
+            </div>
+            <div class='ghost-container' ng-show='c.stage === 0'>
+                <div class='bamappt-subtitle'>Select a location</div>
+                <div class='bamappt-locations' ng-repeat="bank in c.data.banks track by bank.sys_id">
+
+                    <div class='row bamappt-location-box' ng-click='c.setAppt.location = bank.sys_id' ng-class="{'box-selected' : c.setAppt.location === bank.sys_id}">
+                        <div class='col-xs-2'>
+                            <div class="radio">
+                                <input id='{{::bank.sys_id}}' name='{{::bank.sys_id}}' type="radio" value={{::bank.sys_id}} ng-model='c.setAppt.location' />
+                                <label for='{{::bank.sys_id}}' class="radio-label"></label>
+                            </div>
+                        </div>
+                        <div class='col-xs-10'>
+                            <div class='bamappt-location-name'>{{bank.name}}</div>
+                            <div class='bamappt-location-street'>{{bank.street}}</div>
+                            <div class='bamappt-location-street'>{{bank.city}}, {{bank.state}} {{bank.zip}}</div>
+                            <div class='bamappt-location-street'>{{bank.phone}}</div>
+                        </div>
+                    </div>
+
+                </div>
+                <button id='btnContinue' class="btn btn-primary btn-continue" ng-class="{'disabled':c.setAppt.location.length <= 0}" ng-click="c.selectLocation();">Continue</button>
+                <button id='btnCancel' class="btn btn-primary btn-invert" ng-click="c.returnHome()">Cancel</button>
+            </div>
+
+            <div class='ghost-container' ng-show='c.stage === 1'>
+                <div class='bamappt-subtitle'>Select type of appointment and provide brief reason of visit.</div>
+                <div class='bamappt-picker-location'>
+                    <div class='bamappt-locations'>
+                        <div class='row bamappt-location-selected'>
+                            <div class='col-xs-2'>
+                                <svg class="icon-location">
+                  <use xlink:href='#icon-location'></use>
+                </svg>
+                            </div>
+                            <div class='col-xs-7'>
+                                <div class='name'>{{c.data.banksByID[c.setAppt.location].name}}</div>
+                                <div class='street'>{{c.data.banksByID[c.setAppt.location].street}}</div>
+                            </div>
+                            <div class='col-xs-3'>
+                                <div class="change" ng-click="c.changeStage(0)">Change</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='bamappt-field' ng-class="{'bamappt-field-placeholder' : c.setAppt.request_type.length === 0}">
+                        <svg class="icon-arrow">
+              <use xlink:href='#icon-arrow'></use>
+            </svg>
+                        <select id='selRequestType' ng-model='c.setAppt.request_type'>
+              <option value="" disabled selected>What is this Appointment For?</option>
+              <option ng-selected='{{type.choice === c.setAppt.request_type}}' ng-repeat="type in c.data.request_type track by type.choice" value='{{type.choice}}'>{{type.choice}}</option>
+            </select>
+                    </div>
+                    <div class='bamappt-field' ng-class="{'bamappt-field-placeholder' : c.setAppt.description.length === 0}">
+                        <textarea ng-model='c.setAppt.description' placeholder='Briefly Describe the Reason of your visit. (not required)'></textarea>
+                    </div>
+                </div>
+                <button id='btnContinue' class="btn btn-primary btn-continue" ng-class="{'disabled':c.setAppt.location.length <= 0}" ng-click="c.changeStage(2)">Continue</button>
+            </div>
+            <div class='ghost-container' ng-show='c.stage === 2'>
+                <div class='bamappt-subtitle'>Select a date and time below!</div>
+                <div class='bamappt-picker-time'>
+                    <div class='bamappt-datepicker'>
+                        <p class="input-group">
+                            <input type="text" class="form-control uidatepicker" uib-datepicker-popup ng-model="c.selectedDate" is-open="c.datePickerPopup.opened" datepicker-options="c.dateOptions" ng-required="true" close-text="Close" ng-change="c.getTimeSlots(c.selectedDate)"
+                                ng-click="c.openDatePickerPopup()" />
+                            <span class='bamappt-dateformatted' ng-click="c.openDatePickerPopup()">{{c.dateFormatted}}</span>
+                            <span class='bamappt-change' ng-click="c.openDatePickerPopup()">CHANGE</span>
+                        </p>
+                    </div>
+                    <div class="form-group" ng-if="c.data.portalLayout == 'Dropdown'">
+                        <select class="form-control" ng-options="slot as slot.time_slot for slot in c.timeSLots" ng-model="c.selectedSlot"></select>
+                    </div>
+                    <div class='bamappt-picker-chiclets'>
+                        <div class="chiclets" ng-if="c.data.portalLayout == 'Chiclets'">
+                            <div class="no-slots" ng-show="c.timeSLots.length == 0">No Appointments Available for Today.<br/>Please choose a different day!</div>
+                            <button class="btn btn-primary slot-btns" ng-class="{'disabled':slot.taken == 'yes','btn-selected':c.selectedSlotTime == slot.date_time }" ng-click='c.setSlotTime(slot.date_time)' ng-repeat="slot in c.timeSLots">{{slot.time_slot}}</button>
+                        </div>
+                    </div>
+                    <div class='remind-container'>
+                        <div class='row'>
+                            <div class='col-xs-6'>
+                                <div class="form-group" ng-show="c.timeSLots.length > 0">
+                                    <div class="input-switch">
+                                        <input id="setReminder" ng-model='c.setReminder' type="checkbox" name="setReminder">
+                                        <label aria-hidden="true" class="switch" for="setReminder"></label>
+                                        <label aria-hidden="true" class="switch-label" ng-click='c.setReminder = !c.setReminder'>Set Reminder</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-xs-6'>
+                                <div class='fade' ng-class="{'in':c.setReminder===true}">
+                                    <select class="form-control reminder-select" ng-options="time as time.label.display_value for time in c.data.reminderTimes" ng-model="c.selectedReminderTime"></select>
+                                    <label aria-hidden="true" class="reminder-select-label"> prior.</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id='btnContinue' class="btn btn-primary btn-continue" ng-class="{'disabled':c.selectedSlotTime.length <= 0}" ng-click="c.submitTimeSlot()">Continue</button>
+                    <button id='btnContinue' class="btn btn-primary btn-invert" ng-click="c.changeStage(1)">Back</button>
+                </div>
+            </div>
+
+            <div class='ghost-container' ng-show='c.stage === 3'>
+                <div class='row'>
+                    <div class='col-xs-12'>
+                        <div class='bamappt-confirm-title'>
+                            You're all set! <br/> We will see you soon.
+                        </div>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-xs-12'>
+                        <div class='bamappt-confirm-details'>
+                            {{::user.first_name}}, we will see you at:<br/>
+                            <b>{{c.selectedSite}}</b><br/>
+                            <b>When:</b> {{c.dateFormatted}} @ {{c.selectedTime}}<br/>
+                            <b>Where:</b> {{c.selectedLocation}}<br/>
+                            <b>Confirmation</b>: {{c.confirmationNumber}}<br/>
+                        </div>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-xs-12'>
+                        <button class="btn btn-primary btn-continue" ng-click="c.returnHome()">Return Home</button>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-xs-12'>
+                        <button class="btn btn-primary btn-invert" ng-click="c.changeAppt()">Change</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

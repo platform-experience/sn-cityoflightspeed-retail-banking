@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function($q) {
+  /* widget controller */
+  var c = this;
+	$rootScope.$broadcast('refreshFooterUrl');
+	c.profileShow = true;
+
+	c.profile = {
+		account_type : '',
+		first_name : '',
+		middle_initial : '',
+		last_name : '',
+		address:'',
+		city : '',
+		state_province : '',
+		zip_code : '',
+		email_address : '',
+		phone_number : ''
+	};
+	
+	c.submitProfile = function(){
+		if(validateEmail(c.profile.email_address)){
+			if(validatePhone(c.profile.phone_number)){
+				c.msgEmail = c.msgPhone = null;
+				setInvestProfile().then(function(response){
+					c.profileShow = false;
+					var toPass = { 
+						'requestID' : c.data.requestID
+					};
+					$rootScope.$broadcast('showInvest', toPass);	
+				},function(response){
+					console.log(response);
+				});	
+			}else{
+				c.msgPhone = "Phone Number Invalid : Please re-enter your phone number.";
+				c.profile.phone_number='';
+			}
+		}else{
+			c.msgEmail = "Email Invalid : Please re-enter your email.";
+			c.profile.email_address='';
+			if(!validatePhone(c.profile.phone_number)){
+				c.msgPhone = "Phone Number Invalid : Please re-enter your phone number.";
+				c.profile.phone_number='';
+			}
+		}
+	}
+	function setInvestProfile() {
+		var defer = $q.defer();
+		c.server.get({ action: 'setInvestProfile', profile: c.profile }).then(function(response) {
+			c.data.requestID = response.data.requestID;
+			
+			if(c.data.requestID){
+				defer.resolve(response);
+			}else{
+				defer.reject(response);
+			}
+		});
+		return defer.promise;
+	}
+	function validateEmail(input) {
+		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		if(input.length > 0 ){
+			return re.test(input);
+		}else{
+			return true;
+		}
+	}
+	function validatePhone(input) {
+  	var re = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+		if(input.length > 0 ){
+			return re.test(input);
+		}else{
+			return true;
+		}
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.bamprofile-container{
+  width: 335px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+}
+.bamprofile-label{
+	height: 16px;
+	font-size: 14px;
+	font-weight: 600;
+	color: $bam-darkblue;
+}
+.bamprofile-title {
+  margin-top: 15px;
+  margin-left: 0px;
+  margin-bottom: 20px;
+	font-size: 24px;
+	font-weight: 500;
+  line-height: 1;
+	color: $bam-darkblue;
+}
+.alert{
+  margin-top: -25px;
+  padding: 10px;
+  max-width: 335px;
+  @media (max-width: 375px){
+    max-width: 315px;
+  }
+  @media (max-width: 320px){
+    max-width: 275px;
+  }
+}
+.bamprofile-block{
+  margin: 0 auto;
+  margin-left: 10px;
+  @media (max-width: 375px){
+    margin-left: 5px;
+  }
+  @media (max-width: 320px){
+    margin-left: 0px;
+  }
+}
+.bamprofile-field{
+  position: relative;
+  :focus{
+    color: $bam-blue;
+    border-color: $bam-blue;
+  }
+}
+.bamprofile-field input, .bamprofile-field select {
+  @include border-radius(0px);
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
+  width: 100%;
+  max-width: 330px;
+	height: 32px;
+	font-size: 24px;
+	color: $bam-dark-gray;
+  margin-top: 4px;
+  margin-bottom: 33px;
+  padding-bottom: 0px;
+  background-color: transparent;
+  border: 0px solid transparent;
+  border-bottom: 1px solid $bam-soft-gray;
+  @media (max-width: 375px){
+    width: 315px;
+  }
+  @media (max-width: 320px){
+    width: 275px;
+  }
+  @media only screen {
+    height: 36px;
+    padding-left: 0px;
+  }
+}
+.bamprofile-field-placeholder{
+  opacity: 0.6;
+}
+.select-arrow {
+  position: absolute;
+  right: 0;
+  z-index: -1;
+  margin: 0;
+  margin-top: -5px;
+  margin-right: 60px;
+  font-size: 36px;
+  opacity: 0.7;
+  @media (max-width: 375px){
+    margin-right: 31px;
+  }
+  @media (max-width: 320px){
+    margin-right: 20px;
+  }
+}
+.btn.btn-primary{
+   @include border-radius(6px);
+  background-color: $bam-blue;
+  color: $bam-white;
+  border-color: transparent;
+  width: 100%;
+  max-width: 335px;
+  height: 50px;
+  display: block;
+  margin: 0 auto;
+  font-size: 16px;
+  font-weight: 400;
+  margin-left: 7px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  @media (max-width: 375px){
+    margin-left: 2px;
+  }
+  @media (max-width: 320px){
+    width: 275px;
+    margin-left: 0px;
+  }
+}
+.icon-arrow{
+  position: relative;
+  float: right;
+  right: 0;
+  top: 25px;
+  z-index: -1;
+  margin: 0;
+  stroke: $bam-soft-gray;
+  stroke-width: 2px;
+  object-fit: contain;
+  height: 12px;
+  width: 23px;
+  @media only screen {
+
+  }
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>bam-investprofile</id>
+        <internal>false</internal>
+        <link/>
+        <name>Bank App Mobile - Investment Profile</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+	var grRequest = new GlideRecord('x_snc_city_finance_financial_request');
+	grRequest.initialize();
+	
+	data.account_type = [];
+	data.state_province = [];
+	
+	var acctTypes = grRequest.getElement('account_type').getChoices();
+	for(var x=0;x<acctTypes.length;x++){
+		data.account_type.push({'choice': acctTypes[x], 'value': x });	
+	}
+	
+	var states = new GlideRecord('u_states');
+	states.orderBy('u_name');
+	states.query();
+	while (states.next()) {
+		data.state_province.push({
+			'name': states.getDisplayValue('u_name'),
+			'sys_id': states.sys_id.toString(),
+			'abbrv': states.getDisplayValue('u_abbreviation'),
+			'country':states.getDisplayValue('u_country') 
+		});
+	}
+	
+	if (input && Object.keys(input).length > 0) {
+		if (input.action == 'setInvestProfile') {
+			data.sentInput = input;
+			var current = new GlideRecord('x_snc_city_finance_financial_request');
+			current.initialize();
+			current.request_type = "Investments";
+
+			current.account_type = input.profile.account_type.toString();
+			current.first_name = input.profile.first_name.toString();
+			current.middle_initial = input.profile.middle_initial.toString();
+			current.last_name = input.profile.last_name.toString();
+			current.address = input.profile.address.toString();
+			current.city = input.profile.city.toString();
+			current.state_province = input.profile.state_province.toString();
+			current.zip_code = input.profile.zip_code.toString();
+			current.email_address = input.profile.email_address.toString();
+			current.phone_number = input.profile.phone_number.toString();
+			current.insert();
+			data.requestID = current.sys_id.toString();
+		}
+	}
+
+	
+	
+	
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-11 16:30:36</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>8a372b4fdb7b7a00c3beffa31d961978</sys_id>
+        <sys_mod_count>126</sys_mod_count>
+        <sys_name>Bank App Mobile - Investment Profile</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_widget_8a372b4fdb7b7a00c3beffa31d961978</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-24 15:14:14</sys_updated_on>
+        <template><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+  <symbol id='icon-arrow' width="23" height="12" viewBox="0 0 23 12">
+    <path fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" d="M1.438.429L11.501 11.57 21.563.43"/>
+  </symbol>
+</svg>
+<div class='bamprofile-container' ng-show='c.profileShow'>
+  <div class='bamprofile-title'>Investment Application</div>
+  <div class='bamprofile-block'>
+    <div class='bamprofile-label'>
+      Account Type
+    </div>
+    <div class='bamprofile-field' ng-class="{'bamprofile-field-placeholder' : c.profile.account_type.length === 0}">
+      <svg class="icon-arrow">
+        <use xlink:href='#icon-arrow'></use>
+      </svg>
+			<select ng-model='c.profile.account_type' ng-options="option.choice as option.choice for option in c.data.account_type">
+        <option value="" disabled selected>Select Account Type</option>
+      </select>
+    </div>
+  </div>
+  <div class='bamprofile-block'>
+    <div class='bamprofile-label'>
+      First Name
+    </div>
+    <div class='bamprofile-field'>
+			<input ng-model='c.profile.first_name'/>
+    </div>
+  </div>
+  <div class='bamprofile-block'>
+    <div class='bamprofile-label'>
+      Middle Initial
+    </div>
+    <div class='bamprofile-field'>
+			<input ng-model='c.profile.middle_initial'/>
+    </div>
+  </div>
+  <div class='bamprofile-block'>
+    <div class='bamprofile-label'>
+      Last Name
+    </div>
+    <div class='bamprofile-field'>
+			<input ng-model='c.profile.last_name'/>
+    </div>
+  </div>
+  <div class='bamprofile-block'>
+    <div class='bamprofile-label'>
+      Address
+    </div>
+    <div class='bamprofile-field'>
+			<input ng-model='c.profile.address'/>
+    </div>
+  </div>
+  <div class='bamprofile-block'>
+    <div class='bamprofile-label'>
+      City
+    </div>
+    <div class='bamprofile-field'>
+			<input ng-model='c.profile.city'/>
+    </div>
+  </div>
+  <div class='bamprofile-block'>
+    <div class='bamprofile-label'>
+      State/Province
+    </div>
+    <div class='bamprofile-field' ng-class="{'bamprofile-field-placeholder' : c.profile.state_province.length === 0}">
+      <svg class="icon-arrow">
+        <use xlink:href='#icon-arrow'></use>
+      </svg>
+      <select ng-model='c.profile.state_province' ng-options="option.abbrv as option.name for option in c.data.state_province">
+        <option value="" disabled selected>Select State/Province</option>
+      </select>
+    </div>
+  </div>
+  <div class='bamprofile-block'>
+    <div class='bamprofile-label'>
+      Zip Code
+    </div>
+    <div class='bamprofile-field'>
+			<input ng-model='c.profile.zip_code'/>
+    </div>
+  </div>
+  <div class='bamprofile-block'>
+    <div class='bamprofile-label'>
+      Email Address
+    </div>
+    <div class='bamprofile-field' ng-class="{'bamprofile-field-placeholder' : c.profile.email_address.length === 0}">
+			<input ng-model='c.profile.email_address' placeholder="name@domain.com" ng-change='c.msgEmail=null'/>
+    </div>
+    <div ng-if="c.msgEmail" class="alert alert-danger" role="alert">{{c.msgEmail}}</div>
+  </div>
+  <div class='bamprofile-block'>
+    <div class='bamprofile-label'>
+      Phone Number
+    </div>
+    <div class='bamprofile-field' ng-class="{'bamprofile-field-placeholder' : c.profile.phone_number.length === 0}">
+			<input ng-model='c.profile.phone_number' placeholder="(555) 555-5555" ng-change='c.msgPhone=null'/>
+    </div>
+    <div ng-if="c.msgPhone" class="alert alert-danger" role="alert">{{c.msgPhone}}</div>
+  </div>
+  <button class="btn btn-primary" ng-click="c.submitProfile()">Submit</button>
+</div>]]></template>
+    </sp_widget>
+</record_update>

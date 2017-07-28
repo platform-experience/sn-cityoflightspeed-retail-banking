@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function() {
+	var month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+	/* widget controller */
+	var c = this;
+	
+	c.data.spending = [
+		{ 'name' : 'LifeStyle', 'value':'25'},
+		{ 'name' : 'Travel', 'value':'25'},
+		{ 'name': 'Dining', 'value':'25'},
+		{ 'name': 'Utiliteies', 'value':'25'}
+	];
+	
+	c.getMonth = function(){
+		var d = new Date();
+		return month[d.getMonth()];
+	};	
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.bg-darkblue { 
+ 	margin: 0 auto;
+  margin-top: -10px;
+  margin-left: -15px;
+  margin-bottom: 10px;
+  width: 110%;
+  background-color: $bam-darkblue;
+}
+.bamspend-container{
+  min-height: 200px;
+  max-width: 335px;
+  color: $bam-font-light;
+  background-color: transparent;
+  margin: 0 auto;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding: 0px;
+}
+.bamspend-title{
+  @include border-radius(4px);
+  background-color: $bam-blue;
+  height: 30px;
+  font-size: 12px;
+  line-height: 30px;
+  padding-left: 10px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.bamspend-box {
+  margin: 0 auto;
+  height: 200px;
+  background-color: $bam-white;
+  padding: 10px;
+  color: $bam-blue;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>bam-spend</id>
+        <internal>false</internal>
+        <link/>
+        <name>Bank App Mobile - Spend</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-07 12:29:50</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>77c946f5db37f600c3beffa31d961955</sys_id>
+        <sys_mod_count>32</sys_mod_count>
+        <sys_name>Bank App Mobile - Spend</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_widget_77c946f5db37f600c3beffa31d961955</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-18 20:05:05</sys_updated_on>
+        <template><![CDATA[<div class='container bg-darkblue'>
+  <div class='row'>
+    <div class='col-xs-12'>
+      <div class='bamspend-container'>
+        <div class='bamspend-title'>SPENDING: {{::c.getMonth()}} </div>
+        <div class='bamspend-box'>
+          Cool Donut
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      ]]></template>
+    </sp_widget>
+</record_update>

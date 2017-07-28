@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="priority" table="x_snc_city_finance_financial_request" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>priority</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Aggressive</label>
+            <language>en</language>
+            <name>x_snc_city_finance_financial_request</name>
+            <sequence>0</sequence>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:32:26</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>529e8125dbfbb600c3beffa31d96190a</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:32:26</sys_updated_on>
+            <value>1</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>priority</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Moderately Aggressive</label>
+            <language>en</language>
+            <name>x_snc_city_finance_financial_request</name>
+            <sequence>1</sequence>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:32:26</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>d69e8125dbfbb600c3beffa31d96190d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:32:26</sys_updated_on>
+            <value>2</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>priority</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Moderate</label>
+            <language>en</language>
+            <name>x_snc_city_finance_financial_request</name>
+            <sequence>2</sequence>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:32:26</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>129e8125dbfbb600c3beffa31d96191e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:32:26</sys_updated_on>
+            <value>3</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>priority</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Moderately Conservative</label>
+            <language>en</language>
+            <name>x_snc_city_finance_financial_request</name>
+            <sequence>3</sequence>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:32:27</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>169e8125dbfbb600c3beffa31d961922</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:32:27</sys_updated_on>
+            <value>4</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>priority</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Conservative</label>
+            <language>en</language>
+            <name>x_snc_city_finance_financial_request</name>
+            <sequence>4</sequence>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:32:27</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>aa9e8125dbfbb600c3beffa31d961926</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:32:27</sys_updated_on>
+            <value>5</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>priority</element>
+            <name>x_snc_city_finance_financial_request</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:32:26</sys_created_on>
+            <sys_customer_update>false</sys_customer_update>
+            <sys_id>5a9e8125dbfbb600c3beffa31d96190b</sys_id>
+            <sys_mod_count>5</sys_mod_count>
+            <sys_name>priority</sys_name>
+            <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+            <sys_policy/>
+            <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+            <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+            <sys_update_name>sys_choice_x_snc_city_finance_financial_request_priority</sys_update_name>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:32:27</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+</record_update>

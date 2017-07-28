@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function($scope) {
+	var c = this;
+	$scope.userID = $scope.user.sys_id;
+
+	c.$onInit = function() {
+		getCurrentAppointments();
+	};
+
+	c.parseDateTime = function(slotTime, type){
+		var dt = slotTime.split(" ")[0];
+		var time = slotTime.split(" ")[1].split(":");
+		var parsed = [4];
+
+		//Date
+		parsed[0] = moment(dt).format("dddd, MMMM D YYYY");
+
+		//Time
+		if(time[0]>12){
+			parsed[1] = (time[0]-12)+":"+time[1]+"PM";
+		}else{
+			parsed[1] = time[0]+":"+time[1]+"AM";
+		}
+		if(parsed[1].split("")[0]==="0"){
+			parsed[1] = parsed[1].substring(1,parsed[1].length);
+		}
+
+		//Day of Week
+		parsed[2] = moment(dt).format("ddd");
+
+		//Short Date (no year)
+		parsed[3] = moment(dt).format("MMM D");
+
+		return parsed[type];
+	}
+
+	function getCurrentAppointments() {
+		c.server.get({ action: 'getCurrentAppointments' }).then(function(response) {
+			if (response.data.currentAppointments.length > 0) {
+				c.nextAppointment = processTheTimes(JSON.parse(response.data.currentAppointments));
+			}
+		});
+	}
+
+	function processTheTimes(appointments) {
+		for (var i = 0; i < appointments.length; i++) {
+			if(moment().diff(appointments[i].work_start,'days') < 7){
+				if(appointments[i].location){
+					appointments[i].location = c.data.banksByID[appointments[i].location].name;
+				}
+				appointments[i].time = c.parseDateTime(appointments[i].work_start,1)
+				appointments[i].weekday = c.parseDateTime(appointments[i].work_start,2)
+				appointments[i].day = c.parseDateTime(appointments[i].work_start,3)
+				break;
+			}
+		}
+		
+		return appointments[0];
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.bg-darkblue { 
+ 	margin: 0 auto;
+  margin-top: -10px;
+  margin-left: -15px;
+  margin-bottom: 10px;
+  width: 110%;
+  background-color: $bam-darkblue;
+}
+.ghost-container{
+  margin: 0 auto;
+  background-color: transparent;
+}
+
+.bamappt-title {
+  height: 20px;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 20px;
+  font-size: 16px;
+  color: $bam-white;
+  background-color: transparent;
+}
+.container-appts{
+  margin: 0;
+  background-color: transparent;
+  width: 100%;
+  margin-top: 20px;
+}
+.appts{
+  font-size: 14px;
+  color: $bam-blue;
+}
+
+.bamappt-container {
+  max-width: 335px;
+  color: $bam-dark-gray;
+  background-color: transparent;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 0px;
+}
+
+.appt-box { 
+  @include border-radius(4px);
+  max-width: 335px;
+  min-height: 79px;
+  background-color: $bam-white;
+  padding: 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border: solid 1px $bam-soft-gray;
+  margin-left: 0px;
+  font-size: 16px;
+}
+.appt-site {
+  display: block;
+  font-weight: 600;
+}
+.appt-datetime {
+  display: block;
+	font-weight: 400;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+.appt-weekday {
+  display: block;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>bam-upcomingappt</id>
+        <internal>false</internal>
+        <link/>
+        <name>Bank App Mobile - Upcoming Appt</name>
+        <option_schema>[{"name":"task_appointment_record","default_value":"8ee4be0cdb637600c3beffa31d961965","label":"Task Appointment Record","type":"string"},{"name":"additional_fields","default_value":"location","label":"Additional Appointment Fields","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[// populate the 'data' variable with catalog item, variables, and variable view
+(function() {
+	
+	// - Bank list - site on request form
+	var grLocType = new GlideRecord('x_snc_city_finance_location_type');
+	grLocType.addEncodedQuery('active=true');
+	grLocType.query();
+	var types = [];
+	while(grLocType.next()){
+		if(grLocType.getDisplayValue('name')==='Banking Center'){
+			types.push('x_snc_city_finance_typeLIKE');
+			types.push(grLocType.sys_id.toString());	
+		}
+	}
+
+	data.newTypes = types.join('');
+
+	data.banks = [];
+	data.banksByID = {};
+	
+	var grSites = new GlideRecord('cmn_location');
+	grSites.addEncodedQuery(data.newTypes);
+	grSites.query();
+	
+	while (grSites.next()) {
+		data.banks.push({
+			sys_id : grSites.sys_id.toString(),
+			name : grSites.getDisplayValue('company'),
+			street : grSites.getDisplayValue('street'),
+			city : grSites.getDisplayValue('city'),
+			state : grSites.getDisplayValue('state'),
+			zip : grSites.getDisplayValue('zip'),
+			phone : grSites.getDisplayValue('phone')
+		});
+		data.banksByID[grSites.sys_id.toString()] = {
+			name : grSites.getDisplayValue('company'),
+			street : grSites.getDisplayValue('street'),
+			city : grSites.getDisplayValue('city'),
+			state : grSites.getDisplayValue('state'),
+			zip : grSites.getDisplayValue('zip'),
+			phone : grSites.getDisplayValue('phone')
+		};
+	}
+	if (input) {
+		if (input.action == 'getCurrentAppointments') {
+			data.currentAppointments = new global.TaskAppointmentUtils().getUserAppointments(options.task_appointment_record, options.additional_fields);
+		}
+	}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-12 17:04:04</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>0598f82bdbf3ba00c3beffa31d96190f</sys_id>
+        <sys_mod_count>35</sys_mod_count>
+        <sys_name>Bank App Mobile - Upcoming Appt</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_widget_0598f82bdbf3ba00c3beffa31d96190f</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-20 18:57:15</sys_updated_on>
+        <template><![CDATA[<div class='container bg-darkblue' ng-show='c.nextAppointment'>
+  <div class='row'>
+    <div class='col-xs-12'>
+      <div class='ghost-container'>
+      	<div class='bamappt-title'>Next Appointment</div>
+      </div>
+      <div class='ghost-container'>
+      <div class='bamappt-container'>
+        <div class='row appt-box'>
+          <div class='col-xs-3'>
+            <div class='appt-weekday'>{{c.nextAppointment.weekday}}</div>
+            <div class='appt-datetime'>{{c.nextAppointment.day}}</div>
+          </div>
+          <div class='col-xs-6'>
+            <div class='appt-site'>{{c.nextAppointment.location}}</div>
+          </div>
+          <div class='col-xs-3'>
+            <div class='appt-datetime'>{{c.nextAppointment.time}}</div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

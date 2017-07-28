@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element attributes="update_synch=true" extends="dl_matcher" label="Investor Profile Data Lookup" max_length="40" name="x_snc_city_finance_investor_profile_data_lookup" type="collection">
+        <element label="Investor Profile" max_length="40" name="investor_profile" type="integer"/>
+        <element label="Risk Tolerance Score" max_length="40" name="risk_tolerance_score" type="integer"/>
+        <element label="Time Horizon Score" max_length="40" name="time_horizon_score" type="integer"/>
+    </element>
+</database>

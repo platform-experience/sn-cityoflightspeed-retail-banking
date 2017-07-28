@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_ui_section caption="Customer Details" section_id="ad8c85a1dbfbb600c3beffa31d961962" sys_domain="global" table="x_snc_city_finance_financial_request" version="3" view="">
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>first_name</element>
+            <position>0</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:23:23</sys_created_on>
+            <sys_id>798c85a1dbfbb600c3beffa31d961980</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Customer Details" display_value="Customer Details" name="x_snc_city_finance_financial_request" sys_domain="global" view="Default view">ad8c85a1dbfbb600c3beffa31d961962</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:23:23</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>middle_initial</element>
+            <position>1</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:23:23</sys_created_on>
+            <sys_id>f98c85a1dbfbb600c3beffa31d961980</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Customer Details" display_value="Customer Details" name="x_snc_city_finance_financial_request" sys_domain="global" view="Default view">ad8c85a1dbfbb600c3beffa31d961962</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:23:23</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>address</element>
+            <position>2</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:23:23</sys_created_on>
+            <sys_id>7d8c85a1dbfbb600c3beffa31d961980</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Customer Details" display_value="Customer Details" name="x_snc_city_finance_financial_request" sys_domain="global" view="Default view">ad8c85a1dbfbb600c3beffa31d961962</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:23:23</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>zip_code</element>
+            <position>3</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:23:23</sys_created_on>
+            <sys_id>fd8c85a1dbfbb600c3beffa31d961980</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Customer Details" display_value="Customer Details" name="x_snc_city_finance_financial_request" sys_domain="global" view="Default view">ad8c85a1dbfbb600c3beffa31d961962</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:23:23</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>email_address</element>
+            <position>4</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:23:23</sys_created_on>
+            <sys_id>718c85a1dbfbb600c3beffa31d961981</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Customer Details" display_value="Customer Details" name="x_snc_city_finance_financial_request" sys_domain="global" view="Default view">ad8c85a1dbfbb600c3beffa31d961962</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:23:23</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.split</element>
+            <position>5</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:23:23</sys_created_on>
+            <sys_id>f18c85a1dbfbb600c3beffa31d961981</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Customer Details" display_value="Customer Details" name="x_snc_city_finance_financial_request" sys_domain="global" view="Default view">ad8c85a1dbfbb600c3beffa31d961962</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:23:23</sys_updated_on>
+            <sys_user/>
+            <type>.split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>last_name</element>
+            <position>6</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:23:23</sys_created_on>
+            <sys_id>758c85a1dbfbb600c3beffa31d961981</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Customer Details" display_value="Customer Details" name="x_snc_city_finance_financial_request" sys_domain="global" view="Default view">ad8c85a1dbfbb600c3beffa31d961962</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:23:23</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>phone_number</element>
+            <position>7</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:23:23</sys_created_on>
+            <sys_id>f58c85a1dbfbb600c3beffa31d961981</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Customer Details" display_value="Customer Details" name="x_snc_city_finance_financial_request" sys_domain="global" view="Default view">ad8c85a1dbfbb600c3beffa31d961962</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:23:23</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>city</element>
+            <position>8</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:23:23</sys_created_on>
+            <sys_id>798c85a1dbfbb600c3beffa31d961981</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Customer Details" display_value="Customer Details" name="x_snc_city_finance_financial_request" sys_domain="global" view="Default view">ad8c85a1dbfbb600c3beffa31d961962</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:23:23</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>state_province</element>
+            <position>9</position>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:23:23</sys_created_on>
+            <sys_id>f98c85a1dbfbb600c3beffa31d961981</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Customer Details" display_value="Customer Details" name="x_snc_city_finance_financial_request" sys_domain="global" view="Default view">ad8c85a1dbfbb600c3beffa31d961962</sys_ui_section>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:23:23</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_section action="INSERT_OR_UPDATE">
+            <caption>Customer Details</caption>
+            <header>false</header>
+            <name>x_snc_city_finance_financial_request</name>
+            <roles/>
+            <sys_class_name>sys_ui_section</sys_class_name>
+            <sys_created_by>michael.ritchie</sys_created_by>
+            <sys_created_on>2017-07-06 13:23:22</sys_created_on>
+            <sys_customer_update>true</sys_customer_update>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>ad8c85a1dbfbb600c3beffa31d961962</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Customer Details</sys_name>
+            <sys_overrides/>
+            <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+            <sys_policy/>
+            <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+            <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+            <sys_update_name>sys_ui_section_ad8c85a1dbfbb600c3beffa31d961962</sys_update_name>
+            <sys_updated_by>michael.ritchie</sys_updated_by>
+            <sys_updated_on>2017-07-06 13:23:22</sys_updated_on>
+            <sys_user/>
+            <title>false</title>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_section>
+    </sys_ui_section>
+</record_update>

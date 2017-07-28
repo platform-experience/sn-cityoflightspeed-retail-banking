@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function($scope) {
+  /* widget controller */
+  var c = this;
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.bg-darkblue { 
+  background-color: $bam-darkblue;
+  margin: 0 auto;
+  margin-top: -10px;
+  margin-left: -15px;
+  margin-bottom: 10px;
+  width: 110%;
+}
+.bamacct-container {
+  max-width: 335px;
+  color: $bam-font-light;
+  background-color: $bam-darkblue;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  padding: 0px;
+}
+.bamacct-title{
+  @include border-radius(4px);
+  background-color: $bam-blue;
+  height: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 30px;
+  padding-left: 15px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.acct-box { 
+  height: 61px;
+  background-color: $bam-white;
+  padding: 15px;
+  padding-right: 38px;
+  border-bottom: solid 1px $bam-light-gray;
+}
+.last {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.acct-number {
+  width: 27px;
+  height: 18px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: $bam-gray;
+}
+.acct-title {
+  width: 77px;
+  height: 18px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.0;
+  color: $bam-dark-gray;
+  display: inline-flex;
+}
+.acct-balance {
+  float: right;
+  width: 120px;
+  height: 18px;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.0;
+  text-align: right;
+  color: $bam-dark-gray;
+}
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>bam-accounts</id>
+        <internal>false</internal>
+        <link/>
+        <name>Bank App Mobile - Accounts</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+	
+	function getBalance(length){
+		var rnd = Math.floor(Math.pow(10, length-1) + Math.random() * (Math.pow(10, length) - Math.pow(10, length-1) - 1));
+		rnd = rnd*0.01;
+		var cur = "$" + rnd.toFixed(2).replace(/./g, function(c, i, a) {
+        return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "," + c : c;
+    });
+		return cur;
+	}
+	var sess = gs.getSession();
+	
+	if(sess.getClientData('checking')===null){
+		sess.putClientData('checking',getBalance(6))
+	}
+	if(sess.getClientData('savings')===null){
+		sess.putClientData('savings',getBalance(7))
+	}
+	
+	data.accounts = [
+		{ 'name' : 'Checking', 'num': '3313', 'amt': sess.getClientData('checking') },
+		{ 'name' : 'Savings', 'num': '9762', 'amt': sess.getClientData('savings') }
+	];
+	
+	
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-06 16:42:24</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>48d9352ddb3fb600c3beffa31d961927</sys_id>
+        <sys_mod_count>55</sys_mod_count>
+        <sys_name>Bank App Mobile - Accounts</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_widget_48d9352ddb3fb600c3beffa31d961927</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-18 19:26:04</sys_updated_on>
+        <template><![CDATA[<div class='container bg-darkblue'>
+  <div class='row'>
+    <div class='col-xs-12'>
+      <div class='bamacct-container'>
+        <div class='bamacct-title'>Accounts</div>
+        <div class='acct-box' ng-class="{'last':$last}" ng-repeat='item in c.data.accounts'>
+          <div class='acct-title'>{{::item.name}}</div>
+          <div class='acct-balance'>{{::item.amt}}</div>
+          <div class='acct-number'>{{::item.num}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+]]></template>
+    </sp_widget>
+</record_update>

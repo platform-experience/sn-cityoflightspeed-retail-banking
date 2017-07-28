@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function($scope) {
+	/* widget controller */
+	var c = this;
+	$scope.userID = $scope.user.sys_id;
+  $rootScope.$broadcast('refreshFooterUrl');
+	
+	c.getGreeting = function(){
+		var myDate = new Date(); 
+
+		/* hour is before noon */
+		if ( myDate.getHours() < 12 ){ 
+			return "Good Morning,"; 
+		}else if ( myDate.getHours() >= 12 && myDate.getHours() <= 17 ){ 
+				/* Hour is from noon to 5pm (actually to 5:59 pm) */
+				return "Good Afternoon,"; 
+		}else if ( myDate.getHours() > 17 && myDate.getHours() <= 24 ){ 
+			/* the hour is after 5pm, so it is between 6pm and midnight */
+			return "Good Evening,"; 
+		}else{
+			/* the hour is not between 0 and 24, so something is wrong */
+			return "Hello,"	;
+		}
+	};
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.bg-darkblue { 
+  background-color: $bam-darkblue;
+ 	margin: 0 auto;
+  margin-top: -10px;
+  margin-left: -15px;
+  margin-bottom: 10px;
+  width: 110%;
+}
+.bamgreet-container{
+  height: 60px;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 60px;
+  font-size: 16px;
+  font-weight: 500;
+  color: $bam-white;
+  background-color: transparent;
+  text-transform: capitalize;
+}
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>bam-greet</id>
+        <internal>false</internal>
+        <link/>
+        <name>Bank App Mobile - Greet</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-07 12:16:15</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>3ba68e35db37f600c3beffa31d961963</sys_id>
+        <sys_mod_count>27</sys_mod_count>
+        <sys_name>Bank App Mobile - Greet</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_widget_3ba68e35db37f600c3beffa31d961963</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-19 14:31:31</sys_updated_on>
+        <template><![CDATA[<div class='container bg-darkblue'>
+  <div class='row'>
+    <div class='col-xs-12'>
+      <div class='bamgreet-container'>
+        <div>{{c.getGreeting()}} {{::user.first_name}}</div>
+      </div>
+    </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

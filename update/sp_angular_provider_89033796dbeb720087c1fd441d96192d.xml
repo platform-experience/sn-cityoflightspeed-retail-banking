@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_angular_provider">
+    <sp_angular_provider action="INSERT_OR_UPDATE">
+        <name>flippy</name>
+        <script><![CDATA[function flippy(){
+			return {
+			restrict: 'EA',
+			link: function($scope, $elem, $attrs) {
+
+				var options = {
+					flipDuration: ($attrs.flipDuration) ? $attrs.flipDuration : 400,
+					timingFunction: 'ease-in-out',
+				};
+
+				// setting flip options
+				angular.forEach(['flippy-front', 'flippy-back'], function(name) {
+					var el = $elem.find(name);
+					if (el.length == 1) {
+						angular.forEach(['', '-ms-', '-webkit-'], function(prefix) {
+							angular.element(el[0]).css(prefix + 'transition', 'all ' + options.flipDuration/1000 + 's ' + options.timingFunction);
+						});
+					}
+				});
+
+				/**
+				 * behaviour for flipping effect.
+				 */
+				$scope.flip = function() {
+					$elem.toggleClass('flipped');
+				}
+
+			}
+		};
+}]]></script>
+        <sys_class_name>sp_angular_provider</sys_class_name>
+        <sys_created_by>sush.chandrashekar</sys_created_by>
+        <sys_created_on>2017-06-26 23:11:15</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>89033796dbeb720087c1fd441d96192d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>flippy</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_angular_provider_89033796dbeb720087c1fd441d96192d</sys_update_name>
+        <sys_updated_by>sush.chandrashekar</sys_updated_by>
+        <sys_updated_on>2017-06-26 23:11:15</sys_updated_on>
+        <type>directive</type>
+    </sp_angular_provider>
+</record_update>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="m2m_sp_ng_pro_sp_widget">
+    <m2m_sp_ng_pro_sp_widget action="INSERT_OR_UPDATE">
+        <sp_angular_provider display_value="flippy">89033796dbeb720087c1fd441d96192d</sp_angular_provider>
+        <sp_widget display_value="Bank App Mobile - Map">f9818461dbebf60087c1fd441d961984</sp_widget>
+        <sys_class_name>m2m_sp_ng_pro_sp_widget</sys_class_name>
+        <sys_created_by>sush.chandrashekar</sys_created_by>
+        <sys_created_on>2017-06-26 23:11:15</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>a323f396dbeb720087c1fd441d961972</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>flippy.Bank App ATM Near Me</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>m2m_sp_ng_pro_sp_widget_a323f396dbeb720087c1fd441d961972</sys_update_name>
+        <sys_updated_by>sush.chandrashekar</sys_updated_by>
+        <sys_updated_on>2017-06-26 23:11:15</sys_updated_on>
+    </m2m_sp_ng_pro_sp_widget>
+</record_update>

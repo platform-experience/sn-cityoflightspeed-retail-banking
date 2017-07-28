@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_ui_list parent="" relationship="" sys_domain="global" table="u_simple_feedback" version="2" view="">
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>u_name</element>
+            <list_id display_value="u_simple_feedback" element="NULL" name="u_simple_feedback" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">79b437c5db004300d6afffb41d96193a</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>0</position>
+            <sum>false</sum>
+            <sys_created_by>chris.stoll</sys_created_by>
+            <sys_created_on>2017-07-17 22:36:57</sys_created_on>
+            <sys_id>bdb437c5db004300d6afffb41d96193a</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>chris.stoll</sys_updated_by>
+            <sys_updated_on>2017-07-17 22:36:57</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>u_email</element>
+            <list_id display_value="u_simple_feedback" element="NULL" name="u_simple_feedback" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">79b437c5db004300d6afffb41d96193a</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>1</position>
+            <sum>false</sum>
+            <sys_created_by>chris.stoll</sys_created_by>
+            <sys_created_on>2017-07-17 22:36:57</sys_created_on>
+            <sys_id>31b437c5db004300d6afffb41d96193b</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>chris.stoll</sys_updated_by>
+            <sys_updated_on>2017-07-17 22:36:57</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>u_feedback</element>
+            <list_id display_value="u_simple_feedback" element="NULL" name="u_simple_feedback" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">79b437c5db004300d6afffb41d96193a</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>2</position>
+            <sum>false</sum>
+            <sys_created_by>chris.stoll</sys_created_by>
+            <sys_created_on>2017-07-17 22:36:57</sys_created_on>
+            <sys_id>b1b437c5db004300d6afffb41d96193b</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>chris.stoll</sys_updated_by>
+            <sys_updated_on>2017-07-17 22:36:57</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>u_location</element>
+            <list_id display_value="u_simple_feedback" element="NULL" name="u_simple_feedback" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">79b437c5db004300d6afffb41d96193a</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>3</position>
+            <sum>false</sum>
+            <sys_created_by>chris.stoll</sys_created_by>
+            <sys_created_on>2017-07-17 22:36:57</sys_created_on>
+            <sys_id>35b477c5db004300d6afffb41d961902</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>chris.stoll</sys_updated_by>
+            <sys_updated_on>2017-07-17 22:36:57</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>u_other</element>
+            <list_id display_value="u_simple_feedback" element="NULL" name="u_simple_feedback" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">79b437c5db004300d6afffb41d96193a</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>4</position>
+            <sum>false</sum>
+            <sys_created_by>chris.stoll</sys_created_by>
+            <sys_created_on>2017-07-17 22:36:57</sys_created_on>
+            <sys_id>b5b477c5db004300d6afffb41d961902</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>chris.stoll</sys_updated_by>
+            <sys_updated_on>2017-07-17 22:36:57</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>u_page</element>
+            <list_id display_value="u_simple_feedback" element="NULL" name="u_simple_feedback" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">79b437c5db004300d6afffb41d96193a</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>5</position>
+            <sum>false</sum>
+            <sys_created_by>chris.stoll</sys_created_by>
+            <sys_created_on>2017-07-17 22:36:57</sys_created_on>
+            <sys_id>39b477c5db004300d6afffb41d961902</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>chris.stoll</sys_updated_by>
+            <sys_updated_on>2017-07-17 22:36:57</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>u_page_sys_id</element>
+            <list_id display_value="u_simple_feedback" element="NULL" name="u_simple_feedback" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">79b437c5db004300d6afffb41d96193a</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>6</position>
+            <sum>false</sum>
+            <sys_created_by>chris.stoll</sys_created_by>
+            <sys_created_on>2017-07-17 22:36:57</sys_created_on>
+            <sys_id>b9b477c5db004300d6afffb41d961902</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>chris.stoll</sys_updated_by>
+            <sys_updated_on>2017-07-17 22:36:57</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>u_portal</element>
+            <list_id display_value="u_simple_feedback" element="NULL" name="u_simple_feedback" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">79b437c5db004300d6afffb41d96193a</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>7</position>
+            <sum>false</sum>
+            <sys_created_by>chris.stoll</sys_created_by>
+            <sys_created_on>2017-07-17 22:36:57</sys_created_on>
+            <sys_id>3db477c5db004300d6afffb41d961902</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>chris.stoll</sys_updated_by>
+            <sys_updated_on>2017-07-17 22:36:57</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>u_portal_sys_id</element>
+            <list_id display_value="u_simple_feedback" element="NULL" name="u_simple_feedback" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">79b437c5db004300d6afffb41d96193a</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>8</position>
+            <sum>false</sum>
+            <sys_created_by>chris.stoll</sys_created_by>
+            <sys_created_on>2017-07-17 22:36:57</sys_created_on>
+            <sys_id>bdb477c5db004300d6afffb41d961902</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>chris.stoll</sys_updated_by>
+            <sys_updated_on>2017-07-17 22:36:57</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>u_rating</element>
+            <list_id display_value="u_simple_feedback" element="NULL" name="u_simple_feedback" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">79b437c5db004300d6afffb41d96193a</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>9</position>
+            <sum>false</sum>
+            <sys_created_by>chris.stoll</sys_created_by>
+            <sys_created_on>2017-07-17 22:36:57</sys_created_on>
+            <sys_id>31b477c5db004300d6afffb41d961903</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>chris.stoll</sys_updated_by>
+            <sys_updated_on>2017-07-17 22:36:57</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element/>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <name>u_simple_feedback</name>
+            <parent/>
+            <position/>
+            <relationship/>
+            <sum>false</sum>
+            <sys_class_name>sys_ui_list</sys_class_name>
+            <sys_created_by>chris.stoll</sys_created_by>
+            <sys_created_on>2017-07-20 17:29:57</sys_created_on>
+            <sys_customer_update>true</sys_customer_update>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>063bc202db80c300d6afffb41d961936</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>u_simple_feedback</sys_name>
+            <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+            <sys_policy/>
+            <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+            <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+            <sys_update_name>sys_ui_list_u_simple_feedback_null</sys_update_name>
+            <sys_updated_by>chris.stoll</sys_updated_by>
+            <sys_updated_on>2017-07-20 17:29:57</sys_updated_on>
+            <sys_user display_value="Chris Stoll">ed57bba3dbaff20087c1fd441d961992</sys_user>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_list>
+    </sys_ui_list>
+</record_update>

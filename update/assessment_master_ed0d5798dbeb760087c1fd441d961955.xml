@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="assessment_master">
+    <assessment_master action="INSERT_OR_UPDATE">
+        <assessment/>
+        <comments/>
+        <end_note/>
+        <introduction><![CDATA[<p><strong>Find a suitable investment strategy</strong></p>
+<p>Your investing strategy should reflect the kind of investor you are—your personal investor profile. This quiz will help you determine your profile and then match it to an investment strategy that ’s designed for investors like you. The quiz measures two key factors:</p>
+<ul><li>YOUR TIME HORIZON: When will you begin withdrawing money from your account and at what rate? If it ’s many years away, there may be more time to weather the market’s inevitable ups and downs and you may be comfortable with a portfolio that has a greater potential for appreciation and a higher level of risk.</li><li>YOUR RISK TOLERANCE: How do you feel about risk? Some investments fluctuate more dramatically in value than others but may have the potential for higher returns. It’s important to select investments that fit within your level of tolerance for this risk</li></ul>]]></introduction>
+        <name>Investor Profile Questionnaire</name>
+        <sys_class_name>assessment_master</sys_class_name>
+        <sys_created_by>michael.ritchie</sys_created_by>
+        <sys_created_on>2017-06-20 16:28:41</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>ed0d5798dbeb760087c1fd441d961955</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Investor Profile Questionnaire</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>assessment_master_ed0d5798dbeb760087c1fd441d961955</sys_update_name>
+        <sys_updated_by>michael.ritchie</sys_updated_by>
+        <sys_updated_on>2017-06-20 16:28:41</sys_updated_on>
+    </assessment_master>
+    <sys_translated_text action="delete_multiple" query="documentkey=ed0d5798dbeb760087c1fd441d961955"/>
+</record_update>

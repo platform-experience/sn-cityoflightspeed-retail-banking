@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_page">
+    <sp_page action="INSERT_OR_UPDATE">
+        <css>section.page {&#13;
+  overflow-x: hidden;&#13;
+}</css>
+        <id>bam_atm</id>
+        <internal>false</internal>
+        <public>false</public>
+        <roles/>
+        <short_description>Bank App Mobile - Branches and ATMS</short_description>
+        <sys_class_name>sp_page</sys_class_name>
+        <sys_created_by>sush.chandrashekar</sys_created_by>
+        <sys_created_on>2017-06-23 21:41:57</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>e9e18861dbebf60087c1fd441d96191d</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>bam_atm</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_page_e9e18861dbebf60087c1fd441d96191d</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-17 20:30:28</sys_updated_on>
+        <title>Branches and ATMs</title>
+    </sp_page>
+    <sys_translated_text action="delete_multiple" query="documentkey=e9e18861dbebf60087c1fd441d96191d"/>
+</record_update>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update sys_domain="global" table="sys_ui_action">
+    <sys_ui_action action="INSERT_OR_UPDATE">
+        <action_name/>
+        <active>true</active>
+        <client>true</client>
+        <comments/>
+        <condition>!current.isNewRecord() &amp;&amp; current.request_type == "Investments"</condition>
+        <form_action>true</form_action>
+        <form_button>false</form_button>
+        <form_context_menu>false</form_context_menu>
+        <form_link>true</form_link>
+        <hint/>
+        <list_action>false</list_action>
+        <list_banner_button>false</list_banner_button>
+        <list_button>false</list_button>
+        <list_choice>false</list_choice>
+        <list_context_menu>false</list_context_menu>
+        <list_link>false</list_link>
+        <list_save_with_form_button>false</list_save_with_form_button>
+        <name>Fill Out Investor Profile Questionnaire</name>
+        <onclick>invokeAssessment()</onclick>
+        <order>50</order>
+        <script><![CDATA[function invokeAssessment() {
+    g_form.hideAllFieldMsgs();
+	var isSubmitted = false;
+    var id = g_form.getUniqueValue();
+    var ga = new GlideAjax("global.CreateAssessment");
+    ga.addParam("sysparm_name", "checkAssessment");
+    ga.addParam("sysparm_id", id);
+    ga.addParam("sysparm_class", "x_snc_city_finance_financial_request");
+    ga.getXMLAnswer(function(res) {
+        if (res == "No Condition")
+            g_form.addInfoMessage(getMessage("There are no risk assessments defined for this request"));
+        else {
+            var resArr = [];
+            resArr = res.split(",", 2);
+            var taskAsmtID = resArr[0];
+            var assessmentName = resArr[1];
+			
+            var url = "survey_take.do?sysparm_survey=" + encodeURIComponent(assessmentName);
+            url += "&sysparm_task_assessment=" + taskAsmtID;
+            url += "&sysparm_survey_update=false";
+			url += "&sysparm_return_url=" + encodeURIComponent("/x_snc_city_finance_close_task_assessment_dialog.do?sysparm_stack=no");
+			url += "&sysparm_stack=no";
+
+            var d = new GlideOverlay({
+                title: getMessage("Risk Assessment"),
+                iframe: url,
+                width: "60%",
+                height: "80%",
+				onBeforeClose: function() {
+					if (isSubmitted)
+						return;
+					var ga = new GlideAjax("global.CreateAssessment");
+					ga.addParam("sysparm_name", "deleteAssessment");
+					ga.addParam("sysparm_id", taskAsmtID);	
+					ga.getXMLAnswer(function(res){});
+				},
+                onAfterClose: function(){
+					// If the form is submitted & Load Related List button is not shown,
+					// i.e. related lists are aready present, then we reload the form.
+					var isRelatedListDisplayed;
+					if (window.$j)
+						isRelatedListDisplayed = !$j('.related-list-trigger').is(':visible');
+					else
+						isRelatedListDisplayed = true; // Else no need to check since UI11 do not support onDemand RL
+					if (isSubmitted && isRelatedListDisplayed)
+						window.location.replace(g_form.getTableName() + ".do?sys_id=" + g_form.getUniqueValue());
+                },
+                onAfterLoad: function() {
+                    d.autoDimension();
+                    d.autoPosition();
+                    d._createIframeShim();
+                    
+                    var iframe = d.getIFrameElement();
+                    var post_button = iframe.contentWindow.document.getElementById("post_survey");
+                    if (post_button.addEventListener) {
+                        post_button.addEventListener("click", function(eventObj) {
+                            if (eventObj.view.mandatoryResult) {
+								isSubmitted = true;
+								window.g_parentDialog.close();
+                            }
+                        });
+                    } else {
+                        post_button.attachEvent("onclick", function(eventObj) {
+                            if (iframe.contentWindow.mandatoryResult) {
+								isSubmitted = true;
+								window.g_parentDialog.close();
+                            }
+                        });
+                    }
+                }
+            });
+            d.render();
+			//window.g_parentDialog = d; // Accessed from chg_risk_close_assessment_dialog UI page
+        }
+    });
+}]]></script>
+        <show_insert>true</show_insert>
+        <show_multiple_update>false</show_multiple_update>
+        <show_query>false</show_query>
+        <show_update>true</show_update>
+        <sys_class_name>sys_ui_action</sys_class_name>
+        <sys_created_by>michael.ritchie</sys_created_by>
+        <sys_created_on>2017-07-06 13:26:11</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>a22d01e1dbfbb600c3beffa31d961971</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Fill Out Investor Profile Questionnaire</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sys_ui_action_a22d01e1dbfbb600c3beffa31d961971</sys_update_name>
+        <sys_updated_by>michael.ritchie</sys_updated_by>
+        <sys_updated_on>2017-07-14 12:50:42</sys_updated_on>
+        <table>x_snc_city_finance_financial_request</table>
+        <ui11_compatible>false</ui11_compatible>
+        <ui16_compatible>false</ui16_compatible>
+    </sys_ui_action>
+</record_update>

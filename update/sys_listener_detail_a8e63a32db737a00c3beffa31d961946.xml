@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_listener_detail">
+    <sys_listener_detail action="INSERT_OR_UPDATE">
+        <classname>com.glide.listener.ReminderSynchronizer</classname>
+        <correlator_display_value/>
+        <correlator_key/>
+        <correlator_system/>
+        <correlator_type/>
+        <details>#Mon Jul 10 11:20:41 PDT 2017
+cm=email
+cu=ed57bba3dbaff20087c1fd441d961992
+ct=2017-07-11 15\:00\:00
+</details>
+        <document>reminder</document>
+        <document_key>ace67232db737a00c3beffa31d961950</document_key>
+        <fields>field,notes,remind_me,subject,task,user,using</fields>
+        <foreign_key>58e63a32db737a00c3beffa31d96190a</foreign_key>
+        <foreign_name>task</foreign_name>
+        <ondelete>true</ondelete>
+        <oninsert>true</oninsert>
+        <onupdate>true</onupdate>
+        <script/>
+        <sys_class_name>sys_listener_detail</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-10 18:20:28</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>a8e63a32db737a00c3beffa31d961946</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>com.glide.listener.ReminderSynchronizer</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sys_listener_detail_a8e63a32db737a00c3beffa31d961946</sys_update_name>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2017-07-10 18:20:41</sys_updated_on>
+        <update_count/>
+    </sys_listener_detail>
+</record_update>

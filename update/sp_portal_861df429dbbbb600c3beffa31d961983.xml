@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_portal">
+    <sp_portal action="INSERT_OR_UPDATE">
+        <css_variables/>
+        <default>false</default>
+        <homepage display_value="bam_home">d76049a9dbbbb600c3beffa31d96195f</homepage>
+        <icon/>
+        <kb_knowledge_base/>
+        <kb_knowledge_page/>
+        <login_page display_value="bam_login">212635b2dbff3a00c3beffa31d9619dd</login_page>
+        <logo/>
+        <notfound_page display_value="bam_notfound">b405f641db8c0300d6afffb41d96199e</notfound_page>
+        <quick_start_config/>
+        <sc_catalog/>
+        <sc_catalog_page/>
+        <sp_chat_queue/>
+        <sp_rectangle_menu display_value="Bank App Mobile - Menu">16d10ac9dbc80300d6afffb41d961932</sp_rectangle_menu>
+        <sqanda_knowledge_base/>
+        <sys_class_name>sp_portal</sys_class_name>
+        <sys_created_by>chris.stoll</sys_created_by>
+        <sys_created_on>2017-07-06 12:17:15</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>861df429dbbbb600c3beffa31d961983</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>Lightspeed Banking</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sp_portal_861df429dbbbb600c3beffa31d961983</sys_update_name>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-07-19 21:14:48</sys_updated_on>
+        <theme display_value="Bank App Mobile">e9e42168db337600c3beffa31d961946</theme>
+        <title>Lightspeed Banking</title>
+        <url_suffix>bam</url_suffix>
+    </sp_portal>
+    <sys_translated_text action="delete_multiple" query="documentkey=861df429dbbbb600c3beffa31d961983"/>
+</record_update>
