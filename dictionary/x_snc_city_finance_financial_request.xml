@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database>
-    <element attributes="hasListeners=true" audit="true" extends="task" label="Financial Request" max_length="40" name="x_snc_city_finance_financial_request" sizeclass="109" type="collection">
+    <element attributes="hasListeners=true" audit="true" extends="task" label="Financial Request" max_length="40" name="x_snc_city_finance_financial_request" sizeclass="117" type="collection">
         <element choice="1" label="Account Type" max_length="40" name="account_type" type="choice">
             <choice>
                 <element label="Individual" sequence="0" value="Individual"/>

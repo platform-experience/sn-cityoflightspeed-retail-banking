@@ -12,7 +12,7 @@
 		"request_type" : '',
 		"description" : '',
 		"work_start" : ''
-	}
+	};
 	if($location.search().invest){
 		c.setAppt.request_type = 'Investments';
 	}
@@ -34,22 +34,21 @@
 		
 		c.selectedReminderTime = c.data.reminderTimes[0];
 		c.confirmationNumber = "-unknown-";
-	}
+	};
 	console.log(c);
 	
 	c.selectLocation = function(){
 		
 		c.changeStage(1);
 		c.getTimeSlots(c.selectedDate);
-	}
+	};
 	c.returnHome = function(){
 		$window.location.href = '/bam';
-	}
+	};
 	
 	c.changeStage = function(stage) {
 		c.stage = stage;
-		
-	}
+	};
 	
 	c.getTimeSlots = function(selDate) {
 		if(c.setAppt.location.length>0){
@@ -81,17 +80,17 @@
 		if(time[0].split("")[0]==="0"){
 			c.selectedTime = c.selectedTime.substring(1,c.selectedTime.length);
 		}
-	}
+	};
 
 	c.getFormattedDate = function(selDate){
 		c.dateFormatted = moment(selDate).format("dddd, MMMM D YYYY");
-	}
+	};
 
 	c.setupReminder = function(reminderTime) {
 		c.server.get({ action: 'setupReminder', selectedTime: reminderTime, taskID: c.timeSlotReturn }).then(function(response) {
 			c.reminderSetup = response.data.reminderReturn;
 		});
-	}
+	};
 
 	function getCurrentAppointments() {
 		c.server.get({ action: 'getCurrentAppointments' }).then(function(response) {
@@ -126,7 +125,7 @@
 	// Disable weekend selection
 	c.disabled = function(date, mode) {
 		return (mode === 'day' && (date.getDay() === 0 || date.getDay() === 6));
-	}
+	};
 	
 	c.openDatePickerPopup = function() {
 		c.datePickerPopup.opened = true;
@@ -159,7 +158,7 @@
 		c.server.get({ action: 'deleteTimeSlot', taskID: c.timeSlotReturn }).then(function(response) {
 			$window.location.reload();
 		});
-	}
+	};
 	
 	function populateDate() {
 
@@ -848,26 +847,26 @@ input[type=checkbox]{
 			data.deleted = new global.TaskAppointmentUtils().removeAppointment(options.task_appointment_record,input.taskID);
 		}
 		if (input.action == 'setupReminder') {
-			data.reminderReturn = new global.TaskAppointmentUtils().createReminder(input.taskID, input.selectedTime)
+			data.reminderReturn = new global.TaskAppointmentUtils().createReminder(input.taskID, input.selectedTime);
 		}
 	}
 
-})()]]></script>
+})();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>chris.stoll</sys_created_by>
         <sys_created_on>2017-07-06 19:27:37</sys_created_on>
         <sys_customer_update>true</sys_customer_update>
         <sys_id>c1ef5e21dbbfb600c3beffa31d9619f7</sys_id>
-        <sys_mod_count>537</sys_mod_count>
+        <sys_mod_count>539</sys_mod_count>
         <sys_name>Bank App Mobile - Appt</sys_name>
         <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
         <sys_update_name>sp_widget_c1ef5e21dbbfb600c3beffa31d9619f7</sys_update_name>
-        <sys_updated_by>sush.chandrashekar</sys_updated_by>
-        <sys_updated_on>2017-07-27 20:33:16</sys_updated_on>
+        <sys_updated_by>michael.ritchie</sys_updated_by>
+        <sys_updated_on>2017-08-01 17:07:24</sys_updated_on>
         <template><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
   <symbol id="icon-location" width="20" height="26" viewBox="0 0 20 26">
     <path d="M9.68 26C8.133 26 0 14.826 0 9.68 0 4.37 4.37 0 9.68 0c5.311 0 9.682 4.37 9.682 9.68C19.362 14.827 11.23 26 9.68 26zm0-24.894c-4.701 0-8.574 3.873-8.574 8.575 0 4.702 7.192 14.162 8.575 15.157 1.383-.995 8.574-10.51 8.574-15.157 0-4.702-3.872-8.575-8.574-8.575z"/>

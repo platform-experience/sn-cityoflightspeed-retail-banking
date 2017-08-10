@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_grid_canvas_pane">
+    <sys_grid_canvas_pane action="INSERT_OR_UPDATE">
+        <grid_canvas display_value="PA New Tab">dd2f7178db6c83008839f9b61d961936</grid_canvas>
+        <height>4</height>
+        <portal_widget display_value="Created 2017-08-10 09:01:59">9a704e78db6c83008839f9b61d9619f9</portal_widget>
+        <posx>4</posx>
+        <posy>12</posy>
+        <sys_class_name>sys_grid_canvas_pane</sys_class_name>
+        <sys_created_by>chuck.tomasi</sys_created_by>
+        <sys_created_on>2017-08-10 16:02:00</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>d6704e78db6c83008839f9b61d9619fc</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>dd2f7178db6c83008839f9b61d961936</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sys_grid_canvas_pane_d6704e78db6c83008839f9b61d9619fc</sys_update_name>
+        <sys_updated_by>chuck.tomasi</sys_updated_by>
+        <sys_updated_on>2017-08-10 16:02:58</sys_updated_on>
+        <width>4</width>
+    </sys_grid_canvas_pane>
+</record_update>

@@ -326,15 +326,15 @@ margin: 0px;
         <sys_created_on>2017-07-06 12:28:34</sys_created_on>
         <sys_customer_update>true</sys_customer_update>
         <sys_id>13afb0a9dbbbb600c3beffa31d9619ba</sys_id>
-        <sys_mod_count>198</sys_mod_count>
+        <sys_mod_count>200</sys_mod_count>
         <sys_name>Bank App Mobile - Footer</sys_name>
         <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
         <sys_update_name>sp_header_footer_13afb0a9dbbbb600c3beffa31d9619ba</sys_update_name>
-        <sys_updated_by>chris.stoll</sys_updated_by>
-        <sys_updated_on>2017-07-21 16:52:53</sys_updated_on>
+        <sys_updated_by>michael.ritchie</sys_updated_by>
+        <sys_updated_on>2017-08-01 17:06:31</sys_updated_on>
         <template><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="icon-ftr-home" viewBox="0 0 25 16.2" width="25" height="16.2">
     <path d="M22.75 16.25H2.167A2.173 2.173 0 0 1 0 14.083V2.167C0 .975.975 0 2.167 0H22.75c1.192 0 2.167.975 2.167 2.167v11.916a2.173 2.173 0 0 1-2.167 2.167zM2.167 1.083c-.596 0-1.084.488-1.084 1.084v11.916c0 .596.488 1.084 1.084 1.084H22.75c.596 0 1.083-.488 1.083-1.084V2.167c0-.596-.487-1.084-1.083-1.084H2.167z"/>

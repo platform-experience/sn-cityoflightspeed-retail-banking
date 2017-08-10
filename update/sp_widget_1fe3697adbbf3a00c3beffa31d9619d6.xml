@@ -282,56 +282,56 @@
         <roles/>
         <script><![CDATA[// populate the 'data' variable with catalog item, variables, and variable view
 (function() {
-		
-	// - Bank list - site on request form
-	var grLocType = new GlideRecord('x_snc_city_finance_location_type');
-	grLocType.addEncodedQuery('active=true');
-	grLocType.query();
-	var types = [];
-	while(grLocType.next()){
-		if(grLocType.getDisplayValue('name')==='Banking Center'){
-			types.push('x_snc_city_finance_typeLIKE');
-			types.push(grLocType.sys_id.toString());	
-		}
-	}
 
-	data.newTypes = types.join('');
+    // - Bank list - site on request form
+    var grLocType = new GlideRecord('x_snc_city_finance_location_type');
+    grLocType.addEncodedQuery('active=true');
+    grLocType.query();
+    var types = [];
+    while (grLocType.next()) {
+        if (grLocType.getDisplayValue('name') === 'Banking Center') {
+            types.push('x_snc_city_finance_typeLIKE');
+            types.push(grLocType.sys_id.toString());
+        }
+    }
 
-	data.banks = [];
-	data.banksByID = {};
-	
-	var grSites = new GlideRecord('cmn_location');
-	grSites.addEncodedQuery(data.newTypes);
-	grSites.query();
-	
-	while (grSites.next()) {
-		data.banks.push({
-			sys_id : grSites.sys_id.toString(),
-			name : grSites.getDisplayValue('company'),
-			street : grSites.getDisplayValue('street'),
-			city : grSites.getDisplayValue('city'),
-			state : grSites.getDisplayValue('state'),
-			zip : grSites.getDisplayValue('zip'),
-			phone : grSites.getDisplayValue('phone')
-		});
-		data.banksByID[grSites.sys_id.toString()] = {
-			name : grSites.getDisplayValue('company'),
-			street : grSites.getDisplayValue('street'),
-			city : grSites.getDisplayValue('city'),
-			state : grSites.getDisplayValue('state'),
-			zip : grSites.getDisplayValue('zip'),
-			phone : grSites.getDisplayValue('phone')
-		};
-	}
-	
-	if (input) {
-		if (input.action == 'getCurrentAppointments') {
-			data.currentAppointments = new global.TaskAppointmentUtils().getUserAppointments(options.task_appointment_record, options.additional_fields, input.userID);
-		}
-		if (input.action == 'deleteTimeSlot') {
-			data.deleted = new global.TaskAppointmentUtils().removeAppointment(options.task_appointment_record, input.taskSysid);
-		}
-	}
+    data.newTypes = types.join('');
+
+    data.banks = [];
+    data.banksByID = {};
+
+    var grSites = new GlideRecord('cmn_location');
+    grSites.addEncodedQuery(data.newTypes);
+    grSites.query();
+
+    while (grSites.next()) {
+        data.banks.push({
+            sys_id: grSites.sys_id.toString(),
+            name: grSites.getDisplayValue('company'),
+            street: grSites.getDisplayValue('street'),
+            city: grSites.getDisplayValue('city'),
+            state: grSites.getDisplayValue('state'),
+            zip: grSites.getDisplayValue('zip'),
+            phone: grSites.getDisplayValue('phone')
+        });
+        data.banksByID[grSites.sys_id.toString()] = {
+            name: grSites.getDisplayValue('company'),
+            street: grSites.getDisplayValue('street'),
+            city: grSites.getDisplayValue('city'),
+            state: grSites.getDisplayValue('state'),
+            zip: grSites.getDisplayValue('zip'),
+            phone: grSites.getDisplayValue('phone')
+        };
+    }
+
+    if (input) {
+        if (input.action == 'getCurrentAppointments') {
+            data.currentAppointments = new global.TaskAppointmentUtils().getUserAppointments(options.task_appointment_record, options.additional_fields, input.userID);
+        }
+        if (input.action == 'deleteTimeSlot') {
+            data.deleted = new global.TaskAppointmentUtils().removeAppointment(options.task_appointment_record, input.taskSysid);
+        }
+    }
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
@@ -339,15 +339,15 @@
         <sys_created_on>2017-07-10 12:18:02</sys_created_on>
         <sys_customer_update>true</sys_customer_update>
         <sys_id>1fe3697adbbf3a00c3beffa31d9619d6</sys_id>
-        <sys_mod_count>200</sys_mod_count>
+        <sys_mod_count>207</sys_mod_count>
         <sys_name>Bank App Mobile - MyAppt</sys_name>
         <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
         <sys_update_name>sp_widget_1fe3697adbbf3a00c3beffa31d9619d6</sys_update_name>
-        <sys_updated_by>chris.stoll</sys_updated_by>
-        <sys_updated_on>2017-07-24 17:14:10</sys_updated_on>
+        <sys_updated_by>michael.ritchie</sys_updated_by>
+        <sys_updated_on>2017-08-01 17:06:05</sys_updated_on>
         <template><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
   <symbol id='icon-trash' width="20" height="22" viewBox="0 0 20 22">
     <g fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
