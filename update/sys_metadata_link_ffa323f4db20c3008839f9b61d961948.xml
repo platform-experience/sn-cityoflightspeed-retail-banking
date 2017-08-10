@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_metadata_link">
+    <sys_metadata_link action="INSERT_OR_UPDATE">
+        <directory>update</directory>
+        <documentkey>2f13edc2db00c300d6afffb41d9619f3</documentkey>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="cmn_location">
+    <cmn_location action="INSERT_OR_UPDATE">
+        <city>Brooklyn</city>
+        <company display_value="Lightspeed Banking">d521314edb00c300d6afffb41d96199b</company>
+        <contact/>
+        <country>USA</country>
+        <fax_phone/>
+        <full_name>512 86th St, Brooklyn</full_name>
+        <lat_long_error/>
+        <latitude>40.621227</latitude>
+        <longitude>-74.026295</longitude>
+        <name>512 86th St, Brooklyn</name>
+        <parent/>
+        <phone/>
+        <phone_territory/>
+        <state>NY</state>
+        <stock_room>false</stock_room>
+        <street>512 86th St</street>
+        <sys_created_by>michael.ritchie</sys_created_by>
+        <sys_created_on>2017-07-20 14:34:44</sys_created_on>
+        <sys_id>2f13edc2db00c300d6afffb41d9619f3</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_updated_by>michael.ritchie</sys_updated_by>
+        <sys_updated_on>2017-07-20 15:36:47</sys_updated_on>
+        <time_zone/>
+        <x_snc_city_finance_type>11c7b979dbc48300d6afffb41d9619e0</x_snc_city_finance_type>
+        <x_snc_guide_google_map/>
+        <zip>11209</zip>
+    </cmn_location>
+</record_update>
+]]></payload>
+        <sys_class_name>sys_metadata_link</sys_class_name>
+        <sys_created_by>chuck.tomasi</sys_created_by>
+        <sys_created_on>2017-08-10 23:15:27</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>ffa323f4db20c3008839f9b61d961948</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>512 86th St, Brooklyn</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sys_metadata_link_ffa323f4db20c3008839f9b61d961948</sys_update_name>
+        <sys_updated_by>chuck.tomasi</sys_updated_by>
+        <sys_updated_on>2017-08-10 23:15:27</sys_updated_on>
+        <tablename>cmn_location</tablename>
+    </sys_metadata_link>
+</record_update>

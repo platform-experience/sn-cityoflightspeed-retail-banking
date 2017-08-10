@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_metadata_link">
+    <sys_metadata_link action="INSERT_OR_UPDATE">
+        <directory>update</directory>
+        <documentkey>00d7b979dbc48300d6afffb41d9619c1</documentkey>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="x_snc_city_finance_location_type">
+    <x_snc_city_finance_location_type action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <name>ATM</name>
+        <sys_created_by>michael.ritchie</sys_created_by>
+        <sys_created_on>2017-07-19 21:26:45</sys_created_on>
+        <sys_id>00d7b979dbc48300d6afffb41d9619c1</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>michael.ritchie</sys_updated_by>
+        <sys_updated_on>2017-07-19 21:26:45</sys_updated_on>
+    </x_snc_city_finance_location_type>
+</record_update>
+]]></payload>
+        <sys_class_name>sys_metadata_link</sys_class_name>
+        <sys_created_by>chuck.tomasi</sys_created_by>
+        <sys_created_on>2017-08-10 23:16:11</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>6ed3a3f4db20c3008839f9b61d96190f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ATM</sys_name>
+        <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
+        <sys_update_name>sys_metadata_link_6ed3a3f4db20c3008839f9b61d96190f</sys_update_name>
+        <sys_updated_by>chuck.tomasi</sys_updated_by>
+        <sys_updated_on>2017-08-10 23:16:11</sys_updated_on>
+        <tablename>x_snc_city_finance_location_type</tablename>
+    </sys_metadata_link>
+</record_update>
