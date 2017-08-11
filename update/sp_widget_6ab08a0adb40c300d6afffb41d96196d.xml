@@ -405,7 +405,7 @@ button[disabled]{
         <internal>false</internal>
         <link/>
         <name>Bank App Mobile - Feedback</name>
-        <option_schema>[{"name":"dataTable","default_value":"u_simple_feedback","label":"Data Table Name","type":"string"},{"name":"autoHideTY","default_value":"true","label":"Auto Hide Feedback Thank You","type":"boolean"},{"name":"autoHideDuration","default_value":"2.0","label":"Auto Hide Duration (in seconds)","type":"string"},{"name":"showFormButton","default_value":"false","label":"Show Form Button","type":"boolean"},{"name":"hdrTitle","default_value":"Feedback","label":"Header Title","type":"string"},{"name":"hdrIcon","default_value":"","label":"Header Icon","type":"string"},{"name":"txtTYMsg","default_value":"Thank you for your feedback.","label":"Thank You Message","type":"string"},{"name":"showWho","default_value":"true","label":"Show Who","type":"boolean"}]</option_schema>
+        <option_schema>[{"name":"dataTable","default_value":"x_snc_city_finance_feedback","label":"Data Table Name","type":"string"},{"name":"autoHideTY","default_value":"true","label":"Auto Hide Feedback Thank You","type":"boolean"},{"name":"autoHideDuration","default_value":"2.0","label":"Auto Hide Duration (in seconds)","type":"string"},{"name":"showFormButton","default_value":"false","label":"Show Form Button","type":"boolean"},{"name":"hdrTitle","default_value":"Feedback","label":"Header Title","type":"string"},{"name":"hdrIcon","default_value":"","label":"Header Icon","type":"string"},{"name":"txtTYMsg","default_value":"Thank you for your feedback.","label":"Thank You Message","type":"string"},{"name":"showWho","default_value":"true","label":"Show Who","type":"boolean"}]</option_schema>
         <public>true</public>
         <roles/>
         <script><![CDATA[(function() {
@@ -463,7 +463,7 @@ button[disabled]{
         <sys_created_on>2017-07-20 16:44:06</sys_created_on>
         <sys_customer_update>true</sys_customer_update>
         <sys_id>6ab08a0adb40c300d6afffb41d96196d</sys_id>
-        <sys_mod_count>12</sys_mod_count>
+        <sys_mod_count>13</sys_mod_count>
         <sys_name>Bank App Mobile - Feedback</sys_name>
         <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
         <sys_policy/>
@@ -471,7 +471,7 @@ button[disabled]{
         <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
         <sys_update_name>sp_widget_6ab08a0adb40c300d6afffb41d96196d</sys_update_name>
         <sys_updated_by>chris.stoll</sys_updated_by>
-        <sys_updated_on>2017-07-20 19:40:53</sys_updated_on>
+        <sys_updated_on>2017-08-11 16:08:03</sys_updated_on>
         <template><![CDATA[<svg xmlns="http://www.w3.org/2000/svg"  style="display:none">
   <symbol id='svg-feedback' width="38" height="38" viewBox="0 0 38 38" fill="none" fill-rule="evenodd" stroke="#ffffff" stroke-linejoin="round" stroke-width="1" transform="translate(1 1)">
     <circle cx="6.75" cy="29.223" r="2.25"/>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Feedback" max_length="40" name="x_snc_city_finance_feedback" type="collection">
+        <element label="Email" max_length="200" name="u_email" type="string"/>
+        <element label="Feedback" max_length="1000" name="u_feedback" type="string"/>
+        <element label="Name" max_length="200" name="u_name" type="string"/>
+        <element label="Other" max_length="4000" name="u_other" type="string"/>
+        <element label="Page" max_length="100" name="u_page" type="string"/>
+        <element label="Page Sys ID" max_length="100" name="u_page_sys_id" type="string"/>
+        <element label="Portal" max_length="100" name="u_portal" type="string"/>
+        <element label="Portal Sys ID" max_length="100" name="u_portal_sys_id" type="string"/>
+        <element label="Rating" max_length="40" name="u_rating" type="string"/>
+        <element label="Site Location" max_length="1500" name="u_site_location" type="string"/>
+    </element>
+</database>
