@@ -4,7 +4,7 @@
         <client_script><![CDATA[function loginCtrl($scope, $http, $window, $location, urlTools) {
 
 	var c = this;
-		
+
 	c.not_logged_in = !($scope.user.logged_in);
 	
 	c.disableButton = false;
@@ -282,10 +282,12 @@ select:-webkit-autofill:focus {
 	var SHUserID = 'sh:'+ (S4() + S4() + S4() + "4" + S4().substr(0,3) + S4() + S4() + S4() + S4()).toLowerCase();
   var SHUser = {};
 	
+	data.URLString = gs.getProperty('glide.servlet.uri');
+	
 	data.loggedInUser = gs.getUserName();
 	data.SHGenerated = false;
 	if((data.loggedInUser==="guest")||(data.loggedInUser==='undefined')){
-		var endPoint = "https://cityoflightspeeddev.service-now.com/api/snc/stagehand/createstage?definition_id=f9cecf91dbc44300d6afffb41d961990&user_name=" + SHUserID;
+		var endPoint = data.URLString + "api/snc/stagehand/createstage?definition_id=f9cecf91dbc44300d6afffb41d961990&user_name=" + SHUserID;
 		try{
 			var request = new sn_ws.RESTMessageV2();
 			request.setEndpoint(endPoint);
@@ -308,7 +310,7 @@ select:-webkit-autofill:focus {
         <sys_created_on>2017-07-10 13:38:39</sys_created_on>
         <sys_customer_update>true</sys_customer_update>
         <sys_id>585635b2dbff3a00c3beffa31d9619db</sys_id>
-        <sys_mod_count>137</sys_mod_count>
+        <sys_mod_count>140</sys_mod_count>
         <sys_name>Bank App Mobile - Login</sys_name>
         <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
         <sys_policy/>
@@ -316,7 +318,7 @@ select:-webkit-autofill:focus {
         <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
         <sys_update_name>sp_widget_585635b2dbff3a00c3beffa31d9619db</sys_update_name>
         <sys_updated_by>chris.stoll</sys_updated_by>
-        <sys_updated_on>2017-07-19 21:15:21</sys_updated_on>
+        <sys_updated_on>2017-08-11 14:19:00</sys_updated_on>
         <template><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
   <symbol id="icon-thumbprint" viewBox="0 0 32 35" width="32" height="35">
     <path d="M3.133 11.577l-1.7-.36c.626-2.691 1.52-4.845 3.759-6.46l1.074 1.435C4.565 7.27 3.759 8.795 3.133 11.577zM23.452 4.397c-2.059-1.435-4.655-2.153-7.788-2.153-4.565 0-7.34 2.153-7.429 2.153L7.161 2.962c.09-.09 3.312-2.513 8.503-2.513 3.491 0 6.445.807 8.772 2.513l-.984 1.435zM29.538 33.654l-1.7-.628c0-.09 2.148-6.462 2.148-13.641 0-.629 0-1.257.09-1.885.179-2.962.358-6.103-3.491-11.038l1.432-1.077c4.296 5.474 4.028 9.243 3.849 12.294 0 .629-.09 1.167-.09 1.795 0 7.45-2.148 13.91-2.238 14.18zM5.55 18.128l-1.88-.09C4.207 7.36 10.74 5.026 15.217 5.026V6.82c-6.266 0-9.31 3.769-9.667 11.307zM24.705 13.372c-.09-2.154-2.327-4.398-4.744-4.757l.268-1.794c3.223.538 6.087 3.41 6.266 6.371l-1.79.18zM23.72 32.936l-1.7-.449c0-.09 1.342-5.833 1.074-11.308l1.79-.09c.179 5.834-1.164 11.667-1.164 11.847z"/>

@@ -44,7 +44,6 @@
 			c.feedbackWidget = response;
 		});
 	}
-	console.log($scope.portal);
 }]]></client_script>
         <controller_as>c</controller_as>
         <css>.menuSlider {
@@ -124,7 +123,7 @@
         <sys_created_on>2017-07-06 12:26:19</sys_created_on>
         <sys_customer_update>true</sys_customer_update>
         <sys_id>8d3ffc69dbbbb600c3beffa31d961949</sys_id>
-        <sys_mod_count>125</sys_mod_count>
+        <sys_mod_count>126</sys_mod_count>
         <sys_name>Bank App Mobile - Header</sys_name>
         <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
         <sys_policy/>
@@ -132,7 +131,7 @@
         <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
         <sys_update_name>sp_header_footer_8d3ffc69dbbbb600c3beffa31d961949</sys_update_name>
         <sys_updated_by>chris.stoll</sys_updated_by>
-        <sys_updated_on>2017-07-25 20:11:19</sys_updated_on>
+        <sys_updated_on>2017-08-11 14:16:24</sys_updated_on>
         <template><![CDATA[<div class='banner-container'>
     {{::c.bam_header_title}}
 </div>

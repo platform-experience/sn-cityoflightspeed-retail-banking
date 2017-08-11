@@ -60,7 +60,6 @@
 	}
 	function getCurrentAppointments() {
 		c.server.get({ action: 'getCurrentAppointments', userID: $scope.userID   }).then(function(response) {
-			console.log(response.data);
 			if (JSON.parse(response.data.currentAppointments).length > 0) {
 				c.currentUserAppointments = processTheTimes(JSON.parse(response.data.currentAppointments));
 				c.noAppointments = false;
@@ -339,15 +338,15 @@
         <sys_created_on>2017-07-10 12:18:02</sys_created_on>
         <sys_customer_update>true</sys_customer_update>
         <sys_id>1fe3697adbbf3a00c3beffa31d9619d6</sys_id>
-        <sys_mod_count>207</sys_mod_count>
+        <sys_mod_count>208</sys_mod_count>
         <sys_name>Bank App Mobile - MyAppt</sys_name>
         <sys_package display_value="Retail Banking" source="x_snc_city_finance">adbb1758dbeb760087c1fd441d9619d8</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Retail Banking">adbb1758dbeb760087c1fd441d9619d8</sys_scope>
         <sys_update_name>sp_widget_1fe3697adbbf3a00c3beffa31d9619d6</sys_update_name>
-        <sys_updated_by>michael.ritchie</sys_updated_by>
-        <sys_updated_on>2017-08-01 17:06:05</sys_updated_on>
+        <sys_updated_by>chris.stoll</sys_updated_by>
+        <sys_updated_on>2017-08-11 14:15:26</sys_updated_on>
         <template><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
   <symbol id='icon-trash' width="20" height="22" viewBox="0 0 20 22">
     <g fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
